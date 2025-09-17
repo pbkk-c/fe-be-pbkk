@@ -7,20 +7,21 @@ export default function HomePage() {
       <section className="lg:col-span-2 grid grid-cols-2 gap-4">
         <NewsCard
           variant="big"
-          title="Democrats Overhaul Party’s Primary Calendar"
+          title="Lorem Ipsum Dolor Sit Amet"
           description="Shaking up political traditions..."
           image="/img/home/news-1.png"
           category="Politics"
+          href="/news/sample-article"
         />
         <NewsCard
           variant="small"
-          title="Balloon’s Last Flight?"
+          title="Lorem Ipsum Dolor Sit Amet"
           image="/img/home/news-1.png"
           category="Science"
         />
         <NewsCard
           variant="small"
-          title="More Airports to Use Greener Landing Tech"
+          title="Lorem Ipsum Dolor Sit Amet"
           image="/img/home/news-1.png"
           category="World"
         />
@@ -32,12 +33,12 @@ export default function HomePage() {
         <div className="space-y-3">
           <NewsCard
             variant="trending"
-            title="U.S. Strengthens Diplomatic Relations"
+            title="Lorem Ipsum Dolor Sit Amet"
           image="/img/home/news-1.png"
           />
           <NewsCard
             variant="trending"
-            title="Markets Tumble Amid Inflation Worries"
+            title="Lorem Ipsum Dolor Sit Amet"
           image="/img/home/news-1.png"
 
           />
@@ -46,19 +47,33 @@ export default function HomePage() {
 
       {/* Latest News */}
       <section className="lg:col-span-3">
-        <h2 className="font-bold text-2xl mb-4">Latest News</h2>
+        <h2 className="font-bold text-2xl mb-4">Latest News ----</h2>
         <div className="grid md:grid-cols-2 gap-6">
           <NewsCard
             variant="medium"
-            title="London Battered by Storm..."
-            description="Flood warnings across the UK..."
+            title="Lorem Ipsum Dolor Sit Amet"
+            description="Lorem Ipsum dolor sit amet, consectetur..."
           image="/img/home/news-1.png"
             category="World"
           />
           <NewsCard
             variant="medium"
-            title="Europeans are the world’s heaviest drinkers..."
-            description="New study reveals consumption trends..."
+            title="Lorem Ipsum Dolor Sit Amet"
+            description="Lorem Ipsum dolor sit amet, consectetur..."
+          image="/img/home/news-1.png"
+            category="Health"
+          />
+          <NewsCard
+            variant="medium"
+            title="Lorem Ipsum Dolor Sit Amet"
+            description="Lorem Ipsum dolor sit amet, consectetur..."
+          image="/img/home/news-1.png"
+            category="World"
+          />
+          <NewsCard
+            variant="medium"
+            title="Lorem Ipsum Dolor Sit Amet"
+            description="Lorem Ipsum dolor sit amet, consectetur..."
           image="/img/home/news-1.png"
             category="Health"
           />
