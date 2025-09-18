@@ -65,7 +65,7 @@ export default function Footer() {
 
       {/* Copyright */}
       <div className="border-t border-gray-700 py-4 text-center text-xs text-gray-400">
-        © {new Date().getFullYear()} Newsletter. All rights reserved.
+        © {new Date().getFullYear()} XenoTimes. All rights reserved.
       </div>
     </footer>
   );
