@@ -12,6 +12,7 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.544.0",
     "next": "15.5.3",
+    "@tailwindcss/typography": "^0.5.16",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.62.0",
@@ -28,7 +29,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
     "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.17",
+    "tailwindcss": "^4.1.13",
     "typescript": "^5"
   }
 }

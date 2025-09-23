@@ -1,20 +1,22 @@
 import type { Config } from "tailwindcss";
 
+
 const config: Config = {
-  darkMode: ["class"],
+  // darkMode: ["class"],
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/layouts/**/*.{js,ts,jsx,tsx,mdx}",
+     "./src/styles/**/*.{css,scss}",
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
+      // backgroundImage: {
+      //   "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+      //   "gradient-conic":
+      //     "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      // },
       colors: {
         info: {
           light: "#7DCEF7",
@@ -136,7 +138,8 @@ const config: Config = {
       },
     },
   },
-  // plugins: [require("tailwindcss-animate")],
+  plugins: [],
+  
   //   plugins: [],
 };
 export default config;
