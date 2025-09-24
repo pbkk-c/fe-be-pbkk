@@ -11,18 +11,21 @@ export default function Home() {
   useEffect(() => {
     // Fetch news data from Supabase
     const fetchNews = async () => {
-        const { data, error } = await supabase.from('news').select('*');
-        if (error) {
-            console.error('Error fetching news:', error);
-        } else {
-            setNews(data);
+        try {
+            const response = await supabase.from('news').select('*');
+            if (response.error) {
+                console.error('Error fetching news:', response.error);  
+            } else {
+                setNews(response.data as NewsType[]);
+            }
+        } catch (error) {
+            console.error('Unexpected error:', error);
         }
     };
-
     fetchNews();
-  }, [supabase]);
+  }, []);
 
-  console.log(news);
+  console.log(news);  
   
   return (
 <div>

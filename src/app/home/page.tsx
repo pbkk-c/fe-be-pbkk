@@ -1,8 +1,33 @@
+"use client";
+
+import supabase from "@/lib/db";
 import HeroCard from "./components/HeroCard";
 import NewsCard from "./components/NewsCard";
 import SmallNewsCard from "./components/SmallNewsCard";
+import { useEffect, useState } from "react";
+import { NewsType } from "@/types/news";
 
 export default function HomePage() {
+   const [news, setNews] = useState<NewsType[]>([]);
+
+  useEffect(() => {
+    // Fetch news data from Supabase
+    const fetchNews = async () => {
+        try {
+            const response = await supabase.from('news').select('*');
+            if (response.error) {
+                console.error('Error fetching news:', response.error);  
+            } else {
+                setNews(response.data as NewsType[]);
+            }
+        } catch (error) {
+            console.error('Unexpected error:', error);
+        }
+    };
+    fetchNews();
+  }, []);
+
+  console.log(news);  
   return (
     <main className="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
       

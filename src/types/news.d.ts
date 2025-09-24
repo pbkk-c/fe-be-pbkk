@@ -1,8 +1,11 @@
 interface NewsType {
     id: number;
-    name: string;
+    title: string;
     description: string;
     img: string;
+    category?: string;
+    type?: string;
+    created_at: string;
     // published_at: string;
 }
 
