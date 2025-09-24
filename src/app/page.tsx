@@ -1,7 +1,29 @@
+"use client";
+
 import Button from "@/components/buttons/Button";
-import Image from "next/image";
+import supabase from "@/lib/db";
+import type { NewsType } from "@/types/news";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [news, setNews] = useState<NewsType[]>([]);
+
+  useEffect(() => {
+    // Fetch news data from Supabase
+    const fetchNews = async () => {
+        const { data, error } = await supabase.from('news').select('*');
+        if (error) {
+            console.error('Error fetching news:', error);
+        } else {
+            setNews(data);
+        }
+    };
+
+    fetchNews();
+  }, [supabase]);
+
+  console.log(news);
+  
   return (
 <div>
 
@@ -13,6 +35,7 @@ export default function Home() {
     <Button variant="blue" size="lg">
       Button
     </Button>
+
 </div>
   );
 }
