@@ -1,8 +1,8 @@
 interface NewsType {
     id: number;
     title: string;
-    description: string;
-    img: string;
+    description?: string;
+    img?: string;
     category?: string;
     type?: string;
     created_at: string;
