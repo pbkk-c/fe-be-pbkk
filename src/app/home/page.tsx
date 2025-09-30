@@ -6,9 +6,13 @@ import NewsCard from "./components/NewsCard";
 import SmallNewsCard from "./components/SmallNewsCard";
 import { useEffect, useState } from "react";
 import { NewsType } from "@/types/news";
+import { Search } from 'lucide-react';
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
    const [news, setNews] = useState<NewsType[]>([]);
+    const router = useRouter();
+
 
   useEffect(() => {
     // Fetch news data from Supabase
@@ -29,6 +33,7 @@ export default function HomePage() {
 
   console.log(news);  
   return (
+    <>
     <main className="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
       
       {/* Hero Section - full width */}
@@ -135,5 +140,18 @@ export default function HomePage() {
         </div>
       </section>
     </main>
+     <div className="fixed bottom-6 right-6 group">
+        <button
+          onClick={() => router.push("/analyzer")}
+          className="relative flex items-center justify-center w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg transition-colors duration-300"
+        >
+          <Search className="w-6 h-6" />
+          {/* Tooltip */}
+          <span className="absolute right-full mr-3 px-3 py-1 bg-gray-800 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+            Gunakan AI untuk temukan fakta atau opini
+          </span>
+        </button>
+      </div>
+      </>
   );
 }
