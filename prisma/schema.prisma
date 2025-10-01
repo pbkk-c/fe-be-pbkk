@@ -9,23 +9,87 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model news {
-  id          BigInt      @id @default(autoincrement())
-  title       String?     
-  description String?
-  img         String?
-  category    String?
-  type        String?
-  created_at  DateTime    @default(now()) @db.Timestamptz(6)
-  detail      newsdetail?
+model Contents {
+  id           String    @id @default(uuid())
+  platform     String
+  creator      String?
+  creator_id   String?
+  url          String    @unique
+  title        String?
+  raw_text     String?
+  published_at DateTime?
+  collected_at DateTime  @default(now())
+  media        ContentMedia[]
+  analyses     Analyses[]
+  topics       ContentTopics[]
 }
 
-model newsdetail {
-  id        BigInt    @id @default(autoincrement())
-  content   String
-  author    String?
-  views     Int?
-  published DateTime? @db.Timestamptz(6)
-  newsId    BigInt    @unique
-  news      news      @relation(fields: [newsId], references: [id])
+model ContentMedia {
+  id         String   @id @default(uuid())
+  content_id String
+  type       String
+  url        String?
+  created_at DateTime @default(now())
+
+  content Contents @relation(fields: [content_id], references: [id])
+}
+
+model Analyses {
+  id                String           @id @default(uuid())
+  content_id        String
+  main_theme        String?
+  summary           String?
+  fact_percentage   Float?
+  opinion_percentage Float?
+  hoax_percentage   Float?
+  sentiment         String?
+  created_at        DateTime @default(now())
+
+  content          Contents        @relation(fields: [content_id], references: [id])
+  analysis_details AnalysisDetails[]
+}
+
+model AnalysisDetails {
+  id          String   @id @default(uuid())
+  analysis_id String
+  sentence    String?
+  classification String?
+  confidence  Float?
+
+  analysis Analyses @relation(fields: [analysis_id], references: [id])
+}
+
+model Topics {
+  id          String          @id @default(uuid())
+  name        String          @unique
+  description String?
+  created_at  DateTime        @default(now())
+  contents    ContentTopics[]
+}
+
+model ContentTopics {
+  content_id String
+  topic_id   String
+
+  content Contents @relation(fields: [content_id], references: [id])
+  topic   Topics   @relation(fields: [topic_id], references: [id])
+
+  @@id([content_id, topic_id])
+}
+
+model Creators {
+  id         String   @id @default(uuid())
+  platform   String
+  name       String
+  handle     String?
+  profile_url String?
+  avatar_url  String?
+  created_at DateTime @default(now())
+}
+
+model Logs {
+  id         BigInt   @id @default(autoincrement())
+  action     String?
+  details    Json?
+  created_at DateTime @default(now())
 }
