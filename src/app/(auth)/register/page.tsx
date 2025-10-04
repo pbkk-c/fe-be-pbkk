@@ -122,6 +122,7 @@ export default function RegisterForm() {
               </Button>
             </form>
           </FormProvider>
+          </div>
 
           {/* Footer link */}
           <Typography as="p" variant="c1" className="mt-6 text-center text-gray-600 text-sm sm:text-base">
@@ -131,7 +132,7 @@ export default function RegisterForm() {
             </UnstyledLink>
           </Typography>
         </div>
-      </div>
+
     </section>
   );
 }
