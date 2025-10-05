@@ -2,21 +2,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
-  try {
-    const id = params.id;
-    const { data, error } = await supabaseAdmin
-      .from('analyses')
-      .select('*, analysis_details(*)')
-      .eq('id', id)
-      .single();
+export async function GET(request: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
+  const { data, error } = await supabaseAdmin
+    .from('analyses')
+    .select('*, analysis_details(*)')
+    .eq('id', id)
+    .single();
 
-    if (error) return NextResponse.json({ error: error.message }, { status: 404 });
-    return NextResponse.json(data);
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
-  }
+  if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+  return NextResponse.json(data);
 }
+
 
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
   try {
