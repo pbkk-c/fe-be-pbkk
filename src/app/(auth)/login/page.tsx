@@ -53,7 +53,7 @@ export default function LoginForm() {
     <section className="relative flex min-h-screen items-center justify-center bg-[#f4f1ed] p-4">
       {/* Container responsive */}
       <div className="w-full max-w-[320px] sm:max-w-[420px] rounded-2xl bg-[#f5f5f5] p-2 pb-7 shadow-lg mx-auto">
-        <div className="w-full rounded-2xl bg-white p-6 sm:p-8 shadow-lg">
+        <div className="w-full rounded-2xl bg-white p-6 pb-16 sm:p-8 sm:pb-16 shadow-lg">
           {/* Logo */}
           <div className="flex justify-center mb-6">
             <div className="flex h-12 w-44 items-center justify-center rounded-xl bg-gray-100">
@@ -119,28 +119,6 @@ export default function LoginForm() {
               </Button>
             </form>
           </FormProvider>
-
-          {/* Separator */}
-          <div className="my-6 flex items-center justify-center gap-2">
-            <div className="h-px flex-1 bg-gray-200" />
-            <Typography as="p" variant="c1" className="text-gray-500 text-center text-sm sm:text-base">
-              Or continue with
-            </Typography>
-            <div className="h-px flex-1 bg-gray-200" />
-          </div>
-
-          {/* Social buttons */}
-          <div className="flex flex-wrap justify-center gap-4">
-            <button className="flex h-10 w-[75] sm:w-[100] items-center justify-center rounded-md border border-gray-300 hover:bg-gray-100">
-              <img src="/google.svg" alt="Google" className="h-6 w-6" />
-            </button>
-            <button className="flex h-10 w-[74] sm:w-[100] items-center justify-center rounded-md border border-gray-300 hover:bg-gray-100">
-              <img src="/facebook.svg" alt="Facebook" className="h-6 w-6" />
-            </button>
-            <button className="flex h-10 w-[75] sm:w-[100] items-center justify-center rounded-md border border-gray-300 hover:bg-gray-100">
-              <img src="/apple.svg" alt="Apple" className="h-5 w-5" />
-            </button>
-          </div>
         </div>
 
         {/* Footer link */}

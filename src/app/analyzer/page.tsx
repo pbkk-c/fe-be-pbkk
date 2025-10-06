@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Navbar from "../layouts/Navbar";
+import Footer from "../layouts/Footer";
 
 export default function Analyzer() {
   const [url, setUrl] = useState("");
@@ -40,7 +42,10 @@ export default function Analyzer() {
   };
 
   return (
-    // Container utama untuk menengahkan konten
+    <>
+    <Navbar />
+
+    {/* // Container utama untuk menengahkan konten */}
     <main className="flex min-h-screen w-full flex-col items-center justify-center pb-40">
       
       {/* Konten Utama */}
@@ -97,5 +102,7 @@ export default function Analyzer() {
       </div>
 
     </main>
+        <Footer />
+    </>
   );
 }
