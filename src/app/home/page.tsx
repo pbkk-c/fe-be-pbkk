@@ -10,6 +10,8 @@ import { Search } from 'lucide-react';
 import { useRouter } from "next/navigation";
 import SportsSection from "./container/SportsSection";
 import TechSection from "./container/TechSection";
+import Navbar from "../layouts/Navbar";
+import Footer from "../layouts/Footer";
 
 export default function HomePage() {
   const router = useRouter();
@@ -123,6 +125,8 @@ export default function HomePage() {
     <>
       {/* <main className="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6"> */}
       {/* <main className="max-w-7xl mx-auto gap-6"> */}
+      <Navbar />
+
       <main className="w-full mx-auto gap-6">
         {/* Hero Section */}
         <section className="lg:col-span-3 px-16 py-6">
@@ -183,6 +187,7 @@ export default function HomePage() {
         </section>
       {/* </main> */}
       </main>
+      <Footer />
 
       {/* Floating Button */}
       <div className="fixed bottom-6 right-6 group">

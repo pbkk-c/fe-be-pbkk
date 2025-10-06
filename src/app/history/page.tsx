@@ -1,5 +1,8 @@
 "use client";
 
+import Footer from "../layouts/Footer";
+import Navbar from "../layouts/Navbar";
+
 export default function HistoryPage() {
   // Data history hardcode dulu untuk testing
   const history = [
@@ -21,6 +24,8 @@ export default function HistoryPage() {
   ];
 
   return (
+    <>
+    <Navbar />
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <div className="w-full max-w-2xl bg-white shadow-lg rounded-2xl p-8">
         <h1 className="text-2xl font-bold text-gray-800 mb-6">History</h1>
@@ -61,5 +66,8 @@ export default function HistoryPage() {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
+
   );
 }
