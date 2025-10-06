@@ -3,18 +3,45 @@
 import Typography from "@/components/Typography";
 import Button from "@/components/buttons/Button";
 import UnstyledLink from "@/components/links/Unstyledlink";
+import { RegisterType } from "@/types/user";
 import { FormProvider, useForm } from "react-hook-form";
 
 export default function RegisterForm() {
-  const methods = useForm({
+  const methods = useForm<RegisterType>({
     mode: "onTouched",
   });
 
   const { handleSubmit, register, formState: { errors }, watch } = methods;
 
-  const onSubmit = (data: any) => {
-    console.log("Register data:", data);
-  };
+  // const onSubmit = (data: any) => {
+  //   console.log("Register data:", data);
+  // };
+
+  const onSubmit = async (data: RegisterType) => {
+  try {
+    const res = await fetch("/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      throw new Error("Register failed");
+    }
+
+    const result = await res.json();
+    console.log("Register success:", result);
+
+    // Misalnya redirect ke login
+    // router.push("/login");
+  } catch (error) {
+    console.error(error);
+  }
+  console.log("Register data:", data);
+  // ==== TO DO : TAMBAHIN TOAST ====
+};
 
   const password = watch("password", "");
 
