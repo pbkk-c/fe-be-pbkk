@@ -4,7 +4,9 @@ import Typography from "@/components/Typography";
 import Button from "@/components/buttons/Button";
 import UnstyledLink from "@/components/links/Unstyledlink";
 import { RegisterType } from "@/types/user";
+import { useRouter } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 export default function RegisterForm() {
   const methods = useForm<RegisterType>({
@@ -12,37 +14,36 @@ export default function RegisterForm() {
   });
 
   const { handleSubmit, register, formState: { errors }, watch } = methods;
-
+  const router = useRouter();
   // const onSubmit = (data: any) => {
   //   console.log("Register data:", data);
   // };
 
   const onSubmit = async (data: RegisterType) => {
-  try {
-    const res = await fetch("/api/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    try {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-    if (!res.ok) {
-      throw new Error("Register failed");
+      const result = await res.json();
+
+      if (!res.ok) {
+        toast.error(result.error || "Register failed");
+        return;
+      }
+
+      toast.success(result.message || "Register success!");
+
+      // Delay biar user lihat toast dulu
+      setTimeout(() => {
+        router.push("/login");
+      }, 2000);
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong");
     }
-
-    const result = await res.json();
-    console.log("Register success:", result);
-
-    // Misalnya redirect ke login
-    // router.push("/login");
-  } catch (error) {
-    console.error(error);
-  }
-  console.log("Register data:", data);
-  // ==== TO DO : TAMBAHIN TOAST ====
-};
-
+  };
   const password = watch("password", "");
 
   return (
