@@ -1,18 +1,12 @@
 "use client";
 
-import supabase from "@/lib/db";
-import HeroCard from "./components/HeroCard";
-import NewsCard from "./components/NewsCard";
-import SmallNewsCard from "./components/SmallNewsCard";
+import HeroCard from "../components/HeroCard";
+import SmallNewsCard from "../components/SmallNewsCard";
 import { useEffect, useState } from "react";
 import { NewsType } from "@/types/news";
-import { Search } from 'lucide-react';
 import { useRouter } from "next/navigation";
-import SportsSection from "./container/SportsSection";
-import TechSection from "./container/TechSection";
-import HeroSection from "./container/HeroSection";
 
-export default function HomePage() {
+export default function HeroSection() {
   const router = useRouter();
 
   // Data manual (hardcode)
@@ -175,52 +169,33 @@ export default function HomePage() {
 
   return (
     <>
-      {/* <main className="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6"> */}
-      {/* <main className="max-w-7xl mx-auto gap-6"> */}
-      <main className="w-full mx-auto gap-6">
         {/* Hero Section */}
-        <HeroSection /> 
-        
-        {/* Latest News */}
-        <section className="lg:col-span-3  px-16 py-6">
-          <h2 className="font-bold text-2xl mb-4">Latest News</h2>
-          <div className="grid md:grid-cols-2 gap-6">
+        <section className="lg:col-span-3 px-16 py-6">
+          {news
+            .filter((item) => item.type === "hero")
+            .map((item) => (
+              <HeroCard
+                key={item.id}
+                category={item.category ?? ""}
+                title={item.title}
+                description={item.description ?? ""}
+                image={item.img ?? "/img/home/hero-1.png"}
+              />
+            ))}
+          {/* Sub News Section */}
+          <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
             {news
-              .filter((item) => item.type === "medium")
+              .filter((item) => item.type === "headline")
               .map((item) => (
-                <NewsCard
+                <SmallNewsCard
                   key={item.id}
-                  variant="medium"
                   title={item.title}
-                  description={item.description ?? ""}
-                  image={item.img ?? "/img/home/news-1.png"}
-                  category={item.category ?? ""}
+                  image={item.img ?? ""}
                   href={`/news/${item.id}`}
                 />
               ))}
           </div>
         </section>
-        <section className="px-16 py-6 bg-green-100">
-          <SportsSection />
-        </section>
-        <section className="px-16 py-6 bg-yellow-50">
-          <TechSection />
-        </section>
-      {/* </main> */}
-      </main>
-
-      {/* Floating Button */}
-      <div className="fixed bottom-6 right-6 group">
-        <button
-          onClick={() => router.push("/analyzer")}
-          className="relative flex items-center justify-center w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg transition-colors duration-300"
-        >
-          <Search className="w-6 h-6" />
-          <span className="absolute right-full mr-3 px-3 py-1 bg-gray-800 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-            Gunakan AI untuk temukan fakta atau opini
-          </span>
-        </button>
-      </div>
     </>
   );
 }
