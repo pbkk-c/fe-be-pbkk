@@ -20,14 +20,27 @@ export default function Navbar() {
   const supabase = createClientComponentClient();
 
   useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user);
-    };
-    getUser();
-  }, [supabase]);
+  const getUser = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    setUser(user);
+  };
+
+  // pertama kali ambil user
+  getUser();
+
+  // listen perubahan auth
+  const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+    setUser(session?.user ?? null);
+  });
+
+  // cleanup listener
+  return () => {
+    listener.subscription.unsubscribe();
+  };
+}, [supabase]);
+
 
   const handleLogout = async () => {
     await supabase.auth.signOut();

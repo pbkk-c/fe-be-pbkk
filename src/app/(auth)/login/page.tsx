@@ -4,7 +4,9 @@ import Typography from "@/components/Typography";
 import Button from "@/components/buttons/Button";
 import UnstyledLink from "@/components/links/Unstyledlink";
 import { LoginType } from "@/types/user";
+import { useRouter } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 export default function LoginForm() {
   const methods = useForm<LoginType>({
@@ -12,33 +14,37 @@ export default function LoginForm() {
   });
   const { handleSubmit, register, formState: { errors } } = methods;
 
-  
-  const onSubmit = async (data: LoginType) => {
-  try {
-    const res = await fetch("http://localhost:3000/api/login", { // ganti endpoint sesuai backend
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+  const router = useRouter();
+    const onSubmit = async (data: LoginType) => {
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-    if (!res.ok) throw new Error("Login failed");
+      const result = await res.json();
 
-    const result = await res.json();
-    console.log("Login success:", result);
+      if (!res.ok) {
+        toast.error(result.error || "Login failed");
+        return;
+      }
 
-    // misalnya simpan token ke localStorage
-    localStorage.setItem("token", result.token);
+      // misalnya backend kirim token
+      if (result.token) {
+        localStorage.setItem("token", result.token);
+      }
 
-    // redirect ke dashboard
-    // router.push("/dashboard");
-  } catch (error) {
-    console.error(error);
-  }
-};
+      toast.success(result.message || "Login success!");
 
-
+      // redirect setelah 2 detik
+      setTimeout(() => {
+        router.push("/"); // ganti sesuai kebutuhan
+      }, 2000);
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong");
+    }
+  };
   // const onSubmit = (data: any) => {
   //   console.log("Login data:", data);
   // };
