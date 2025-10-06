@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { Menu, X, Search } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Menu, X } from "lucide-react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 const navItems = [
   { label: "Politics", href: "/politics" },
@@ -14,6 +15,24 @@ const navItems = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+
+  const supabase = createClientComponentClient();
+
+  useEffect(() => {
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    getUser();
+  }, [supabase]);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+  };
 
   return (
     <header className="w-full border-b border-gray-200 bg-black text-white">
@@ -36,16 +55,31 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Search Bar */}
+        {/* Auth Buttons */}
         <div className="hidden md:flex items-center space-x-2">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="rounded-md px-3 py-1 text-black focus:outline-none"
-          />
-          <button className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded-md text-white flex items-center">
-            <Search size={16} />
-          </button>
+          {!user ? (
+            <>
+              <Link
+                href="/register"
+                className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded-md text-white"
+              >
+                Register
+              </Link>
+              <Link
+                href="/login"
+                className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-md text-white"
+              >
+                Login
+              </Link>
+            </>
+          ) : (
+            <button
+              onClick={handleLogout}
+              className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded-md text-white"
+            >
+              Logout
+            </button>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -69,15 +103,31 @@ export default function Navbar() {
               {item.label}
             </Link>
           ))}
-          <div className="flex items-center space-x-2 pt-2">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full rounded-md px-3 py-1 text-black focus:outline-none"
-            />
-            <button className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded-md text-white flex items-center">
-              <Search size={16} />
-            </button>
+
+          <div className="flex flex-col gap-2 pt-2">
+            {!user ? (
+              <>
+                <Link
+                  href="/register"
+                  className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded-md text-center text-white"
+                >
+                  Register
+                </Link>
+                <Link
+                  href="/login"
+                  className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-md text-center text-white"
+                >
+                  Login
+                </Link>
+              </>
+            ) : (
+              <button
+                onClick={handleLogout}
+                className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded-md text-white"
+              >
+                Logout
+              </button>
+            )}
           </div>
         </div>
       )}

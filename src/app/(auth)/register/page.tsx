@@ -71,17 +71,17 @@ export default function RegisterForm() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               {/* Username */}
               <div>
-                <div className={`flex items-center border rounded-md p-2 focus-within:ring-1 focus-within:ring-blue-500 ${errors.username ? "border-red-500" : "border-gray-300"}`}>
+                <div className={`flex items-center border rounded-md p-2 focus-within:ring-1 focus-within:ring-blue-500 ${errors.name ? "border-red-500" : "border-gray-300"}`}>
                   <img src="/profile.svg" alt="User Icon" className="h-5 w-5 p-0.5 text-gray-500" />
                   <input
                     type="text"
                     placeholder="Username"
-                    {...register("username", { required: "Username is required" })}
+                    {...register("name", { required: "Username is required" })}
                     className="ml-3 w-full border-none focus:ring-0 outline-none text-sm sm:text-base"
                   />
                 </div>
-                {errors.username && (
-                  <p className="mt-1 text-xs text-red-500">{errors.username?.message?.toString()}</p>
+                {errors.name && (
+                  <p className="mt-1 text-xs text-red-500">{errors.name?.message?.toString()}</p>
                 )}
               </div>
 
