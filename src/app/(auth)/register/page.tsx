@@ -58,19 +58,19 @@ export default function RegisterForm() {
                 )}
               </div>
 
-              {/* Email/Phone */}
+              {/* Email */}
               <div>
-                <div className={`flex items-center border rounded-md p-2 focus-within:ring-1 focus-within:ring-blue-500 ${errors.email_phone ? "border-red-500" : "border-gray-300"}`}>
+                <div className={`flex items-center border rounded-md p-2 focus-within:ring-1 focus-within:ring-blue-500 ${errors.email ? "border-red-500" : "border-gray-300"}`}>
                   <img src="/mail.svg" alt="Email Icon" className="h-5 w-5 text-gray-500" />
                   <input
-                    type="text"
-                    placeholder="Email or Phone"
-                    {...register("email_phone", { required: "Email or phone is required" })}
+                    type="email"
+                    placeholder="Email"
+                    {...register("email", { required: "Email is required" })}
                     className="ml-3 w-full border-none focus:ring-0 outline-none text-sm sm:text-base"
                   />
                 </div>
-                {errors.email_phone && (
-                  <p className="mt-1 text-xs text-red-500">{errors.email_phone?.message?.toString()}</p>
+                {errors.email && (
+                  <p className="mt-1 text-xs text-red-500">{errors.email?.message?.toString()}</p>
                 )}
               </div>
 
