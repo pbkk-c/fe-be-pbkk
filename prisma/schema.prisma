@@ -37,45 +37,26 @@ model content_media {
   content_id String?   @db.Uuid
   type       String?
   url        String?
+  text       String?   // paragraf-paragraf isi berita
   created_at DateTime? @default(now()) @db.Timestamp(6)
   contents   contents? @relation(fields: [content_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
-model content_topics {
-  content_id String   @db.Uuid
-  topic_id   String   @db.Uuid
-  contents   contents @relation(fields: [content_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  topics     topics   @relation(fields: [topic_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-  @@id([content_id, topic_id])
-}
-
 model contents {
-  id             String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  user_id        String?          @db.Uuid
-  creator_id     String?          @db.Uuid
-  platform       String
-  url            String?          @unique
-  title          String?
-  raw_text       String?
-  published_at   DateTime?        @db.Timestamp(6)
-  collected_at   DateTime?        @default(now()) @db.Timestamp(6)
-  analyses       analyses[]
-  content_media  content_media[]
-  content_topics content_topics[]
-  creators       creators?        @relation(fields: [creator_id], references: [id], onUpdate: NoAction)
-  users          users?           @relation(fields: [user_id], references: [id], onUpdate: NoAction)
-}
-
-model creators {
-  id          String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  platform    String
-  name        String
-  handle      String?
-  profile_url String?
-  avatar_url  String?
-  created_at  DateTime?  @default(now()) @db.Timestamp(6)
-  contents    contents[]
+  id            String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id       String?          @db.Uuid
+  platform      String?
+  url           String?          @unique
+  title         String?
+  raw_text      String?
+  type          String?          // "home" atau "history"
+  topic         String?          // langsung simpan topik/genre
+  creator_name  String?          // nama pembuat konten
+  published_at  DateTime?        @db.Timestamp(6)
+  collected_at  DateTime?        @default(now()) @db.Timestamp(6)
+  analyses      analyses[]
+  content_media content_media[]
+  users         users?           @relation(fields: [user_id], references: [id], onUpdate: NoAction)
 }
 
 model login_history {
@@ -94,14 +75,6 @@ model logs {
   details    Json?
   created_at DateTime? @default(now()) @db.Timestamp(6)
   users      users?    @relation(fields: [user_id], references: [id], onUpdate: NoAction)
-}
-
-model topics {
-  id             String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  name           String?          @unique
-  description    String?
-  created_at     DateTime?        @default(now()) @db.Timestamp(6)
-  content_topics content_topics[]
 }
 
 model users {
