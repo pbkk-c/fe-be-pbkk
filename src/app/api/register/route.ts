@@ -6,8 +6,8 @@ export async function POST(req: Request) {
   try {
     const { email, password, name } = await req.json();
 
-    if (!email || !password) {
-      return NextResponse.json({ error: "Email and password required" }, { status: 400 });
+    if (!email || !password || name === undefined || name.trim() === "") {
+      return NextResponse.json({ error: "Email, password, and name required" }, { status: 400 });
     }
 
     // cek apakah email sudah ada
@@ -32,8 +32,9 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ message: "User registered successfully", user: { id: user.id, email: user.email } });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  } catch (err: any) {
+    console.error("Registration error:", err);
+    // Optionally, return the error message for debugging (remove in production)
+    return NextResponse.json({ error: "Internal server error", detail: err?.message }, { status: 500 });
   }
 }
