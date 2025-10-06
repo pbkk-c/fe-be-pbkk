@@ -1,49 +1,91 @@
 import Image from "next/image";
-import Link from "next/link";
 
-interface HeroCardProps {
+type BigCardProps = {
   category: string;
   title: string;
   description: string;
   image: string;
-  href?: string;
-}
+  facts: number;
+  opinion: number;
+  hoax: number;
+};
 
-export default function HeroCard({
+export default function BigCard({
   category,
   title,
   description,
   image,
-  href = "#",
-}: HeroCardProps) {
+  facts,
+  opinion,
+  hoax,
+}: BigCardProps) {
   return (
-   <Link
-  href={href}
-  className="relative w-full min-h-[450px] rounded-2xl overflow-hidden group block"
->
-  <Image
-    src={image}
-    alt={title}
-    fill
-    priority
-    className="object-cover transition-transform duration-500 group-hover:scale-105"
-  />
-  {/* Overlay */}
-  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+    <div className="relative w-full rounded-3xl overflow-hidden shadow-lg">
+      {/* Background image */}
+      <div className="relative h-[260px] md:h-[360px] lg:h-[460px] xl:h-[560px] 2xl:h-[600px] w-full transition-all duration-300">
+        <Image
+          src={image}
+          alt={title}
+          fill
+          className="object-cover"
+          priority
+        />
 
-  {/* Text Content */}
-  <div className="absolute bottom-6 left-6 right-6 text-white">
-    <span className="bg-white/20 text-xs px-2 py-1 rounded-md backdrop-blur">
-      {category}
-    </span>
-    <h2 className="mt-2 text-3xl md:text-4xl font-bold leading-snug drop-shadow">
-      {title}
-    </h2>
-    <p className="mt-2 text-sm md:text-base text-gray-200 line-clamp-3">
-      {description}
-    </p>
-  </div>
-</Link>
+        {/* Overlay gelap agar teks terbaca */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
 
+        {/* Konten overlay */}
+        <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 md:p-8 text-white">
+          {/* Kategori */}
+          <span className="absolute top-4 left-4 bg-white/90 text-black text-[10px] sm:text-xs md:text-sm font-semibold px-3 py-1 rounded-full">
+            {category}
+          </span>
+
+          {/* Judul */}
+          <h2 className="md:w-1/2 text-[12px] sm:text-[14px] md:text-[16px] lg:text-[18px] xl:text-4xl font-extrabold leading-snug drop-shadow-lg line-clamp-3">
+            {title}
+          </h2>
+
+          {/* Bar fakta, opini, hoax */}
+          <div className="w-full md:w-1/2 bg-gray-300 h-4 sm:h-5.5 md:h-7 mt-3 rounded-md overflow-hidden flex">
+            <div
+              className="bg-blue-800 h-full text-[6px] sm:text-[7px] md:text-[9px] lg:text-[10px] font-semibold flex items-center justify-center"
+              style={{ width: `${facts}%` }}
+            >
+              {facts > 10 ? (
+                <span>Facts {facts}%</span>
+              ) : facts > 3 ? (
+                <span>{facts}%</span>
+              ) : null}
+            </div>
+            <div
+              className="bg-gray-500 h-full text-[6px] sm:text-[7px] md:text-[9px] lg:text-[10px] font-semibold flex items-center justify-center"
+              style={{ width: `${opinion}%` }}
+            >
+              {opinion > 10 ? (
+                <span>Opinion {opinion}%</span>
+              ) : opinion > 3 ? (
+                <span>{opinion}%</span>
+              ) : null}
+            </div>
+            <div
+              className="bg-red-800 h-full text-[6px] sm:text-[7px] md:text-[9px] lg:text-[10px] font-semibold flex items-center justify-center"
+              style={{ width: `${hoax}%` }}
+            >
+              {hoax > 10 ? (
+                <span>Hoax {hoax}%</span>
+              ) : hoax > 3 ? (
+                <span>{hoax}%</span>
+              ) : null}
+            </div>
+          </div>
+
+          {/* Deskripsi */}
+          <p className="text-[10px] sm:text-[12px] md:text-[14px] lg:text-[16px] xl:text-[24px] sm:text-sm md:text-base text-gray-200 mt-2 line-clamp-3 max-w-3xl">
+            {description}
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
