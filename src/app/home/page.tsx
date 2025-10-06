@@ -135,6 +135,9 @@ export default function HomePage() {
                 title={item.title}
                 description={item.description ?? ""}
                 image={item.img ?? "/img/home/hero-1.png"}
+                facts = {50}
+                opinion = {30}
+                hoax = {20}
               />
             ))}
 
