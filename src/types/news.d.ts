@@ -5,7 +5,7 @@ interface NewsType {
     img?: string;
     category?: string;
     type?: string;
-    created_at: string;
+    // created_at: string;
     // published_at: string;
 }
 
