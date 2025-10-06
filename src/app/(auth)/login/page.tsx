@@ -3,17 +3,45 @@
 import Typography from "@/components/Typography";
 import Button from "@/components/buttons/Button";
 import UnstyledLink from "@/components/links/Unstyledlink";
+import { LoginType } from "@/types/user";
 import { FormProvider, useForm } from "react-hook-form";
 
 export default function LoginForm() {
-  const methods = useForm({
+  const methods = useForm<LoginType>({
     mode: "onTouched",
   });
   const { handleSubmit, register, formState: { errors } } = methods;
 
-  const onSubmit = (data: any) => {
-    console.log("Login data:", data);
-  };
+  
+  const onSubmit = async (data: LoginType) => {
+  try {
+    const res = await fetch("http://localhost:3000/api/login", { // ganti endpoint sesuai backend
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) throw new Error("Login failed");
+
+    const result = await res.json();
+    console.log("Login success:", result);
+
+    // misalnya simpan token ke localStorage
+    localStorage.setItem("token", result.token);
+
+    // redirect ke dashboard
+    // router.push("/dashboard");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
+  // const onSubmit = (data: any) => {
+  //   console.log("Login data:", data);
+  // };
 
   return (
     <section className="relative flex min-h-screen items-center justify-center bg-[#f4f1ed] p-4">
