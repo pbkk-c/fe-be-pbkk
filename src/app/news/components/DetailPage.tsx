@@ -32,29 +32,27 @@ interface ContentDetail {
   content_media: ContentMedia[];
 }
 
-export default function NewsDetailPage() {
-  const params = useParams();
-  const id = params?.slug as string | undefined;
+export default function NewsDetailPage({ id }: { id: string }) {
+  // kamu tidak perlu useParams() lagi
+  console.log("id dari server:", id);
+
+  useEffect(() => {
+    console.log("useParams() ->", id);
+    console.log("id ->", id);
+  }, [id]);
 
   const [content, setContent] = useState<ContentDetail | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("Params object:", params);
-    console.log("Extracted id:", id);
-  }, [params, id]);
-
-  useEffect(() => {
     const fetchContent = async () => {
-      if (!id) return;
-
       try {
-        setLoading(true);
         const res = await fetch(`/api/content/${id}`);
-        if (!res.ok) throw new Error(`Failed to fetch content: ${res.status}`);
+        if (!res.ok) throw new Error("Failed to fetch content");
         const data: ContentDetail = await res.json();
         setContent(data);
         console.log("Fetched content:", data);
+        console.log("Content analyses:", data.analyses);
       } catch (err) {
         console.error("Error fetching content:", err);
       } finally {
@@ -62,7 +60,7 @@ export default function NewsDetailPage() {
       }
     };
 
-    fetchContent();
+    if (id) fetchContent();
   }, [id]);
 
   if (loading)
@@ -79,12 +77,14 @@ export default function NewsDetailPage() {
       </main>
     );
 
+  // Ambil nilai analisis (ambil 1 analisis terbaru kalau ada)
   const analysis = content.analyses[0] || {
     fact_percentage: 0,
     opinion_percentage: 0,
     hoax_percentage: 0,
   };
 
+  // Ambil gambar pertama dari content_media
   const imageUrl =
     content.content_media.find((m) => m.type === "image")?.url ||
     "/img/home/news-1.png";
@@ -102,17 +102,6 @@ export default function NewsDetailPage() {
           year: "numeric",
         })}
       </p>
-
-
-      {/* Hero Image */}
-      <div className="relative w-full h-80 my-6 rounded-lg overflow-hidden">
-        <Image
-          src={imageUrl}
-          alt={content.title || ""}
-          fill
-          className="object-cover"
-        />
-      </div>
 
       {/* Analisis bar */}
       <div className="w-full bg-gray-300 h-5 mt-4 rounded-md overflow-hidden flex">
@@ -137,8 +126,20 @@ export default function NewsDetailPage() {
             `Hoax ${analysis.hoax_percentage}%`}
         </div>
       </div>
+
+      {/* Hero Image */}
+      <div className="relative w-full h-80 my-6 rounded-lg overflow-hidden">
+        <Image
+          src={imageUrl}
+          alt={content.title || ""}
+          fill
+          className="object-cover"
+        />
+      </div>
+
       {/* Article Text */}
       <article className="prose max-w-none text-gray-800">
+        {/* Gunakan paragraf dari content_media kalau ada */}
         {content.content_media.length > 0 ? (
           content.content_media
             .filter((m) => m.text)
@@ -151,10 +152,10 @@ export default function NewsDetailPage() {
           <p>{content.raw_text}</p>
         )}
       </article>
-        
-        {/* === HIDE DULU === */}
-      {/* <SocialActions />
-      <CommentSection /> */}
+
+      {/* Social and Comments */}
+      <SocialActions />
+      <CommentSection />
     </main>
   );
 }
