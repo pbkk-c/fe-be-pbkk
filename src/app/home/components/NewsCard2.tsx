@@ -8,7 +8,7 @@ type NewsCardProps = {
   hoax: number;
 };
 
-export default function NewsCard2({
+export default function NewsCard2 ({
   title,
   image,
   facts,

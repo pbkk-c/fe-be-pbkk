@@ -7,26 +7,26 @@ import { useEffect, useState } from "react";
 import HomePage from "./home/page";
 
 export default function Home() {
-  const [news, setNews] = useState<NewsType[]>([]);
+  // const [news, setNews] = useState<NewsType[]>([]);
 
-  useEffect(() => {
-    // Fetch news data from Supabase
-    const fetchNews = async () => {
-        try {
-            const response = await supabase.from('news').select('*');
-            if (response.error) {
-                console.error('Error fetching news:', response.error);  
-            } else {
-                setNews(response.data as NewsType[]);
-            }
-        } catch (error) {
-            console.error('Unexpected error:', error);
-        }
-    };
-    fetchNews();
-  }, []);
+  // useEffect(() => {
+  //   // Fetch news data from Supabase
+  //   const fetchNews = async () => {
+  //       try {
+  //           const response = await supabase.from('news').select('*');
+  //           if (response.error) {
+  //               console.error('Error fetching news:', response.error);  
+  //           } else {
+  //               setNews(response.data as NewsType[]);
+  //           }
+  //       } catch (error) {
+  //           console.error('Unexpected error:', error);
+  //       }
+  //   };
+  //   fetchNews();
+  // }, []);
 
-  console.log(news);  
+  // console.log(news);  
   
   return (
 <div>

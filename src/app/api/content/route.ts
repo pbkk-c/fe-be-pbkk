@@ -8,11 +8,25 @@ export async function GET(request: NextRequest) {
     const limit = Number(url.searchParams.get('limit') ?? 20);
     const offset = Number(url.searchParams.get('offset') ?? 0);
 
-    const { data, error } = await supabaseAdmin
-      .from('contents')
-      .select('*')
-      .order('collected_at', { ascending: false })
-      .range(offset, offset + limit - 1);
+    // const { data, error } = await supabaseAdmin
+    //   .from('contents')
+    //   .select('*')
+    //   .order('collected_at', { ascending: false })
+    //   .range(offset, offset + limit - 1);
+
+        const { data, error } = await supabaseAdmin
+    .from("contents")
+    .select(`
+      *,
+      analyses (
+        fact_percentage,
+        opinion_percentage,
+        hoax_percentage,
+        created_at
+      )
+    `)
+    .order("collected_at", { ascending: false })
+    .range(offset, offset + limit - 1);
 
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
     return NextResponse.json(data);

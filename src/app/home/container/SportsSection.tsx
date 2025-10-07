@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BigCard from "../components/BigCard";
 import NewsCard from "../components/NewsCard2";
+import { Content } from "@/types/fetchContent";
 
 const dummyBig = {
     category: "Sports",
@@ -27,6 +28,46 @@ export default function SportsSection() {
     setIsExpanded(!isExpanded);
   };
 
+  const [contents, setContents] = useState<Content[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+  
+    // Fetch data dari API
+    useEffect(() => {
+      const fetchContents = async () => {
+        try {
+          const res = await fetch("/api/content");
+          if (!res.ok) throw new Error("Failed to fetch contents");
+  
+          const data: Content[] = await res.json();
+          setContents(data);
+        } catch (err) {
+          console.error("Error fetching contents:", err);
+          setError("Gagal memuat konten. Coba lagi nanti.");
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      fetchContents();
+    }, []);
+  
+    if (loading) {
+      return (
+        <section className="px-16 py-6 text-center text-gray-500">
+          Loading konten...
+        </section>
+      );
+    }
+  
+    if (error) {
+      return (
+        <section className="px-16 py-6 text-center text-red-500">
+          {error}
+        </section>
+      );
+    }
+
   const listContainerClasses = isExpanded
     ? 'max-h-[400px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300'
     : 'max-h-[335px] overflow-hidden'; 
@@ -38,9 +79,19 @@ export default function SportsSection() {
 
         <div className="relative flex-grow">
           <div className={`flex flex-col gap-4 transition-all duration-300 ease-in-out ${listContainerClasses}`}>
-            {dummyNews.map((news, i) => (
-              <NewsCard key={i} {...news} />
-            ))}
+            {contents
+                    .filter((item) => item.type === "home"&& item.topic === "Olahraga")
+                     .slice(0, 4) 
+                    .map((item) => (
+                      <NewsCard
+                        key={item.id}
+                        title={item.title ?? ""}
+                        image="/img/home/hero-1.png"
+                        facts={item.analyses?.[0]?.fact_percentage ?? 0}
+                        opinion={item.analyses?.[0]?.opinion_percentage ?? 0}
+                        hoax={item.analyses?.[0]?.hoax_percentage ?? 0}
+                      />
+                    ))}
           </div>
 
         </div>
@@ -54,7 +105,21 @@ export default function SportsSection() {
       </div>
 
       <div className="w-full lg:w-3/5 mt-8 lg:mt-0">
-        <BigCard {...dummyBig} />
+              {contents
+                    .filter((item) => item.type === "home"&& item.topic === "Olahraga")
+                     .slice(0, 4) 
+                    .map((item) => (
+                      <BigCard
+                            key={item.id}
+                        title={item.title ?? ""}
+                        image="/img/home/hero-1.png"
+                        facts={item.analyses?.[0]?.fact_percentage ?? 0}
+                        opinion={item.analyses?.[0]?.opinion_percentage ?? 0}
+                        hoax={item.analyses?.[0]?.hoax_percentage ?? 0}
+                        description={item.raw_text?.slice(0, 100) ?? ""}
+                        category={item.topic ?? ""}
+                      />
+                    ))}
       </div>
     </div>
   );
