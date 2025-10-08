@@ -7,6 +7,7 @@ import Link from "next/link";
 import Navbar from "../layouts/Navbar";
 import Footer from "../layouts/Footer";
 import { useRouter } from "next/navigation";
+import { Search } from "lucide-react";
 // import { useRouter } from "next/router";
 
 interface User {
@@ -119,6 +120,18 @@ useEffect(() => {
 </button>
           </div>
         </div>
+      </div>
+       {/* Floating Button */}
+      <div className="fixed bottom-6 right-6 group">
+        <button
+          onClick={() => route.push("/analyzer")}
+          className="relative flex items-center justify-center w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg transition-colors duration-300"
+        >
+          <Search className="w-6 h-6" />
+          <span className="absolute right-full mr-3 px-3 py-1 bg-gray-800 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+            Gunakan AI untuk temukan fakta atau opini
+          </span>
+        </button>
       </div>
       <Footer />
     </ProtectedRoute>
