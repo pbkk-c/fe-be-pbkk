@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User } from "lucide-react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 const navItems = [
+  { label: "Home", href: "/" },
   { label: "Politics", href: "/politics" },
   { label: "World", href: "/world" },
   { label: "Economy", href: "/economy" },
@@ -16,35 +17,33 @@ const navItems = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
-
   const supabase = createClientComponentClient();
 
   useEffect(() => {
-  const getUser = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    setUser(user);
-  };
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setUser(user);
+    };
 
-  // pertama kali ambil user
-  getUser();
+    getUser();
 
-  // listen perubahan auth
-  const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-    setUser(session?.user ?? null);
-  });
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
 
-  // cleanup listener
-  return () => {
-    listener.subscription.unsubscribe();
-  };
-}, [supabase]);
-
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, [supabase]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setUser(null);
+    window.location.href = "/login";
   };
 
   return (
@@ -61,26 +60,34 @@ export default function Navbar() {
             <Link
               key={item.href}
               href={item.href}
-              className="hover:text-green-400 transition"
+              className="hover:text-[#00A86B] transition"
             >
               {item.label}
             </Link>
           ))}
         </nav>
 
-        {/* Auth Buttons */}
-        <div className="hidden md:flex items-center space-x-2">
+        {/* Right Side: Profile + Auth */}
+        <div className="hidden md:flex items-center space-x-3">
+            <Link
+              href="/profile"
+              className="flex items-center gap-1 text-gray-300 hover:text-[#00A86B] transition"
+            >
+              <User size={18} />
+              <span>Profile</span>
+            </Link>
+
           {!user ? (
             <>
               <Link
                 href="/register"
-                className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded-md text-white"
+                className="border border-gray-400 text-gray-200 hover:bg-gray-100 hover:text-black px-3 py-1 rounded-md transition"
               >
                 Register
               </Link>
               <Link
                 href="/login"
-                className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-md text-white"
+                className="bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded-md text-white transition"
               >
                 Login
               </Link>
@@ -88,7 +95,7 @@ export default function Navbar() {
           ) : (
             <button
               onClick={handleLogout}
-              className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded-md text-white"
+              className="bg-red-500 hover:bg-red-600 px-3 py-1 rounded-md text-white transition"
             >
               Logout
             </button>
@@ -111,24 +118,34 @@ export default function Navbar() {
             <Link
               key={item.href}
               href={item.href}
-              className="block hover:text-green-400 transition"
+              className="block hover:text-[#00A86B] transition"
             >
               {item.label}
             </Link>
           ))}
+
+          {user && (
+            <Link
+              href="/profile"
+              className="flex items-center gap-2 text-gray-300 hover:text-[#00A86B] transition"
+            >
+              <User size={18} />
+              <span>Profile</span>
+            </Link>
+          )}
 
           <div className="flex flex-col gap-2 pt-2">
             {!user ? (
               <>
                 <Link
                   href="/register"
-                  className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded-md text-center text-white"
+                  className="border border-gray-400 text-gray-200 hover:bg-gray-100 hover:text-black px-3 py-1 rounded-md text-center transition"
                 >
                   Register
                 </Link>
                 <Link
                   href="/login"
-                  className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-md text-center text-white"
+                  className="bg-gray-800 hover:bg-gray-700 px-3 py-1 rounded-md text-center text-white transition"
                 >
                   Login
                 </Link>
@@ -136,7 +153,7 @@ export default function Navbar() {
             ) : (
               <button
                 onClick={handleLogout}
-                className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded-md text-white"
+                className="bg-red-500 hover:bg-red-600 px-3 py-1 rounded-md text-white"
               >
                 Logout
               </button>

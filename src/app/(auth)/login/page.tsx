@@ -4,6 +4,7 @@ import Typography from "@/components/Typography";
 import Button from "@/components/buttons/Button";
 import UnstyledLink from "@/components/links/Unstyledlink";
 import { LoginType } from "@/types/user";
+import Link from "next/dist/client/link";
 import { useRouter } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -117,6 +118,17 @@ export default function LoginForm() {
                   Sign In
                 </Typography>
               </Button>
+              <Link href="/">
+              <Button
+                variant="slate"
+                size="lg"
+                className="w-full mt-4 bg-white hover:bg-gray-200 text-black py-2 sm:py-3"
+                >
+                <Typography as="p" variant="btn" weight="medium" className="text-base sm:text-lg text-black">
+                  Kembali ke home
+                </Typography>
+              </Button>
+                </Link>
             </form>
           </FormProvider>
         </div>

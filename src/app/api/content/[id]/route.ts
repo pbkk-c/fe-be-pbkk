@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma"; // pastikan kamu punya file prisma.ts di /lib
+import {prisma} from "@/lib/prisma"; // pastikan ini default export
 
 // ✅ GET: Ambil content by ID lengkap dengan analyses & content_media
 export async function GET(
@@ -12,14 +12,20 @@ export async function GET(
     const content = await prisma.contents.findUnique({
       where: { id },
       include: {
+        // 🔹 ambil semua kolom analyses + relasi ke analysis_details
         analyses: {
-          select: {
-            created_at: true,
-            fact_percentage: true,
-            hoax_percentage: true,
-            opinion_percentage: true,
+          include: {
+            analysis_details: {
+              select: {
+                id: true,
+                sentence: true,
+                classification: true,
+                confidence: true,
+              },
+            },
           },
         },
+        // 🔹 ambil media yang terkait
         content_media: {
           select: {
             id: true,
@@ -55,7 +61,11 @@ export async function PATCH(
       where: { id },
       data: payload,
       include: {
-        analyses: true,
+        analyses: {
+          include: {
+            analysis_details: true,
+          },
+        },
         content_media: true,
       },
     });
