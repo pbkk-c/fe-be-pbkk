@@ -60,7 +60,7 @@ export default function HeroSection() {
             category={item.topic ?? ""}
             title={item.title ?? ""}
             description={item.raw_text?.slice(0, 100) ?? ""}
-            image="/img/home/hero-1.png"
+            image="/img/home/news-3.png"
             // image={item.url ?? "/img/home/hero-1.png"}
             facts={item.analyses?.[0]?.fact_percentage ?? 0}
             opinion={item.analyses?.[0]?.opinion_percentage ?? 0}

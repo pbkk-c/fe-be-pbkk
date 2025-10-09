@@ -55,7 +55,7 @@ export default function AnalyzePage() {
 
     try {
       // 1️⃣ Kirim request join ke Gradio
-      const joinRes = await fetch("https://1d28dd69d6b427d0f2.gradio.live/queue/join", {
+      const joinRes = await fetch("https://4c94eddf3df79dbe75.gradio.live/queue/join", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -71,7 +71,7 @@ export default function AnalyzePage() {
 
       // 2️⃣ Buka stream ke /queue/data?session_hash
       const source = new EventSource(
-        `https://1d28dd69d6b427d0f2.gradio.live/queue/data?session_hash=${sessionHash}`
+        `https://4c94eddf3df79dbe75.gradio.live/queue/data?session_hash=${sessionHash}`
       );
 
       source.onmessage = async    (event) => {
