@@ -17,11 +17,11 @@ const links = [
 
 export default function Footer() {
   return (
-    <footer className="mt-10 border-t border-gray-200 bg-black text-gray-300">
+    <footer className="mt-10 border-t border-gray-200 bg-slate-900 text-gray-300">
       <div className="mx-auto max-w-7xl px-4 py-10 grid grid-cols-1 gap-8 md:grid-cols-3">
         {/* Logo + Deskripsi */}
         <div>
-          <h2 className="text-2xl font-extrabold text-white">NEWSLETTER</h2>
+          <h2 className="text-2xl font-extrabold text-white">XenoTimes</h2>
           <p className="mt-3 text-sm text-gray-400">
             Your trusted source for the latest updates in politics, economy,
             science, and more.
@@ -46,7 +46,7 @@ export default function Footer() {
         </div>
 
         {/* Links tambahan */}
-        <div>
+        {/* <div>
           <h3 className="mb-3 text-lg font-semibold text-white">Company</h3>
           <ul className="space-y-2 text-sm">
             {links.map((item) => (
@@ -60,13 +60,13 @@ export default function Footer() {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
       </div>
 
       {/* Copyright */}
-      <div className="border-t border-gray-700 py-4 text-center text-xs text-gray-400">
+      {/* <div className="border-t border-gray-700 py-4 text-center text-xs text-gray-400">
         © {new Date().getFullYear()} XenoTimes. All rights reserved.
-      </div>
+      </div> */}
     </footer>
   );
 }

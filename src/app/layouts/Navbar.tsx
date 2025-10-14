@@ -47,7 +47,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="w-full border-b border-gray-200 bg-black text-white">
+    <header className="w-full border-b border-gray-200 bg-slate-900 text-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
         {/* Logo */}
         <Link href="/" className="text-2xl font-extrabold tracking-tight">
@@ -113,7 +113,7 @@ export default function Navbar() {
 
       {/* Mobile Dropdown */}
       {isOpen && (
-        <div className="md:hidden border-t border-gray-700 bg-black px-4 py-3 space-y-3">
+        <div className="md:hidden border-t border-gray-700 bg-slate-900 px-4 py-3 space-y-3">
           {navItems.map((item) => (
             <Link
               key={item.href}

@@ -4,10 +4,10 @@ import {prisma} from "@/lib/prisma"; // pastikan ini default export
 // ✅ GET: Ambil content by ID lengkap dengan analyses & content_media
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
 
     const content = await prisma.contents.findUnique({
       where: { id },
@@ -51,10 +51,10 @@ export async function GET(
 // ✅ PATCH: Update content
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const payload = await request.json();
 
     const updated = await prisma.contents.update({
@@ -80,10 +80,10 @@ export async function PATCH(
 // ✅ DELETE: Hapus content
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
 
     await prisma.contents.delete({
       where: { id },

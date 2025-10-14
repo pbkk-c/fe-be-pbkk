@@ -2,8 +2,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 
-export async function GET(request: NextRequest, context: { params: Promise<{ id: string }> }) {
-  const { id } = await context.params;
+export async function GET(
+  request: NextRequest, 
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+  
   const { data, error } = await supabaseAdmin
     .from('analyses')
     .select('*, analysis_details(*)')
@@ -14,13 +18,14 @@ export async function GET(request: NextRequest, context: { params: Promise<{ id:
   return NextResponse.json(data);
 }
 
-
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(
+  request: NextRequest, 
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
-    const id = params.id;
+    const { id } = await params;
     const payload = await request.json();
 
-    // Update analysis row
     const updatePayload: any = {};
     ['main_theme', 'summary', 'fact_percentage', 'opinion_percentage', 'hoax_percentage', 'sentiment'].forEach((k) => {
       if (k in payload) updatePayload[k] = payload[k];
@@ -35,7 +40,6 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
 
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 
-    // If payload.details present, we will replace existing details (simple approach)
     if (Array.isArray(payload.details)) {
       await supabaseAdmin.from('analysis_details').delete().eq('analysis_id', id);
       const detailsRows = payload.details.map((d: any) => ({
@@ -60,9 +64,12 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  request: NextRequest, 
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
-    const id = params.id;
+    const { id } = await params;
     const { error } = await supabaseAdmin.from('analyses').delete().eq('id', id);
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
     return NextResponse.json({ ok: true });

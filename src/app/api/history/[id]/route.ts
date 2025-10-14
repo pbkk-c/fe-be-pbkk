@@ -4,7 +4,10 @@ import { prisma } from "@/lib/prisma";
 
 const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(
+  req: Request, 
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const authHeader = req.headers.get("authorization");
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -14,8 +17,10 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     const token = authHeader.split(" ")[1];
     const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
 
+    const { id } = await params;
+
     const content = await prisma.contents.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         analyses: {
           orderBy: { created_at: "desc" },
