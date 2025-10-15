@@ -14,6 +14,10 @@ import Navbar from "../layouts/Navbar";
 import Footer from "../layouts/Footer";
 import HeroSection from "./container/HeroSection";
 import LatestSection from "./container/LatestSection";
+import HighlightSection from "./container/HighlightSection";
+import PoliticsSection from "./container/PoliticsSection";
+import Highlight2Section from "./container/Highlight2Section";
+import FloatingAIButton from "./components/FloatingButton";
 
 export default function HomePage() {
   const router = useRouter();
@@ -126,32 +130,36 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
-      <main className="w-full mx-auto gap-6">
+      <main className="w-full mx-auto gap-6 pt-10">
         <HeroSection />
-        <LatestSection />
-        
-        <section className="px-16 py-6 bg-green-100">
+        <HighlightSection />
+        <section className="px-16 py-6 bg-white">
+          <PoliticsSection />
+        </section>
+        <section className="px-16 py-6 bg-[#BABABA]">
           <SportsSection />
         </section>
+        <Highlight2Section />
         <section className="px-16 py-6 bg-yellow-50">
           <TechSection />
         </section>
-      {/* </main> */}
+        <LatestSection />
       </main>
       <Footer />
 
-      {/* Floating Button */}
-      <div className="fixed bottom-6 right-6 group">
+      {/*=== FLOATING BUTTON AI === */}
+      {/* <div className="fixed bottom-6 right-6 group">
         <button
           onClick={() => router.push("/analyzer")}
-          className="relative flex items-center justify-center w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg transition-colors duration-300"
+          className="relative flex items-center justify-center w-14 h-14 rounded-full bg-[#D97706] hover:bg-blue-700 text-white shadow-lg transition-colors duration-300"
         >
           <Search className="w-6 h-6" />
           <span className="absolute right-full mr-3 px-3 py-1 bg-gray-800 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
             Gunakan AI untuk temukan fakta atau opini
           </span>
         </button>
-      </div>
+      </div> */}
+      <FloatingAIButton />
     </>
   );
 }
