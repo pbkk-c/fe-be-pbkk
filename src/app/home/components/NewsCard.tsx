@@ -47,13 +47,13 @@ export default function NewsCard({
       </div>
       <div className="p-4">
         {category && (
-          <span className="text-xs uppercase text-green-600 font-semibold">
+          <span className="text-xs uppercase text-[#D97706] font-semibold">
             {category}
           </span>
         )}
         <h3
           className={clsx(
-            "font-bold leading-snug group-hover:text-green-600",
+            "font-bold leading-snug group-hover:text-[#D97706]",
             variant === "big" && "text-2xl",
             variant === "medium" && "text-lg",
             variant === "small" && "text-base",

@@ -45,9 +45,9 @@ export default function LatestSection() {
   }
 
   return (
-     <section className="lg:col-span-3  px-16 py-6">
+     <section className="lg:col-span-3 px-16 py-6">
           <h2 className="font-bold text-2xl mb-4">Latest News</h2>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-4 gap-6">
             {contents
               .filter((item) => item.type === "home")
               .map((item) => (
