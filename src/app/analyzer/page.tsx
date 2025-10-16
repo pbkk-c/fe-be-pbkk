@@ -66,9 +66,10 @@ export default function AnalyzePage() {
 
     const sessionHash = Math.random().toString(36).substring(2, 12);
 
+    // TO DO CHANGE: 
     try {
       const joinRes = await fetch(
-        "https://e62ee8cc623b51003c.gradio.live/gradio_api/queue/join",
+        "https://2d66e424d4b830b03a.gradio.live/gradio_api/queue/join",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -84,8 +85,9 @@ export default function AnalyzePage() {
       console.log("Join:", joinData);
       setLogs((prev) => [...prev, "Connected to Gradio queue..."]);
 
+      // TO DO CHANGE:
       const source = new EventSource(
-        `https://e62ee8cc623b51003c.gradio.live/gradio_api/queue/data?session_hash=${sessionHash}`
+        `https://2d66e424d4b830b03a.gradio.live/gradio_api/queue/data?session_hash=${sessionHash}`
       );
 
       source.onmessage = async (event) => {
