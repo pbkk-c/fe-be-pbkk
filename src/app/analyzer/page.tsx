@@ -69,7 +69,7 @@ export default function AnalyzePage() {
     // TO DO CHANGE: 
     try {
       const joinRes = await fetch(
-        "https://2d66e424d4b830b03a.gradio.live/gradio_api/queue/join",
+        "https://4772a4f80eb58679bc.gradio.live/gradio_api/queue/join",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -87,7 +87,7 @@ export default function AnalyzePage() {
 
       // TO DO CHANGE:
       const source = new EventSource(
-        `https://2d66e424d4b830b03a.gradio.live/gradio_api/queue/data?session_hash=${sessionHash}`
+        `https://4772a4f80eb58679bc.gradio.live/gradio_api/queue/data?session_hash=${sessionHash}`
       );
 
       source.onmessage = async (event) => {
