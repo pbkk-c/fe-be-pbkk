@@ -8,6 +8,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing URL" }, { status: 400 });
     }
 
+    // TO DO CHANGE GRADIO URL
     const gradioUrl = process.env.GRADIO_URL;
     if (!gradioUrl) {
       return NextResponse.json({ error: "Missing GRADIO_URL in env" }, { status: 500 });
@@ -21,7 +22,7 @@ export async function POST(req: Request) {
       session_hash: Math.random().toString(36).substring(7), // random hash
     };
 
-    const response = await fetch(`${gradioUrl}/queue/join`, {
+    const response = await fetch(`${gradioUrl}/gradio_api/queue/join`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -74,7 +75,7 @@ async function waitForGradioResult(gradioUrl: string, eventId: string) {
   const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
   for (let i = 0; i < maxAttempts; i++) {
-    const res = await fetch(`${gradioUrl}/queue/data?event_id=${eventId}`);
+    const res = await fetch(`${gradioUrl}/gradio_api/queue/data?event_id=${eventId}`);
     const data = await res.json();
 
     if (data?.status === "COMPLETE" && data?.output?.data) {
