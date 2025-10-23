@@ -37,9 +37,29 @@ export default function AnalyzePage() {
   const [user, setUser] = useState<User | null>(null);
   const [progress, setProgress] = useState(0);
   const [progressDesc, setProgressDesc] = useState("");
+    const [GRADIO_BASE_URL, setGradioUrl] = useState<string | null>(null);
 
-    const GRADIO_BASE_URL =
-    "https://069d93420c693e575d.gradio.live/gradio_api/queue";
+    // const GRADIO_BASE_URL =
+    // "https://069d93420c693e575d.gradio.live/gradio_api/queue";
+
+      // 🔗 Fetch link Gradio dari backend
+  useEffect(() => {
+    const fetchGradioLink = async () => {
+      try {
+        const res = await fetch("/api/gardio");
+        const data = await res.json();
+        if (data.data.url) {
+          setGradioUrl(data.data.url);
+          console.log("✅ Gradio link loaded:", data.data.url);
+        } else {
+          console.error("❌ Tidak ada Gradio link aktif");
+        }
+      } catch (err) {
+        console.error("Gagal mengambil link Gradio:", err);
+      }
+    };
+    fetchGradioLink();
+  }, []);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -74,7 +94,7 @@ export default function AnalyzePage() {
     // TO DO CHANGE: 
     try {
       const joinRes = await fetch(
-        `${GRADIO_BASE_URL}/join`,
+        `${GRADIO_BASE_URL}gradio_api/queue/join`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -92,7 +112,7 @@ export default function AnalyzePage() {
 
       // TO DO CHANGE:
       const source = new EventSource(
-        `${GRADIO_BASE_URL}/data?session_hash=${sessionHash}`
+        `${GRADIO_BASE_URL}gradio_api/queue/data?session_hash=${sessionHash}`
       );
 
 

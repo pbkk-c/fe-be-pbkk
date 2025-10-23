@@ -8,9 +8,21 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing URL" }, { status: 400 });
     }
 
+     // ✅ Ambil link Gradio terbaru dari database
+    const latestLink = await prisma.gardio_links.findFirst({
+      orderBy: { created_at: "desc" },
+    });
+
+    if (!latestLink?.url) {
+      return NextResponse.json({ error: "No active Gradio link found" }, { status: 404 });
+    }
+
     // TO DO CHANGE GRADIO URL
+       const gradioUrl = latestLink.url;
+    console.log("Using Gradio URL:", gradioUrl);
+
     // const gradioUrl = process.env.GRADIO_URL;
-    const gradioUrl = "https://069d93420c693e575d.gradio.live";
+    // const gradioUrl = "https://069d93420c693e575d.gradio.live";
     if (!gradioUrl) {
       return NextResponse.json({ error: "Missing GRADIO_URL in env" }, { status: 500 });
     }
