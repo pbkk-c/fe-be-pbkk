@@ -23,6 +23,11 @@ const paginatedItems = headlineItems.slice(
   page * itemsPerPage
 );
 
+
+useEffect(() => {
+  console.log("Fetched contents:", contents);
+}, [contents]);
+
   // Fetch data dari API
   useEffect(() => {
     const fetchContents = async () => {
@@ -59,29 +64,13 @@ const paginatedItems = headlineItems.slice(
     );
   }
 
+  
+
   return (
     <section className="lg:col-span-3 px-16 py-6">
-      {/* Hero Card (type = hero) */}
-      {/* {contents
-        .filter((item) => item.type === "home")
-         .slice(0, 1) 
-        .map((item) => (
-          <HeroCard
-            key={item.id}
-            category={item.topic ?? ""}
-            title={item.title ?? ""}
-            description={item.raw_text?.slice(0, 100) ?? ""}
-            image="/img/home/news-3.png"
-            // image={item.url ?? "/img/home/hero-1.png"}
-            facts={item.analyses?.[0]?.fact_percentage ?? 0}
-            opinion={item.analyses?.[0]?.opinion_percentage ?? 0}
-            hoax={item.analyses?.[0]?.hoax_percentage ?? 0}
-            href={`/news/${item.id}`}
-            interval={5000}
-          />
-        ))} */}
-
-        <HeroCard
+    
+    {/* YANG BENER INI */}
+        {/* <HeroCard
   cards={contents
     .filter((item) => item.type === "home")
     .slice(0, 3)
@@ -96,22 +85,25 @@ const paginatedItems = headlineItems.slice(
       hoax: item.analyses?.[0]?.hoax_percentage ?? 0,
     }))}
   interval={5000}
+/> */}
+
+          
+    <HeroCard
+  cards={contents
+    .filter((item) => item.type === "home" || item.type === "history") // kalau mau tampilkan history juga
+    .slice(0, 3)
+    .map((item) => ({
+      href: `/news/${item.id}`,
+      category: item.topic || "Umum",
+      title: item.title || "Judul tidak tersedia",
+      description: item.raw_text?.slice(0, 100) || "Deskripsi belum tersedia.",
+      image: "/img/home/news-3.png", // fallback ke gambar default
+      facts: item.analyses?.[0]?.fact_percentage ?? 0,
+      opinion: item.analyses?.[0]?.opinion_percentage ?? 0,
+      hoax: item.analyses?.[0]?.hoax_percentage ?? 0,
+    }))}
 />
 
-      {/* Headline Section (type = headline) */}
-      {/* <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-        {contents
-          .filter((item) => item.type === "home")
-         .slice(0, 5) 
-          .map((item) => (
-            <SmallNewsCard
-              key={item.id}
-              title={item.title ?? ""}
-              image="/img/home/news-1.png"
-              href={`/news/${item.id}`}
-            />
-          ))}
-      </div> */}
 
       <SmallNewsCarousel contents={contents} />
 

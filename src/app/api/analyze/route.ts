@@ -10,7 +10,7 @@ export async function POST(req: Request) {
 
     // TO DO CHANGE GRADIO URL
     // const gradioUrl = process.env.GRADIO_URL;
-    const gradioUrl = "https://4772a4f80eb58679bc.gradio.live";
+    const gradioUrl = "https://069d93420c693e575d.gradio.live";
     if (!gradioUrl) {
       return NextResponse.json({ error: "Missing GRADIO_URL in env" }, { status: 500 });
     }
