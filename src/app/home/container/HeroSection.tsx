@@ -49,16 +49,17 @@ export default function HeroSection() {
   return (
     <section className="lg:col-span-3 px-16 py-12">
       <HeroCard
-        cards={contents
-          .sort((a, b) => (a.platform ?? 0) - (b.platform ?? 0)) // urutkan berdasarkan platform
+        cards={[...contents]
+          .sort((a, b) => Number(a.platform) - Number(b.platform)) // urutkan berdasarkan platform (cast ke number)
           .filter((item) => item.type === "News" || item.type === "history")
           .slice(0, 10)
-          .map((item, index) => ({
+          .map((item) => ({
             href: `/news/${item.id}`,
-            category: item.topic,
-            title: item.title,
-            description: item.raw_text?.slice(0, 100),
-            image: item.url,
+            category: item.topic ?? "",
+            title: item.title ?? "",
+            // ensure description is string (fallback to empty string)
+            description: item.raw_text ? item.raw_text.slice(0, 100) : "",
+            image: item.url ?? "/placeholder.jpg",
             facts: item.analyses?.[0]?.fact_percentage ?? 0,
             opinion: item.analyses?.[0]?.opinion_percentage ?? 0,
             hoax: item.analyses?.[0]?.hoax_percentage ?? 0,
