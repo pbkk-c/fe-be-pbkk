@@ -24,7 +24,6 @@ type HeroCardProps = {
 export default function HeroCard({ cards, interval = 5000 }: HeroCardProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Auto-slide tiap beberapa detik
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % cards.length);
@@ -32,82 +31,78 @@ export default function HeroCard({ cards, interval = 5000 }: HeroCardProps) {
     return () => clearInterval(timer);
   }, [cards.length, interval]);
 
-  // const current = cards[activeIndex];
-
-  const current = cards[activeIndex] ?? {
-  href: "#",
-  category: "Loading...",
-  title: "Please wait",
-  description: "",
-  // image: "/placeholder.jpg",
-  facts: 0,
-  opinion: 0,
-  hoax: 0,
-};
+  const current =
+    cards[activeIndex] ?? {
+      href: "#",
+      category: "Loading...",
+      title: "Please wait",
+      description: "",
+      image: "/placeholder.jpg",
+      facts: 0,
+      opinion: 0,
+      hoax: 0,
+    };
 
   return (
     <UnstyledLink href={current.href ?? "#"} className="block">
-      <div className="relative w-full min-h-[300px] md:min-h-[420px] lg:min-h-[520px] rounded-3xl overflow-hidden group cursor-pointer transition-all duration-500">
+      <div className="relative w-full min-h-[300px] md:min-h-[420px] lg:min-h-[520px] rounded-3xl overflow-hidden group cursor-pointer shadow-lg transition-all duration-500">
         <AnimatePresence mode="wait">
           <motion.div
             key={current.title}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.02 }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
             className="absolute inset-0"
           >
-            {/* Gambar */}
+            {/* Gambar Latar */}
             <div className="relative h-[300px] md:h-[420px] lg:h-[520px] w-full">
-              <motion.div
-                className="absolute inset-0"
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-              >
-                <Image
-                  src={current.image}
-                  alt={current.title}
-                  fill
-                  priority
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-transparent" />
-              </motion.div>
+              <Image
+                src={current.image}
+                alt={current.title}
+                fill
+                priority
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
             </div>
 
             {/* Konten */}
-            <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10 text-white transition-all duration-500 group-hover:border-4 group-hover:border-amber-500 rounded-3xl">
-              <span className="absolute top-5 left-5 bg-white/90 text-black text-xs md:text-sm font-semibold px-4 py-1 rounded-full backdrop-blur-md">
+            <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10 text-white">
+              {/* Kategori */}
+              <span className="absolute top-5 left-5 bg-white/90 text-black text-xs md:text-sm font-semibold px-4 py-1 rounded-full shadow-sm backdrop-blur-md">
                 {current.category}
               </span>
 
-              <h2 className="text-2xl md:text-4xl font-extrabold leading-snug drop-shadow-lg md:w-2/3 transition-all duration-300">
+              {/* Judul */}
+              <h2 className="text-2xl md:text-4xl font-bold leading-snug drop-shadow-lg md:w-3/4 transition-all duration-300 group-hover:text-amber-400">
                 {current.title}
               </h2>
 
-              {/* Bar Fakta, Opini, Hoax */}
-              <div className="w-full md:w-2/3 bg-gray-300 h-4 rounded-full overflow-hidden mt-4 flex shadow-inner">
+              {/* Bar Fakta / Opini / Hoax */}
+              <div className="w-full md:w-3/4 bg-gray-200 h-4 rounded-full overflow-hidden mt-5 flex shadow-inner">
                 <div
-                  className="bg-blue-800 h-full flex items-center justify-center text-[16px] font-semibold"
+                  className="bg-blue-700 h-full flex items-center justify-center text-[13px] md:text-[14px] font-semibold"
                   style={{ width: `${current.facts}%` }}
                 >
                   {current.facts > 10 && `Facts ${current.facts}%`}
                 </div>
                 <div
-                  className="bg-gray-500 h-full flex items-center justify-center text-[16px] font-semibold"
+                  className="bg-yellow-500 h-full flex items-center justify-center text-[13px] md:text-[14px] font-semibold"
                   style={{ width: `${current.opinion}%` }}
                 >
                   {current.opinion > 10 && `Opinion ${current.opinion}%`}
                 </div>
                 <div
-                  className="bg-red-800 h-full flex items-center justify-center text-[16px] font-semibold py-2"
+                  className="bg-red-700 h-full flex items-center justify-center text-[13px] md:text-[14px] font-semibold"
                   style={{ width: `${current.hoax}%` }}
                 >
                   {current.hoax > 10 && `Hoax ${current.hoax}%`}
                 </div>
               </div>
 
-              <p className="text-gray-300 mt-3 md:w-2/3 text-sm md:text-base line-clamp-3 backdrop-blur-sm bg-black/10 p-2 rounded-md">
+              {/* Deskripsi */}
+              <p className="text-gray-300 mt-3 md:w-3/4 text-sm md:text-base line-clamp-3 bg-black/30 backdrop-blur-sm p-3 rounded-lg shadow-sm">
                 {current.description}
               </p>
             </div>

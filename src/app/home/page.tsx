@@ -9,7 +9,7 @@ import { NewsType } from "@/types/news";
 import { Search } from 'lucide-react';
 import { useRouter } from "next/navigation";
 import SportsSection from "./container/SportsSection";
-import TechSection from "./container/TechSection";
+import TechSection from "./container/EconomySection";
 import Navbar from "../layouts/Navbar";
 import Footer from "../layouts/Footer";
 import HeroSection from "./container/HeroSection";
@@ -18,6 +18,7 @@ import HighlightSection from "./container/HighlightSection";
 import PoliticsSection from "./container/PoliticsSection";
 import Highlight2Section from "./container/Highlight2Section";
 import FloatingAIButton from "./components/FloatingButton";
+import EconomySection from "./container/EconomySection";
 
 export default function HomePage() {
   const router = useRouter();
@@ -141,7 +142,7 @@ export default function HomePage() {
         </section>
         <Highlight2Section />
         <section className="px-16 py-6 bg-yellow-50">
-          <TechSection />
+          <EconomySection />
         </section>
         <LatestSection />
       </main>

@@ -36,7 +36,7 @@ export default function NewsCard2 ({
             title={`Facts: ${facts}%`}
           />
           <div
-            className="bg-gray-500 h-full"
+            className="bg-yellow-500 h-full"
             style={{ width: `${opinion}%` }}
             title={`Opinion: ${opinion}%`}
           />

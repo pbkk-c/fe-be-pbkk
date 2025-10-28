@@ -8,8 +8,7 @@ import clsx from "clsx";
 
 const navItems = [
   { label: "Home", href: "/" },
-  { label: "Politics", href: "/politics" },
-  { label: "World", href: "/world" },
+  { label: "Politic", href: "/politic" },
   { label: "Economy", href: "/economy" },
   { label: "Science", href: "/science" },
   { label: "Sports", href: "/sports" },

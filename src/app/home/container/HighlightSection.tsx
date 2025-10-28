@@ -2,27 +2,50 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-// import UnstyledLink from "@/components/links/UnstyledLink";
 import UnstyledLink from "@/components/links/Unstyledlink";
+import { Content } from "@/types/fetchContent";
 
 export default function HighlightSection() {
   const ref = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
+  const [content, setContent] = useState<Content | null>(null);
+  const [loading, setLoading] = useState(true);
   const [facts, setFacts] = useState(0);
   const [hoax, setHoax] = useState(0);
   const [opinion, setOpinion] = useState(0);
 
-  // Observer untuk animasi on-scroll (seperti AOS)
+  useEffect(() => {
+    const fetchHighlight = async () => {
+      try {
+        const res = await fetch("/api/content");
+        if (!res.ok) throw new Error("Failed to fetch content");
+
+        const data: Content[] = await res.json();
+        const sorted = data
+          // .sort((a, b) => (a.platform ?? 0) - (b.platform ?? 0))
+          .filter((item) => item.type === "News" || item.type === "history");
+
+        setContent(sorted[0] || null);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHighlight();
+  }, []);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && content) {
           setVisible(true);
           setTimeout(() => {
-            setFacts(60);
-            setHoax(30);
-            setOpinion(10);
+            setFacts(content.analyses?.[0]?.fact_percentage ?? 0);
+            setHoax(content.analyses?.[0]?.hoax_percentage ?? 0);
+            setOpinion(content.analyses?.[0]?.opinion_percentage ?? 0);
           }, 400);
         }
       },
@@ -33,7 +56,23 @@ export default function HighlightSection() {
     return () => {
       if (ref.current) observer.unobserve(ref.current);
     };
-  }, []);
+  }, [content]);
+
+  if (loading) {
+    return (
+      <section className="h-screen flex items-center justify-center bg-black text-gray-400">
+        Loading highlight...
+      </section>
+    );
+  }
+
+  if (!content) {
+    return (
+      <section className="h-screen flex items-center justify-center bg-black text-red-400">
+        Tidak ada highlight yang ditemukan.
+      </section>
+    );
+  }
 
   return (
     <section
@@ -41,76 +80,71 @@ export default function HighlightSection() {
       className="relative min-h-screen bg-black w-full overflow-hidden shadow-xl"
     >
       <UnstyledLink
-        href="/news/1"
-        className="group relative block p-10 h-full w-full transition-transform duration-700 hover:scale-[1.01]"
+        href={`/news/${content.id}`}
+        className="group relative block h-full w-full transition-transform duration-700 hover:scale-[1.01]"
       >
         {/* Background image */}
         <div className="relative h-screen w-full">
           <Image
-            src="/img/home/news-4.png" // ganti sesuai aset kamu
-            alt="Protests Breaks Out In Texas"
+            src={content.url || "/img/home/news-1.png"}
+            alt={content.title || "Highlight news"}
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-105"
             priority
           />
-          <div className="absolute inset-0 bg-black/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60"></div>
         </div>
 
         {/* Overlay konten */}
         <div
-          className={`absolute inset-0 flex flex-col justify-end px-6 sm:px-10 pb-10 text-white transition-all duration-700 ease-out ${
-            visible
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-6"
+          className={`absolute inset-0 flex flex-col justify-end px-6 sm:px-10 md:px-20 pb-16 text-white transition-all duration-700 ease-out ${
+            visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
-          <span className="bg-white/90 text-black text-xs sm:text-sm font-semibold px-3 py-1 rounded-full w-fit mb-4">
-            Story
-          </span>
+          <div className="max-w-5xl">
+            <span className="bg-white/90 text-black text-xs sm:text-sm font-semibold px-3 py-1 rounded-full w-fit mb-4">
+              {content.topic || "Story"}
+            </span>
 
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold leading-snug mb-3 drop-shadow-lg">
-            Protests Breaks Out In Texas
-          </h1>
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold leading-snug mb-5 drop-shadow-lg">
+              {content.title}
+            </h1>
 
-          {/* Progress bar */}
-          <div
-            className={`w-full sm:w-2/3 bg-gray-400/50 h-5 rounded-lg overflow-hidden flex mb-4 transition-all duration-700 ease-out ${
-              visible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-4"
-            }`}
-          >
+            {/* Progress bar */}
             <div
-              className="bg-blue-700 h-full flex items-center justify-center text-[10px] sm:text-xs font-semibold transition-all duration-700 ease-out"
-              style={{ width: `${facts}%` }}
+              className={`w-full sm:w-3/4 bg-gray-400/40 h-5 rounded-lg overflow-hidden flex mb-6 transition-all duration-700 ease-out ${
+                visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+              }`}
             >
-              {facts > 5 && <span>Facts {facts}%</span>}
+              <div
+                className="bg-blue-700 h-full flex items-center justify-center text-[10px] sm:text-xs font-semibold transition-all duration-700 ease-out"
+                style={{ width: `${facts}%` }}
+              >
+                {facts > 5 && <span>Facts {facts}%</span>}
+              </div>
+              <div
+                className="bg-red-700 h-full flex items-center justify-center text-[10px] sm:text-xs font-semibold transition-all duration-700 ease-out"
+                style={{ width: `${hoax}%` }}
+              >
+                {hoax > 5 && <span>Hoax {hoax}%</span>}
+              </div>
+              <div
+                className="bg-yellow-500 h-full flex items-center justify-center text-[10px] sm:text-xs font-semibold transition-all duration-700 ease-out"
+                style={{ width: `${opinion}%` }}
+              >
+                {opinion > 5 && <span>Opinion {opinion}%</span>}
+              </div>
             </div>
-            <div
-              className="bg-red-700 h-full flex items-center justify-center text-[10px] sm:text-xs font-semibold transition-all duration-700 ease-out"
-              style={{ width: `${hoax}%` }}
+
+            <p
+              className={`text-sm sm:text-base md:text-lg text-gray-200 max-w-4xl leading-relaxed transition-all duration-700 ease-out ${
+                visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+              }`}
             >
-              {hoax > 5 && <span>Hoax {hoax}%</span>}
-            </div>
-            <div
-              className="bg-purple-700 h-full flex items-center justify-center text-[10px] sm:text-xs font-semibold transition-all duration-700 ease-out"
-              style={{ width: `${opinion}%` }}
-            >
-              {opinion > 5 && <span>Op {opinion}%</span>}
-            </div>
+              {content.raw_text?.slice(0, 220) ||
+                "No description available for this news."}
+            </p>
           </div>
-
-          <p
-            className={`text-sm sm:text-base md:text-lg text-gray-200 max-w-3xl transition-all duration-700 ease-out ${
-              visible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-4"
-            }`}
-          >
-            Protests broke out in California as thousands took to the streets to
-            oppose recent policy changes, leading to clashes with law
-            enforcement and a state of emergency declared in several cities.
-          </p>
         </div>
       </UnstyledLink>
     </section>

@@ -80,13 +80,14 @@ export default function SportsSection() {
         <div className="relative flex-grow">
           <div className={`flex flex-col gap-4 transition-all duration-300 ease-in-out ${listContainerClasses}`}>
             {contents
-                    .filter((item) => item.type === "home"&& item.topic === "Olahraga")
-                     .slice(0, 4) 
+                    .filter((item) => item.type === "News"&& item.topic === "Sports")
+                    //  .slice(0, 4) 
                     .map((item) => (
                       <NewsCard
                         key={item.id}
                         title={item.title ?? ""}
-                        image="/img/home/news-3.png"
+                        // image="/img/home/news-3.png"
+                        image={item.url ?? "/img/home/news-3.png"}
                         facts={item.analyses?.[0]?.fact_percentage ?? 0}
                         opinion={item.analyses?.[0]?.opinion_percentage ?? 0}
                         hoax={item.analyses?.[0]?.hoax_percentage ?? 0}
@@ -106,13 +107,13 @@ export default function SportsSection() {
 
       <div className="w-full lg:w-3/5 mt-8 lg:mt-0">
               {contents
-                    .filter((item) => item.type === "home"&& item.topic === "Olahraga")
-                     .slice(0, 4) 
+                    .filter((item) => item.type === "News"&& item.topic === "Sports")
+                     .slice(0, 1) 
                     .map((item) => (
                       <BigCard
                             key={item.id}
                         title={item.title ?? ""}
-                        image="/img/home/news-4.png"
+                        image={item.url?? "/img/home/news-8.png"}
                         facts={item.analyses?.[0]?.fact_percentage ?? 0}
                         opinion={item.analyses?.[0]?.opinion_percentage ?? 0}
                         hoax={item.analyses?.[0]?.hoax_percentage ?? 0}

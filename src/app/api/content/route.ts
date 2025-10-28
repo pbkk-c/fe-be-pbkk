@@ -4,31 +4,23 @@ import { supabaseAdmin } from '@/lib/supabaseAdmin';
 
 export async function GET(request: NextRequest) {
   try {
-    const url = new URL(request.url);
-    const limit = Number(url.searchParams.get('limit') ?? 20);
-    const offset = Number(url.searchParams.get('offset') ?? 0);
+    const { data, error } = await supabaseAdmin
+      .from("contents")
+      .select(`
+        *,
+        analyses (
+          fact_percentage,
+          opinion_percentage,
+          hoax_percentage,
+          created_at
+        )
+      `)
+      .order("collected_at", { ascending: false });
 
-    // const { data, error } = await supabaseAdmin
-    //   .from('contents')
-    //   .select('*')
-    //   .order('collected_at', { ascending: false })
-    //   .range(offset, offset + limit - 1);
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
 
-        const { data, error } = await supabaseAdmin
-    .from("contents")
-    .select(`
-      *,
-      analyses (
-        fact_percentage,
-        opinion_percentage,
-        hoax_percentage,
-        created_at
-      )
-    `)
-    .order("collected_at", { ascending: false })
-    .range(offset, offset + limit - 1);
-
-    if (error) return NextResponse.json({ error: error.message }, { status: 400 });
     return NextResponse.json(data);
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
@@ -38,6 +30,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+
     // basic validation
     if (!body.url || !body.platform) {
       return NextResponse.json({ error: 'Missing url or platform' }, { status: 400 });
@@ -58,7 +51,9 @@ export async function POST(request: NextRequest) {
       .select()
       .single();
 
-    if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
 
     // (opsional) jika ada media array, insert ke content_media
     if (body.media && Array.isArray(body.media) && body.media.length > 0) {
