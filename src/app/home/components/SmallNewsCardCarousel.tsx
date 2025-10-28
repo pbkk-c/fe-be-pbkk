@@ -43,10 +43,7 @@ export default function SmallNewsCarousel({ contents }: SmallNewsCarouselProps) 
         <div className="pointer-events-none absolute left-0 top-0 h-full w-12 bg-gradient-to-r from-white to-transparent z-5" />
         <div className="pointer-events-none absolute right-0 top-0 h-full w-12 bg-gradient-to-l from-white to-transparent z-5" />
 
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto scroll-smooth no-scrollbar py-2"
-        >
+        <div ref={scrollRef} className="flex gap-5 overflow-x-auto scroll-smooth no-scrollbar py-2">
           {filtered.map((item) => (
             <div
               key={item.id}

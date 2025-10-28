@@ -23,13 +23,7 @@ export default function BigCard({
     <div className="relative w-full rounded-3xl overflow-hidden shadow-lg">
       {/* Background image */}
       <div className="relative h-[260px] md:h-[360px] lg:h-[460px] xl:h-[560px] 2xl:h-[600px] w-full transition-all duration-300">
-        <Image
-          src={image}
-          alt={title}
-          fill
-          className="object-cover"
-          priority
-        />
+        <Image src={image} alt={title} fill className="object-cover" priority />
 
         {/* Overlay gelap agar teks terbaca */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
@@ -52,11 +46,7 @@ export default function BigCard({
               className="bg-blue-800 h-full text-[6px] sm:text-[7px] md:text-[9px] lg:text-[10px] font-semibold flex items-center justify-center"
               style={{ width: `${facts}%` }}
             >
-              {facts > 10 ? (
-                <span>Facts {facts}%</span>
-              ) : facts > 3 ? (
-                <span>{facts}%</span>
-              ) : null}
+              {facts > 10 ? <span>Facts {facts}%</span> : facts > 3 ? <span>{facts}%</span> : null}
             </div>
             <div
               className="bg-gray-500 h-full text-[6px] sm:text-[7px] md:text-[9px] lg:text-[10px] font-semibold flex items-center justify-center"
@@ -72,11 +62,7 @@ export default function BigCard({
               className="bg-red-800 h-full text-[6px] sm:text-[7px] md:text-[9px] lg:text-[10px] font-semibold flex items-center justify-center"
               style={{ width: `${hoax}%` }}
             >
-              {hoax > 10 ? (
-                <span>Hoax {hoax}%</span>
-              ) : hoax > 3 ? (
-                <span>{hoax}%</span>
-              ) : null}
+              {hoax > 10 ? <span>Hoax {hoax}%</span> : hoax > 3 ? <span>{hoax}%</span> : null}
             </div>
           </div>
 

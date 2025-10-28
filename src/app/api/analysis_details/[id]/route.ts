@@ -5,7 +5,11 @@ import { supabaseAdmin } from "@/lib/supabaseAdmin";
 export async function GET(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await context.params;
-    const { data, error } = await supabaseAdmin.from("analysis_details").select("*").eq("id", id).single();
+    const { data, error } = await supabaseAdmin
+      .from("analysis_details")
+      .select("*")
+      .eq("id", id)
+      .single();
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
     return NextResponse.json(data);
   } catch (err: any) {

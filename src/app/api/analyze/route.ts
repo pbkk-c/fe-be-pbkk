@@ -8,7 +8,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing URL" }, { status: 400 });
     }
 
-     // ✅ Ambil link Gradio terbaru dari database
+    // ✅ Ambil link Gradio terbaru dari database
     const latestLink = await prisma.gardio_links.findFirst({
       orderBy: { created_at: "desc" },
     });
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     }
 
     // TO DO CHANGE GRADIO URL
-       const gradioUrl = latestLink.url;
+    const gradioUrl = latestLink.url;
     console.log("Using Gradio URL:", gradioUrl);
 
     // const gradioUrl = process.env.GRADIO_URL;
@@ -54,14 +54,8 @@ export async function POST(req: Request) {
     }
 
     // --- hasil analisis dari Gradio ---
-    const {
-      main_theme,
-      summary,
-      fact_percentage,
-      opinion_percentage,
-      hoax_percentage,
-      sentiment,
-    } = result || {};
+    const { main_theme, summary, fact_percentage, opinion_percentage, hoax_percentage, sentiment } =
+      result || {};
 
     // Step 3: Simpan ke database
     const saved = await prisma.analyses.create({

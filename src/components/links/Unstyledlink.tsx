@@ -20,13 +20,7 @@ const UnstyledLink = React.forwardRef<HTMLAnchorElement, UnstyledLinkProps>(
 
     if (!isNewTab) {
       return (
-        <Link
-          href={href}
-          ref={ref}
-          className={className}
-          {...rest}
-          {...nextLinkProps}
-        >
+        <Link href={href} ref={ref} className={className} {...rest} {...nextLinkProps}>
           {children}
         </Link>
       );
@@ -44,7 +38,7 @@ const UnstyledLink = React.forwardRef<HTMLAnchorElement, UnstyledLinkProps>(
         {children}
       </a>
     );
-  },
+  }
 );
 
 export default UnstyledLink;

@@ -14,7 +14,12 @@ export default function RegisterForm() {
     mode: "onTouched",
   });
 
-  const { handleSubmit, register, formState: { errors }, watch } = methods;
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    watch,
+  } = methods;
   const router = useRouter();
   // const onSubmit = (data: any) => {
   //   console.log("Register data:", data);
@@ -60,7 +65,12 @@ export default function RegisterForm() {
 
           {/* Title */}
           <div className="text-center mb-8">
-            <Typography as="h1" variant="h5" weight="bold" className="text-gray-900 text-xl sm:text-2xl">
+            <Typography
+              as="h1"
+              variant="h5"
+              weight="bold"
+              className="text-gray-900 text-xl sm:text-2xl"
+            >
               Create an Account
             </Typography>
             <Typography as="p" className="text-gray-500 text-sm sm:text-base">
@@ -73,7 +83,9 @@ export default function RegisterForm() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               {/* Username */}
               <div>
-                <div className={`flex items-center border rounded-md p-2 focus-within:ring-1 focus-within:ring-blue-500 ${errors.name ? "border-red-500" : "border-gray-300"}`}>
+                <div
+                  className={`flex items-center border rounded-md p-2 focus-within:ring-1 focus-within:ring-blue-500 ${errors.name ? "border-red-500" : "border-gray-300"}`}
+                >
                   <img src="/profile.svg" alt="User Icon" className="h-5 w-5 p-0.5 text-gray-500" />
                   <input
                     type="text"
@@ -89,7 +101,9 @@ export default function RegisterForm() {
 
               {/* Email */}
               <div>
-                <div className={`flex items-center border rounded-md p-2 focus-within:ring-1 focus-within:ring-blue-500 ${errors.email ? "border-red-500" : "border-gray-300"}`}>
+                <div
+                  className={`flex items-center border rounded-md p-2 focus-within:ring-1 focus-within:ring-blue-500 ${errors.email ? "border-red-500" : "border-gray-300"}`}
+                >
                   <img src="/mail.svg" alt="Email Icon" className="h-5 w-5 text-gray-500" />
                   <input
                     type="email"
@@ -105,7 +119,9 @@ export default function RegisterForm() {
 
               {/* Password */}
               <div>
-                <div className={`flex items-center border rounded-md p-2 focus-within:ring-1 focus-within:ring-blue-500 ${errors.password ? "border-red-500" : "border-gray-300"}`}>
+                <div
+                  className={`flex items-center border rounded-md p-2 focus-within:ring-1 focus-within:ring-blue-500 ${errors.password ? "border-red-500" : "border-gray-300"}`}
+                >
                   <img src="/lock.svg" alt="Password Icon" className="h-5 w-5 text-gray-500" />
                   <input
                     type="password"
@@ -115,26 +131,36 @@ export default function RegisterForm() {
                   />
                 </div>
                 {errors.password && (
-                  <p className="mt-1 text-xs text-red-500">{errors.password?.message?.toString()}</p>
+                  <p className="mt-1 text-xs text-red-500">
+                    {errors.password?.message?.toString()}
+                  </p>
                 )}
               </div>
 
               {/* Confirm Password */}
               <div>
-                <div className={`flex items-center border rounded-md p-2 focus-within:ring-1 focus-within:ring-blue-500 ${errors.confirm_password ? "border-red-500" : "border-gray-300"}`}>
-                  <img src="/lock.svg" alt="Confirm Password Icon" className="h-5 w-5 text-gray-500" />
+                <div
+                  className={`flex items-center border rounded-md p-2 focus-within:ring-1 focus-within:ring-blue-500 ${errors.confirm_password ? "border-red-500" : "border-gray-300"}`}
+                >
+                  <img
+                    src="/lock.svg"
+                    alt="Confirm Password Icon"
+                    className="h-5 w-5 text-gray-500"
+                  />
                   <input
                     type="password"
                     placeholder="Confirm Password"
-                    {...register("confirm_password", { 
+                    {...register("confirm_password", {
                       required: "Confirm password is required",
-                      validate: value => value === password || "Passwords do not match"
+                      validate: (value) => value === password || "Passwords do not match",
                     })}
                     className="ml-3 w-full border-none focus:ring-0 outline-none text-sm sm:text-base"
                   />
                 </div>
                 {errors.confirm_password && (
-                  <p className="mt-1 text-xs text-red-500">{errors.confirm_password?.message?.toString()}</p>
+                  <p className="mt-1 text-xs text-red-500">
+                    {errors.confirm_password?.message?.toString()}
+                  </p>
                 )}
               </div>
 
@@ -145,34 +171,47 @@ export default function RegisterForm() {
                 size="lg"
                 className="w-full bg-black hover:bg-gray-900 text-white py-2 sm:py-3"
               >
-                <Typography as="p" variant="btn" weight="medium" className="text-base sm:text-lg text-white">
+                <Typography
+                  as="p"
+                  variant="btn"
+                  weight="medium"
+                  className="text-base sm:text-lg text-white"
+                >
                   Register
                 </Typography>
               </Button>
               <Link href="/">
-              <Button
-                variant="slate"
-                size="lg"
-                className="w-full mt-4 bg-white hover:bg-gray-200 text-black py-2 sm:py-3"
+                <Button
+                  variant="slate"
+                  size="lg"
+                  className="w-full mt-4 bg-white hover:bg-gray-200 text-black py-2 sm:py-3"
                 >
-                <Typography as="p" variant="btn" weight="medium" className="text-base sm:text-lg text-black">
-                  Kembali ke home
-                </Typography>
-              </Button>
-                </Link>
+                  <Typography
+                    as="p"
+                    variant="btn"
+                    weight="medium"
+                    className="text-base sm:text-lg text-black"
+                  >
+                    Kembali ke home
+                  </Typography>
+                </Button>
+              </Link>
             </form>
           </FormProvider>
-          </div>
-
-          {/* Footer link */}
-          <Typography as="p" variant="c1" className="mt-6 text-center text-gray-600 text-sm sm:text-base">
-            Already have an account?{" "}
-            <UnstyledLink href="/login" className="font-semibold text-gray-900 hover:underline">
-              Sign In
-            </UnstyledLink>
-          </Typography>
         </div>
 
+        {/* Footer link */}
+        <Typography
+          as="p"
+          variant="c1"
+          className="mt-6 text-center text-gray-600 text-sm sm:text-base"
+        >
+          Already have an account?{" "}
+          <UnstyledLink href="/login" className="font-semibold text-gray-900 hover:underline">
+            Sign In
+          </UnstyledLink>
+        </Typography>
+      </div>
     </section>
   );
 }

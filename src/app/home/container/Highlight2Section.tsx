@@ -93,10 +93,9 @@ export default function Highlight2Section() {
 
         {/* Deskripsi */}
         <p className="text-gray-700 text-sm sm:text-base md:text-lg leading-relaxed max-w-xl mx-auto md:mx-0">
-          Local Government Faces Criticism Over New Policies as thousands took
-          to the streets to oppose recent policy changes, leading to clashes
-          with law enforcement and a state of emergency declared in several
-          cities.
+          Local Government Faces Criticism Over New Policies as thousands took to the streets to
+          oppose recent policy changes, leading to clashes with law enforcement and a state of
+          emergency declared in several cities.
         </p>
       </div>
     </section>

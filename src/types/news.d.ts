@@ -1,12 +1,12 @@
 interface NewsType {
-    id: string;
-    title: string;
-    description?: string;
-    img?: string;
-    category?: string;
-    type?: string;
-    // created_at: string;
-    // published_at: string;
+  id: string;
+  title: string;
+  description?: string;
+  img?: string;
+  category?: string;
+  type?: string;
+  // created_at: string;
+  // published_at: string;
 }
 
 export type { NewsType };

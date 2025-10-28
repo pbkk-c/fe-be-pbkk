@@ -15,7 +15,7 @@ export default function Home() {
   //       try {
   //           const response = await supabase.from('news').select('*');
   //           if (response.error) {
-  //               console.error('Error fetching news:', response.error);  
+  //               console.error('Error fetching news:', response.error);
   //           } else {
   //               setNews(response.data as NewsType[]);
   //           }
@@ -26,21 +26,19 @@ export default function Home() {
   //   fetchNews();
   // }, []);
 
-  // console.log(news);  
-  
-  return (
-<div>
+  // console.log(news);
 
-  <HomePage />
-    {/* <h1 className="text-3xl bg-sky-500 font-bold underline">
+  return (
+    <div>
+      <HomePage />
+      {/* <h1 className="text-3xl bg-sky-500 font-bold underline">
       Hello world!
     </h1> */}
-    {/* <h1 className="text-3xl bg-reeva-secondary-5 font-bold underline">haloo</h1>
+      {/* <h1 className="text-3xl bg-reeva-secondary-5 font-bold underline">haloo</h1>
     <div className="w-10 h-10 bg-slate-700"></div> */}
-    {/* <Button variant="blue" size="lg">
+      {/* <Button variant="blue" size="lg">
       Button
     </Button> */}
-
-</div>
+    </div>
   );
 }

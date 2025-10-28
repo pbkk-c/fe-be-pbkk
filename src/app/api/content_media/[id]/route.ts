@@ -1,17 +1,14 @@
 // src/app/api/content_media/[id]/route.ts
-import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { NextRequest, NextResponse } from "next/server";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
-export async function GET(
-  request: NextRequest, 
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
     const { data, error } = await supabaseAdmin
-      .from('content_media')
-      .select('*')
-      .eq('id', id)
+      .from("content_media")
+      .select("*")
+      .eq("id", id)
       .single();
 
     if (error) return NextResponse.json({ error: error.message }, { status: 404 });
@@ -21,10 +18,7 @@ export async function GET(
   }
 }
 
-export async function PATCH(
-  request: NextRequest, 
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
     const payload = await request.json();
@@ -32,17 +26,17 @@ export async function PATCH(
     // if user tries to change content_id, optionally validate referenced content exists
     if (payload.content_id) {
       const { data: c, error: ce } = await supabaseAdmin
-        .from('contents')
-        .select('id')
-        .eq('id', payload.content_id)
+        .from("contents")
+        .select("id")
+        .eq("id", payload.content_id)
         .single();
-      if (ce) return NextResponse.json({ error: 'Referenced content not found' }, { status: 400 });
+      if (ce) return NextResponse.json({ error: "Referenced content not found" }, { status: 400 });
     }
 
     const { data, error } = await supabaseAdmin
-      .from('content_media')
+      .from("content_media")
       .update(payload)
-      .eq('id', id)
+      .eq("id", id)
       .select()
       .single();
 
@@ -54,12 +48,12 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  request: NextRequest, 
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
-    const { error } = await supabaseAdmin.from('content_media').delete().eq('id', id);
+    const { error } = await supabaseAdmin.from("content_media").delete().eq("id", id);
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
     return NextResponse.json({ ok: true });
   } catch (err: any) {

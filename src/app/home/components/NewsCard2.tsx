@@ -8,13 +8,7 @@ type NewsCardProps = {
   hoax: number;
 };
 
-export default function NewsCard2 ({
-  title,
-  image,
-  facts,
-  opinion,
-  hoax,
-}: NewsCardProps) {
+export default function NewsCard2({ title, image, facts, opinion, hoax }: NewsCardProps) {
   return (
     <div className="flex flex-col sm:flex-row gap-3 items-center sm:items-start rounded-xl p-3 hover:shadow-md transition-all duration-300 w-full max-w-full">
       {/* Thumbnail */}

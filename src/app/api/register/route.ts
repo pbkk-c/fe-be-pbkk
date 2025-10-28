@@ -31,10 +31,16 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json({ message: "User registered successfully", user: { id: user.id, email: user.email } });
+    return NextResponse.json({
+      message: "User registered successfully",
+      user: { id: user.id, email: user.email },
+    });
   } catch (err: any) {
     console.error("Registration error:", err);
     // Optionally, return the error message for debugging (remove in production)
-    return NextResponse.json({ error: "Internal server error", detail: err?.message }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error", detail: err?.message },
+      { status: 500 }
+    );
   }
 }

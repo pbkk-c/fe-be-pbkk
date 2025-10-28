@@ -6,7 +6,7 @@ import NewsCard from "./components/NewsCard";
 import SmallNewsCard from "./components/SmallNewsCard";
 import { useEffect, useState } from "react";
 import { NewsType } from "@/types/news";
-import { Search } from 'lucide-react';
+import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import SportsSection from "./container/SportsSection";
 import TechSection from "./container/EconomySection";
@@ -28,7 +28,8 @@ export default function HomePage() {
     {
       id: "1",
       title: "Pemerintah Umumkan Kebijakan Ekonomi Baru",
-      description: "Ringkasan kebijakan ekonomi terbaru yang diharapkan memperkuat pertumbuhan nasional.",
+      description:
+        "Ringkasan kebijakan ekonomi terbaru yang diharapkan memperkuat pertumbuhan nasional.",
       img: "/img/home/news-1.png",
       category: "economy",
       type: "headline",
@@ -36,7 +37,8 @@ export default function HomePage() {
     {
       id: "2",
       title: "Penemuan Baru dalam Bidang Energi Terbarukan",
-      description: "Para ilmuwan Indonesia menemukan metode baru meningkatkan efisiensi panel surya.",
+      description:
+        "Para ilmuwan Indonesia menemukan metode baru meningkatkan efisiensi panel surya.",
       img: "/img/home/news-2.png",
       category: "science",
       type: "medium",
@@ -92,7 +94,8 @@ export default function HomePage() {
     {
       id: "9",
       title: "Kesepakatan Dagang Baru Antarnegara Asia Tenggara",
-      description: "Negara-negara ASEAN menandatangani perjanjian untuk meningkatkan perdagangan regional.",
+      description:
+        "Negara-negara ASEAN menandatangani perjanjian untuk meningkatkan perdagangan regional.",
       img: "/img/home/news-9.png",
       category: "world",
       type: "medium",

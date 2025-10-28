@@ -26,11 +26,7 @@ export async function POST(req: Request) {
     }
 
     // buat token JWT
-    const token = jwt.sign(
-      { userId: user.id, email: user.email },
-      JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+    const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, { expiresIn: "7d" });
 
     // optional: simpan login_history
     await prisma.login_history.create({

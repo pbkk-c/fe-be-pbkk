@@ -10,9 +10,9 @@ export default function HeroSection() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-useEffect(() => {
-  console.log("Fetched contents:", contents);
-}, [contents]);
+  useEffect(() => {
+    console.log("Fetched contents:", contents);
+  }, [contents]);
 
   // Fetch data dari API
   useEffect(() => {
@@ -37,42 +37,33 @@ useEffect(() => {
   console.log("HeroSection contents state:", contents);
 
   if (loading) {
-    return (
-      <section className="px-16 py-6 text-center text-gray-500">
-        Loading konten...
-      </section>
-    );
+    return <section className="px-16 py-6 text-center text-gray-500">Loading konten...</section>;
   }
 
   if (error) {
-    return (
-      <section className="px-16 py-6 text-center text-red-500">
-        {error}
-      </section>
-    );
+    return <section className="px-16 py-6 text-center text-red-500">{error}</section>;
   }
 
   console.log("Rendering HeroSection with contents:", contents);
-  
 
   return (
     <section className="lg:col-span-3 px-16 py-12">
-<HeroCard
-  cards={contents
-    .sort((a, b) => (a.platform ?? 0) - (b.platform ?? 0)) // urutkan berdasarkan platform
-    .filter((item) => item.type === "News" || item.type === "history")
-    .slice(0, 10)
-    .map((item, index) => ({
-      href: `/news/${item.id}`,
-      category: item.topic,
-      title: item.title,
-      description: item.raw_text?.slice(0, 100),
-      image: item.url,
-      facts: item.analyses?.[0]?.fact_percentage ?? 0,
-      opinion: item.analyses?.[0]?.opinion_percentage ?? 0,
-      hoax: item.analyses?.[0]?.hoax_percentage ?? 0,
-    }))}
-/>
+      <HeroCard
+        cards={contents
+          .sort((a, b) => (a.platform ?? 0) - (b.platform ?? 0)) // urutkan berdasarkan platform
+          .filter((item) => item.type === "News" || item.type === "history")
+          .slice(0, 10)
+          .map((item, index) => ({
+            href: `/news/${item.id}`,
+            category: item.topic,
+            title: item.title,
+            description: item.raw_text?.slice(0, 100),
+            image: item.url,
+            facts: item.analyses?.[0]?.fact_percentage ?? 0,
+            opinion: item.analyses?.[0]?.opinion_percentage ?? 0,
+            hoax: item.analyses?.[0]?.hoax_percentage ?? 0,
+          }))}
+      />
       <SmallNewsCarousel contents={contents} />
     </section>
   );

@@ -19,10 +19,7 @@ export default function SocialActions() {
       </button>
 
       {/* Comment */}
-      <a
-        href="#comments"
-        className="flex items-center space-x-1 hover:text-green-600 transition"
-      >
+      <a href="#comments" className="flex items-center space-x-1 hover:text-green-600 transition">
         <MessageCircle size={18} />
         <span>Comment</span>
       </a>
@@ -32,10 +29,7 @@ export default function SocialActions() {
         onClick={() => setBookmarked(!bookmarked)}
         className="flex items-center space-x-1 hover:text-green-600 transition"
       >
-        <Bookmark
-          size={18}
-          className={bookmarked ? "fill-green-600 text-green-600" : ""}
-        />
+        <Bookmark size={18} className={bookmarked ? "fill-green-600 text-green-600" : ""} />
         <span>{bookmarked ? "Saved" : "Save"}</span>
       </button>
 

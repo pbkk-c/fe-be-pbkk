@@ -86,8 +86,7 @@ export default function NewsDetailPage() {
   };
 
   const imageUrl =
-    content.content_media.find((m) => m.type === "image")?.url ||
-    "/img/home/news-1.png";
+    content.content_media.find((m) => m.type === "image")?.url || "/img/home/news-1.png";
 
   return (
     <main className="max-w-3xl mx-auto px-4 py-8">
@@ -103,15 +102,9 @@ export default function NewsDetailPage() {
         })}
       </p>
 
-
       {/* Hero Image */}
       <div className="relative w-full h-80 my-6 rounded-lg overflow-hidden">
-        <Image
-          src={imageUrl}
-          alt={content.title || ""}
-          fill
-          className="object-cover"
-        />
+        <Image src={imageUrl} alt={content.title || ""} fill className="object-cover" />
       </div>
 
       {/* Analisis bar */}
@@ -126,15 +119,13 @@ export default function NewsDetailPage() {
           className="bg-gray-500 h-full text-[10px] font-semibold flex items-center justify-center text-white"
           style={{ width: `${analysis.opinion_percentage}%` }}
         >
-          {analysis.opinion_percentage > 5 &&
-            `Opinion ${analysis.opinion_percentage}%`}
+          {analysis.opinion_percentage > 5 && `Opinion ${analysis.opinion_percentage}%`}
         </div>
         <div
           className="bg-red-800 h-full text-[10px] font-semibold flex items-center justify-center text-white"
           style={{ width: `${analysis.hoax_percentage}%` }}
         >
-          {analysis.hoax_percentage > 5 &&
-            `Hoax ${analysis.hoax_percentage}%`}
+          {analysis.hoax_percentage > 5 && `Hoax ${analysis.hoax_percentage}%`}
         </div>
       </div>
       {/* Article Text */}
@@ -151,8 +142,8 @@ export default function NewsDetailPage() {
           <p>{content.raw_text}</p>
         )}
       </article>
-        
-        {/* === HIDE DULU === */}
+
+      {/* === HIDE DULU === */}
       {/* <SocialActions />
       <CommentSection /> */}
     </main>

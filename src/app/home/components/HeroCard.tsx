@@ -31,17 +31,16 @@ export default function HeroCard({ cards, interval = 5000 }: HeroCardProps) {
     return () => clearInterval(timer);
   }, [cards.length, interval]);
 
-  const current =
-    cards[activeIndex] ?? {
-      href: "#",
-      category: "Loading...",
-      title: "Please wait",
-      description: "",
-      image: "/placeholder.jpg",
-      facts: 0,
-      opinion: 0,
-      hoax: 0,
-    };
+  const current = cards[activeIndex] ?? {
+    href: "#",
+    category: "Loading...",
+    title: "Please wait",
+    description: "",
+    image: "/placeholder.jpg",
+    facts: 0,
+    opinion: 0,
+    hoax: 0,
+  };
 
   return (
     <UnstyledLink href={current.href ?? "#"} className="block">

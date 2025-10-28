@@ -75,10 +75,7 @@ export default function HighlightSection() {
   }
 
   return (
-    <section
-      ref={ref}
-      className="relative min-h-screen bg-black w-full overflow-hidden shadow-xl"
-    >
+    <section ref={ref} className="relative min-h-screen bg-black w-full overflow-hidden shadow-xl">
       <UnstyledLink
         href={`/news/${content.id}`}
         className="group relative block h-full w-full transition-transform duration-700 hover:scale-[1.01]"
@@ -141,8 +138,7 @@ export default function HighlightSection() {
                 visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
               }`}
             >
-              {content.raw_text?.slice(0, 220) ||
-                "No description available for this news."}
+              {content.raw_text?.slice(0, 220) || "No description available for this news."}
             </p>
           </div>
         </div>

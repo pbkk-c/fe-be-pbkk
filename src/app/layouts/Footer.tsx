@@ -14,12 +14,9 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {/* Logo + Deskripsi */}
         <div>
-          <h2 className="text-3xl font-bold text-white tracking-tight">
-            XenoTimes
-          </h2>
+          <h2 className="text-3xl font-bold text-white tracking-tight">XenoTimes</h2>
           <p className="mt-3 text-sm text-gray-400 leading-relaxed max-w-sm">
-            Your trusted source for the latest updates in politics, economy,
-            science, and more.
+            Your trusted source for the latest updates in politics, economy, science, and more.
           </p>
         </div>
 
@@ -52,9 +49,8 @@ export default function Footer() {
 
       {/* Copyright */}
       <div className="border-t border-gray-800 py-5 text-center text-xs text-gray-500">
-        © {new Date().getFullYear()}{" "}
-        <span className="font-semibold text-white">XenoTimes</span>. All rights
-        reserved.
+        © {new Date().getFullYear()} <span className="font-semibold text-white">XenoTimes</span>.
+        All rights reserved.
       </div>
     </footer>
   );

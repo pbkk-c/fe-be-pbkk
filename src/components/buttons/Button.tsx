@@ -5,15 +5,7 @@ import { ImSpinner } from "react-icons/im";
 
 import clsxm from "@/lib/clsxm";
 
-const ButtonVariant = [
-  "blue",
-  "green",
-  "yellow",
-  "red",
-  "outline",
-  "ghost",
-  "slate",
-] as const;
+const ButtonVariant = ["blue", "green", "yellow", "red", "outline", "ghost", "slate"] as const;
 const ButtonSize = ["sm", "base", "lg"] as const;
 
 type ButtonProps = {
@@ -41,7 +33,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       rightIconClassName,
       ...rest
     },
-    ref,
+    ref
   ) => {
     const disabled = isLoading || buttonDisabled;
 
@@ -57,18 +49,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           "transition-colors duration-75",
           //#region  //*=========== Size ===========
           [
-            size === "lg" && [
-              "min-h-[2.75rem] px-3.5 md:min-h-[3rem]",
-              "text-base",
-            ],
-            size === "base" && [
-              "min-h-[2.25rem] px-3 md:min-h-[2.5rem]",
-              "text-sm md:text-base",
-            ],
-            size === "sm" && [
-              "min-h-[1.75rem] px-2 md:min-h-[2rem]",
-              "text-xs md:text-sm",
-            ],
+            size === "lg" && ["min-h-[2.75rem] px-3.5 md:min-h-[3rem]", "text-base"],
+            size === "base" && ["min-h-[2.25rem] px-3 md:min-h-[2.5rem]", "text-sm md:text-base"],
+            size === "sm" && ["min-h-[1.75rem] px-2 md:min-h-[2rem]", "text-xs md:text-sm"],
           ],
           //#endregion  //*======== Size ===========
           //#region  //*=========== Variants ===========
@@ -128,21 +111,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           "disabled:cursor-not-allowed",
           isLoading &&
             "relative text-transparent transition-none hover:text-transparent disabled:cursor-wait",
-          className,
+          className
         )}
         {...rest}
       >
         {isLoading && (
           <div
-            className={clsxm(
-              "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
-              {
-                "text-white": ["blue", "green", "red", "yellow"].includes(
-                  variant,
-                ),
-                "text-blue-500": ["outline", "ghost"].includes(variant),
-              },
-            )}
+            className={clsxm("absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2", {
+              "text-white": ["blue", "green", "red", "yellow"].includes(variant),
+              "text-blue-500": ["outline", "ghost"].includes(variant),
+            })}
           >
             <ImSpinner size={18} className="animate-spin" />
           </div>
@@ -155,10 +133,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               size === "sm" && "mr-1",
             ])}
           >
-            <LeftIcon
-              size="1em"
-              className={clsxm("text-base", leftIconClassName)}
-            />
+            <LeftIcon size="1em" className={clsxm("text-base", leftIconClassName)} />
           </div>
         )}
         {children}
@@ -170,15 +145,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               size === "sm" && "ml-1",
             ])}
           >
-            <RightIcon
-              size="1em"
-              className={clsxm("text-base", rightIconClassName)}
-            />
+            <RightIcon size="1em" className={clsxm("text-base", rightIconClassName)} />
           </div>
         )}
       </button>
     );
-  },
+  }
 );
 
 export default Button;

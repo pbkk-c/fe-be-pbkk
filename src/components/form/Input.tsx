@@ -67,7 +67,7 @@ export default function Input({
       <div className="relative flex w-full gap-0">
         <div
           className={clsxm(
-            "pointer-events-none absolute h-full w-full rounded-md border-typo-outline-1 ring-1 ring-inset ring-typo-outline-1",
+            "pointer-events-none absolute h-full w-full rounded-md border-typo-outline-1 ring-1 ring-inset ring-typo-outline-1"
           )}
         />
 
@@ -84,7 +84,7 @@ export default function Input({
           className={clsxm(
             "relative w-full rounded-md",
             prefix && "rounded-l-md",
-            suffix && "rounded-r-md",
+            suffix && "rounded-r-md"
           )}
         >
           {LeftIcon && (
@@ -93,7 +93,7 @@ export default function Input({
                 "absolute left-0 top-0 h-full",
                 "flex items-center justify-center pl-2.5",
                 "text-lg text-typo-main md:text-xl",
-                leftIconClassName,
+                leftIconClassName
               )}
             >
               <LeftIcon />
@@ -102,9 +102,7 @@ export default function Input({
 
           <input
             {...register(id, validation)}
-            type={
-              type === "password" ? (showPassword ? "text" : "password") : type
-            }
+            type={type === "password" ? (showPassword ? "text" : "password") : type}
             id={id}
             name={id}
             readOnly={readOnly}
@@ -123,7 +121,7 @@ export default function Input({
               prefix && "rounded-l-none rounded-r-md ",
               suffix && "rounded-l-md rounded-r-none",
               prefix && suffix && "rounded-none",
-              className,
+              className
             )}
             aria-describedby={id}
             {...rest}
@@ -135,7 +133,7 @@ export default function Input({
                 "absolute bottom-0 right-0 h-full",
                 "flex items-center justify-center pr-2.5",
                 "text-lg text-typo-main md:text-xl",
-                rightIconClassName,
+                rightIconClassName
               )}
             >
               <RightIcon />
@@ -148,7 +146,7 @@ export default function Input({
                 "absolute bottom-0 right-0 h-full",
                 "flex items-center justify-center pr-3",
                 "text-lg text-typo-outline-1 md:text-xl cursor-pointer",
-                rightIconClassName,
+                rightIconClassName
               )}
               onClick={() => setShowPassword(!showPassword)}
             >
@@ -172,7 +170,7 @@ export default function Input({
         <HelperText
           helperTextClassName={clsxm(
             helperTextClassName,
-            !hideError && error && "text-danger-main",
+            !hideError && error && "text-danger-main"
           )}
         >
           {helperText}

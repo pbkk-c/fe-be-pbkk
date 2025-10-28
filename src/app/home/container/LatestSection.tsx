@@ -33,17 +33,11 @@ export default function LatestSection() {
   }, []);
 
   if (loading) {
-    return (
-      <section className="px-16 py-12 text-center text-gray-500">
-        Loading konten...
-      </section>
-    );
+    return <section className="px-16 py-12 text-center text-gray-500">Loading konten...</section>;
   }
 
   if (error) {
-    return (
-      <section className="px-16 py-12 text-center text-red-500">{error}</section>
-    );
+    return <section className="px-16 py-12 text-center text-red-500">{error}</section>;
   }
 
   const totalPages = Math.ceil(contents.length / itemsPerPage);
@@ -55,8 +49,8 @@ export default function LatestSection() {
       <div className="flex justify-between items-center mb-6">
         <h2 className="font-extrabold text-3xl text-[#1F2937]">Latest News</h2>
         <span className="text-sm text-gray-500">
-          Showing {startIndex + 1} - {Math.min(startIndex + itemsPerPage, contents.length)}{" "}
-          of {contents.length}
+          Showing {startIndex + 1} - {Math.min(startIndex + itemsPerPage, contents.length)} of{" "}
+          {contents.length}
         </span>
       </div>
 

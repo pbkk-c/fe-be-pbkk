@@ -17,10 +17,7 @@ export default function HelperText({
         font="Poppins"
         weight="regular"
         variant="c1"
-        className={clsxm(
-          "text-xs !leading-tight text-typo-main",
-          helperTextClassName,
-        )}
+        className={clsxm("text-xs !leading-tight text-typo-main", helperTextClassName)}
       >
         {children}
       </Typography>

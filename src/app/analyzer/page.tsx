@@ -37,12 +37,12 @@ export default function AnalyzePage() {
   const [user, setUser] = useState<User | null>(null);
   const [progress, setProgress] = useState(0);
   const [progressDesc, setProgressDesc] = useState("");
-    const [GRADIO_BASE_URL, setGradioUrl] = useState<string | null>(null);
+  const [GRADIO_BASE_URL, setGradioUrl] = useState<string | null>(null);
 
-    // const GRADIO_BASE_URL =
-    // "https://069d93420c693e575d.gradio.live/gradio_api/queue";
+  // const GRADIO_BASE_URL =
+  // "https://069d93420c693e575d.gradio.live/gradio_api/queue";
 
-      // 🔗 Fetch link Gradio dari backend
+  // 🔗 Fetch link Gradio dari backend
   useEffect(() => {
     const fetchGradioLink = async () => {
       try {
@@ -91,20 +91,17 @@ export default function AnalyzePage() {
 
     const sessionHash = Math.random().toString(36).substring(2, 12);
 
-    // TO DO CHANGE: 
+    // TO DO CHANGE:
     try {
-      const joinRes = await fetch(
-        `${GRADIO_BASE_URL}gradio_api/queue/join`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            data: [url],
-            fn_index: 0,
-            session_hash: sessionHash,
-          }),
-        }
-      );
+      const joinRes = await fetch(`${GRADIO_BASE_URL}gradio_api/queue/join`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          data: [url],
+          fn_index: 0,
+          session_hash: sessionHash,
+        }),
+      });
 
       const joinData = await joinRes.json();
       console.log("Join:", joinData);
@@ -114,7 +111,6 @@ export default function AnalyzePage() {
       const source = new EventSource(
         `${GRADIO_BASE_URL}gradio_api/queue/data?session_hash=${sessionHash}`
       );
-
 
       source.onmessage = async (event) => {
         const message = event.data;
@@ -215,74 +211,71 @@ export default function AnalyzePage() {
           </button> */}
 
           <div className="w-full space-y-2">
-  <button
-    onClick={handleAnalyze}
-    disabled={loading}
-    className={`w-full px-4 py-2 rounded-md text-white flex items-center justify-center gap-2 transition-all duration-200 ${
-      loading ? "bg-gray-700 cursor-not-allowed" : "bg-black hover:bg-gray-800"
-    }`}
-  >
-    {loading ? (
-      <>
-        <svg
-          className="animate-spin h-5 w-5 text-white"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <circle
-            className="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            strokeWidth="4"
-          ></circle>
-          <path
-            className="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-          ></path>
-        </svg>
-        Menganalisis...
-      </>
-    ) : (
-      "Analisis"
-    )}
-  </button>
+            <button
+              onClick={handleAnalyze}
+              disabled={loading}
+              className={`w-full px-4 py-2 rounded-md text-white flex items-center justify-center gap-2 transition-all duration-200 ${
+                loading ? "bg-gray-700 cursor-not-allowed" : "bg-black hover:bg-gray-800"
+              }`}
+            >
+              {loading ? (
+                <>
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                    ></path>
+                  </svg>
+                  Menganalisis...
+                </>
+              ) : (
+                "Analisis"
+              )}
+            </button>
 
-  {/* ✅ Loading bar di bawah tombol */}
-  {/* {loading && (
+            {/* ✅ Loading bar di bawah tombol */}
+            {/* {loading && (
     <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
       <div className="h-full bg-black animate-loading-bar"></div>
     </div>
   )} */}
 
-{loading && (
-  <div className="w-full mt-3">
-    <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-      <div
-        className="h-full bg-black transition-all duration-300"
-        style={{ width: `${progress}%` }}
-      ></div>
-    </div>
-    <div className="flex justify-between text-sm text-gray-600 mt-1">
-      <span>{progressDesc}</span>
-      <span>{progress}%</span>
-    </div>
-  </div>
-)}
-
-</div>
+            {loading && (
+              <div className="w-full mt-3">
+                <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-black transition-all duration-300"
+                    style={{ width: `${progress}%` }}
+                  ></div>
+                </div>
+                <div className="flex justify-between text-sm text-gray-600 mt-1">
+                  <span>{progressDesc}</span>
+                  <span>{progress}%</span>
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* HASIL ANALISIS */}
           {result && (
             <div className="mt-6 bg-white border p-6 rounded-lg shadow-sm text-left space-y-6">
               <h2 className="text-2xl font-bold mb-2">Hasil Analisis</h2>
 
-              <p className="text-gray-700 whitespace-pre-wrap">
-                {result.summary_statement}
-              </p>
+              <p className="text-gray-700 whitespace-pre-wrap">{result.summary_statement}</p>
 
               {result.analysis && (
                 <div className="space-y-6 mt-4">

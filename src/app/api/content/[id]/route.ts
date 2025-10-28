@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import {prisma} from "@/lib/prisma"; // pastikan ini default export
+import { prisma } from "@/lib/prisma"; // pastikan ini default export
 
 // ✅ GET: Ambil content by ID lengkap dengan analyses & content_media
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
 
@@ -38,8 +35,7 @@ export async function GET(
       },
     });
 
-    if (!content)
-      return NextResponse.json({ error: "Content not found" }, { status: 404 });
+    if (!content) return NextResponse.json({ error: "Content not found" }, { status: 404 });
 
     return NextResponse.json(content);
   } catch (err: any) {
@@ -49,10 +45,7 @@ export async function GET(
 }
 
 // ✅ PATCH: Update content
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
     const payload = await request.json();

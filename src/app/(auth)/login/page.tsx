@@ -13,10 +13,14 @@ export default function LoginForm() {
   const methods = useForm<LoginType>({
     mode: "onTouched",
   });
-  const { handleSubmit, register, formState: { errors } } = methods;
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = methods;
 
   const router = useRouter();
-    const onSubmit = async (data: LoginType) => {
+  const onSubmit = async (data: LoginType) => {
     try {
       const res = await fetch("/api/login", {
         method: "POST",
@@ -64,7 +68,12 @@ export default function LoginForm() {
 
           {/* Title */}
           <div className="text-center mb-8">
-            <Typography as="h1" variant="h5" weight="bold" className="text-gray-900 text-xl sm:text-2xl">
+            <Typography
+              as="h1"
+              variant="h5"
+              weight="bold"
+              className="text-gray-900 text-xl sm:text-2xl"
+            >
               Sign in to continue
             </Typography>
             <Typography as="p" className="text-gray-500 text-sm sm:text-base">
@@ -77,7 +86,9 @@ export default function LoginForm() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               {/* Email */}
               <div>
-                <div className={`flex items-center border rounded-md p-2 focus-within:ring-1 focus-within:ring-blue-500 ${errors.email ? "border-red-500" : "border-gray-300"}`}>
+                <div
+                  className={`flex items-center border rounded-md p-2 focus-within:ring-1 focus-within:ring-blue-500 ${errors.email ? "border-red-500" : "border-gray-300"}`}
+                >
                   <img src="/mail.svg" alt="Email Icon" className="h-5 w-5 text-gray-500" />
                   <input
                     type="email"
@@ -93,7 +104,9 @@ export default function LoginForm() {
 
               {/* Password */}
               <div>
-                <div className={`flex items-center border rounded-md p-2 focus-within:ring-1 focus-within:ring-blue-500 ${errors.password ? "border-red-500" : "border-gray-300"}`}>
+                <div
+                  className={`flex items-center border rounded-md p-2 focus-within:ring-1 focus-within:ring-blue-500 ${errors.password ? "border-red-500" : "border-gray-300"}`}
+                >
                   <img src="/lock.svg" alt="Password Icon" className="h-5 w-5 text-gray-500" />
                   <input
                     type="password"
@@ -103,7 +116,9 @@ export default function LoginForm() {
                   />
                 </div>
                 {errors.password && (
-                  <p className="mt-1 text-xs text-red-500">{errors.password?.message?.toString()}</p>
+                  <p className="mt-1 text-xs text-red-500">
+                    {errors.password?.message?.toString()}
+                  </p>
                 )}
               </div>
 
@@ -114,27 +129,41 @@ export default function LoginForm() {
                 size="lg"
                 className="w-full bg-black hover:bg-gray-900 text-white py-2 sm:py-3"
               >
-                <Typography as="p" variant="btn" weight="medium" className="text-base sm:text-lg text-white">
+                <Typography
+                  as="p"
+                  variant="btn"
+                  weight="medium"
+                  className="text-base sm:text-lg text-white"
+                >
                   Sign In
                 </Typography>
               </Button>
               <Link href="/">
-              <Button
-                variant="slate"
-                size="lg"
-                className="w-full mt-4 bg-white hover:bg-gray-200 text-black py-2 sm:py-3"
+                <Button
+                  variant="slate"
+                  size="lg"
+                  className="w-full mt-4 bg-white hover:bg-gray-200 text-black py-2 sm:py-3"
                 >
-                <Typography as="p" variant="btn" weight="medium" className="text-base sm:text-lg text-black">
-                  Kembali ke home
-                </Typography>
-              </Button>
-                </Link>
+                  <Typography
+                    as="p"
+                    variant="btn"
+                    weight="medium"
+                    className="text-base sm:text-lg text-black"
+                  >
+                    Kembali ke home
+                  </Typography>
+                </Button>
+              </Link>
             </form>
           </FormProvider>
         </div>
 
         {/* Footer link */}
-        <Typography as="p" variant="c1" className="mt-6 text-center text-gray-600 text-sm sm:text-base">
+        <Typography
+          as="p"
+          variant="c1"
+          className="mt-6 text-center text-gray-600 text-sm sm:text-base"
+        >
           Don’t have an account?{" "}
           <UnstyledLink href="/register" className="font-semibold text-gray-900 hover:underline">
             Sign Up

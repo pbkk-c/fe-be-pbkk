@@ -47,9 +47,7 @@ export default function NewsCard({
       </div>
       <div className="p-4">
         {category && (
-          <span className="text-xs uppercase text-[#D97706] font-semibold">
-            {category}
-          </span>
+          <span className="text-xs uppercase text-[#D97706] font-semibold">{category}</span>
         )}
         <h3
           className={clsx(
@@ -63,9 +61,7 @@ export default function NewsCard({
           {title}
         </h3>
         {description && variant !== "trending" && (
-          <p className="mt-2 text-sm text-gray-600 line-clamp-3">
-            {description}
-          </p>
+          <p className="mt-2 text-sm text-gray-600 line-clamp-3">{description}</p>
         )}
       </div>
     </Link>

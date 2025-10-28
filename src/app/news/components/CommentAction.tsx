@@ -45,9 +45,7 @@ export default function CommentSection() {
 
       {/* List Comments */}
       <div className="space-y-3">
-        {comments.length === 0 && (
-          <p className="text-gray-500 text-sm">No comments yet.</p>
-        )}
+        {comments.length === 0 && <p className="text-gray-500 text-sm">No comments yet.</p>}
         {comments.map((c) => (
           <div key={c.id} className="rounded-md bg-gray-100 p-3">
             <p className="text-sm font-semibold">{c.author}</p>

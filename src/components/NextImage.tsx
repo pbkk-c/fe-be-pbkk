@@ -35,21 +35,15 @@ export default function NextImage({
   blurClassName,
   ...rest
 }: NextImageProps) {
-  const [status, setStatus] = React.useState(
-    useSkeleton ? "loading" : "complete",
-  );
+  const [status, setStatus] = React.useState(useSkeleton ? "loading" : "complete");
   const widthIsSet = className?.includes("w-") ?? false;
 
   return (
-    <figure
-      style={!widthIsSet ? { width: `${width}px` } : undefined}
-      className={className}
-    >
+    <figure style={!widthIsSet ? { width: `${width}px` } : undefined} className={className}>
       <Image
         className={clsxm(
           imgClassName,
-          status === "loading" &&
-            clsxm("animate-pulse bg-red-50", blurClassName),
+          status === "loading" && clsxm("animate-pulse bg-red-50", blurClassName)
         )}
         src={serverStaticImg ? src : "/images" + src}
         width={width}

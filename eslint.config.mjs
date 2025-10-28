@@ -1,3 +1,4 @@
+// eslint.config.mjs
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
@@ -9,17 +10,23 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+export default [
+  ...compat.extends("next/core-web-vitals", "next/typescript", "plugin:prettier/recommended"),
   {
-    ignores: [
-      "node_modules/**",
-      ".next/**",
-      "out/**",
-      "build/**",
-      "next-env.d.ts",
-    ],
+    rules: {
+      "no-unused-vars": "warn",
+      "react/react-in-jsx-scope": "off", // Next.js tidak perlu import React
+      "prettier/prettier": [
+        "warn",
+        {
+          semi: true,
+          singleQuote: false,
+          tabWidth: 2,
+          trailingComma: "es5",
+          endOfLine: "auto",
+        },
+      ],
+    },
+    ignores: ["node_modules/**", ".next/**", "out/**", "build/**", "next-env.d.ts"],
   },
 ];
-
-export default eslintConfig;

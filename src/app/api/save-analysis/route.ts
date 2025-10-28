@@ -1,27 +1,20 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma"; // pastikan prisma client sudah ada
 
-
 export async function POST(req: Request) {
-
   try {
     const body = await req.json();
     const { url, summary, userId } = body;
 
     if (!url || !summary) {
-      return NextResponse.json(
-        { error: "Missing url or summary" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Missing url or summary" }, { status: 400 });
     }
 
     // 🔹 Buat record di contents (hanya id dan url)
     const content = await prisma.contents.upsert({
       where: { url },
       update: {},
-      create: {    url,
-        user_id: userId,
-        type: "history", },
+      create: { url, user_id: userId, type: "history" },
     });
 
     // 🔹 Analisis: parse summary untuk ambil nilai persen
@@ -54,9 +47,6 @@ export async function POST(req: Request) {
     });
   } catch (err) {
     console.error("Error saving analysis:", err);
-    return NextResponse.json(
-      { error: "Failed to save analysis" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to save analysis" }, { status: 500 });
   }
 }

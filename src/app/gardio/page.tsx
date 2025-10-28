@@ -72,7 +72,9 @@ export default function GardioPage() {
             {activeLink}
           </a>
         ) : (
-          <p><i>Belum ada link aktif.</i></p>
+          <p>
+            <i>Belum ada link aktif.</i>
+          </p>
         )}
       </div>
     </div>

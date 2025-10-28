@@ -1,17 +1,20 @@
 // src/app/api/analyses/route.ts
-import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { NextRequest, NextResponse } from "next/server";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export async function GET(request: NextRequest) {
   try {
     const url = new URL(request.url);
-    const content_id = url.searchParams.get('content_id');
-    const limit = Number(url.searchParams.get('limit') ?? 50);
-    const offset = Number(url.searchParams.get('offset') ?? 0);
+    const content_id = url.searchParams.get("content_id");
+    const limit = Number(url.searchParams.get("limit") ?? 50);
+    const offset = Number(url.searchParams.get("offset") ?? 0);
 
-    let query = supabaseAdmin.from('analyses').select('*, analysis_details(*)').order('created_at', { ascending: false });
+    let query = supabaseAdmin
+      .from("analyses")
+      .select("*, analysis_details(*)")
+      .order("created_at", { ascending: false });
 
-    if (content_id) query = query.eq('content_id', content_id);
+    if (content_id) query = query.eq("content_id", content_id);
 
     const { data, error } = await query.range(offset, offset + limit - 1);
 
@@ -28,21 +31,21 @@ export async function POST(request: NextRequest) {
 
     // validation
     if (!body.content_id) {
-      return NextResponse.json({ error: 'Missing content_id' }, { status: 400 });
+      return NextResponse.json({ error: "Missing content_id" }, { status: 400 });
     }
 
     // Optionally check content exists
     const { data: content, error: ce } = await supabaseAdmin
-      .from('contents')
-      .select('id')
-      .eq('id', body.content_id)
+      .from("contents")
+      .select("id")
+      .eq("id", body.content_id)
       .single();
 
-    if (ce) return NextResponse.json({ error: 'Referenced content not found' }, { status: 400 });
+    if (ce) return NextResponse.json({ error: "Referenced content not found" }, { status: 400 });
 
     // Insert analysis
     const { data: analysis, error } = await supabaseAdmin
-      .from('analyses')
+      .from("analyses")
       .insert({
         content_id: body.content_id,
         main_theme: body.main_theme ?? null,
@@ -65,14 +68,14 @@ export async function POST(request: NextRequest) {
         classification: d.classification,
         confidence: d.confidence ?? null,
       }));
-      await supabaseAdmin.from('analysis_details').insert(detailsRows);
+      await supabaseAdmin.from("analysis_details").insert(detailsRows);
     }
 
     // return analysis with details
     const { data: full, error: fullErr } = await supabaseAdmin
-      .from('analyses')
-      .select('*, analysis_details(*)')
-      .eq('id', analysis.id)
+      .from("analyses")
+      .select("*, analysis_details(*)")
+      .eq("id", analysis.id)
       .single();
 
     if (fullErr) return NextResponse.json({ error: fullErr.message }, { status: 400 });

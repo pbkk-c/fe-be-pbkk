@@ -20,13 +20,14 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const supabase = createClientComponentClient();
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    
-    // ✅ Fetch user
+  // ✅ Fetch user
   useEffect(() => {
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       setUser(user);
     };
 
@@ -64,8 +65,8 @@ export default function Navbar() {
 
   return (
     <header
-    className={clsx(
-      "fixed w-full z-50 transition-all duration-500 backdrop-blur-md",
+      className={clsx(
+        "fixed w-full z-50 transition-all duration-500 backdrop-blur-md",
         scrolled
           ? "bg-slate-900/80 shadow-md border-b border-slate-700/40 py-2"
           : "bg-slate-900/80 shadow-md border-b border-slate-700/40 py-4"
@@ -96,24 +97,24 @@ export default function Navbar() {
 
         {/* === Right Side === */}
         <div className="hidden md:flex items-center space-x-3">
-                       {isLoggedIn ? (
-          <>
-            <Link
-              href="/profile"
-              className="bg-amber-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-amber-400 transition-all"
-            >
-              Profile
-            </Link>
-            <button
-              onClick={handleLogout}
-              className="bg-transparent border-2 border-red-500 text-red-500 font-semibold px-4 py-2 rounded-lg font-medium hover:bg-red-500 hover:text-white transition-all"
-            >
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-           <Link
+          {isLoggedIn ? (
+            <>
+              <Link
+                href="/profile"
+                className="bg-amber-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-amber-400 transition-all"
+              >
+                Profile
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="bg-transparent border-2 border-red-500 text-red-500 font-semibold px-4 py-2 rounded-lg font-medium hover:bg-red-500 hover:text-white transition-all"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
                 href="/register"
                 className="px-4 py-1.5 rounded-md border border-amber-500 text-amber-400 hover:bg-amber-500 hover:text-black transition-all duration-300 shadow-[0_0_8px_rgba(251,191,36,0.4)]"
               >
@@ -125,8 +126,8 @@ export default function Navbar() {
               >
                 Login
               </Link>
-              </>
-        )}
+            </>
+          )}
           {/* {user ? (
             <>
               <Link
@@ -199,20 +200,20 @@ export default function Navbar() {
           )}
 
           <div className="flex flex-col gap-2 pt-2">
-             {isLoggedIn ? (
-          <>
-            <Link href="/profile" className="font-semibold">
-              Profile
-            </Link>
-            <button onClick={handleLogout} className="text-red-500 font-semibold">
-              Logout
-            </button>
-          </>
-        ) : (
-          <Link href="/login" className="font-semibold">
-            Login
-          </Link>
-        )}
+            {isLoggedIn ? (
+              <>
+                <Link href="/profile" className="font-semibold">
+                  Profile
+                </Link>
+                <button onClick={handleLogout} className="text-red-500 font-semibold">
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link href="/login" className="font-semibold">
+                Login
+              </Link>
+            )}
             {/* {!user ? (
               <>
                 <Link

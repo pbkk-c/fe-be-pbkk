@@ -1,12 +1,13 @@
 // src/app/api/content/route.ts
-import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { NextRequest, NextResponse } from "next/server";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export async function GET(request: NextRequest) {
   try {
     const { data, error } = await supabaseAdmin
       .from("contents")
-      .select(`
+      .select(
+        `
         *,
         analyses (
           fact_percentage,
@@ -14,7 +15,8 @@ export async function GET(request: NextRequest) {
           hoax_percentage,
           created_at
         )
-      `)
+      `
+      )
       .order("collected_at", { ascending: false });
 
     if (error) {
@@ -33,12 +35,12 @@ export async function POST(request: NextRequest) {
 
     // basic validation
     if (!body.url || !body.platform) {
-      return NextResponse.json({ error: 'Missing url or platform' }, { status: 400 });
+      return NextResponse.json({ error: "Missing url or platform" }, { status: 400 });
     }
 
     // Insert content (kembalikan row yang dibuat)
     const { data, error } = await supabaseAdmin
-      .from('contents')
+      .from("contents")
       .insert({
         user_id: body.user_id ?? null,
         creator_id: body.creator_id ?? null,
@@ -62,7 +64,7 @@ export async function POST(request: NextRequest) {
         type: m.type,
         url: m.url,
       }));
-      await supabaseAdmin.from('content_media').insert(mediaRows);
+      await supabaseAdmin.from("content_media").insert(mediaRows);
     }
 
     return NextResponse.json(data);

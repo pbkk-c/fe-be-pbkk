@@ -53,8 +53,7 @@ export default function Typography<T extends React.ElementType>({
   font = "Inter",
   variant = "p",
   ...props
-}: TypographyProps<T> &
-  Omit<React.ComponentProps<T>, keyof TypographyProps<T>>) {
+}: TypographyProps<T> & Omit<React.ComponentProps<T>, keyof TypographyProps<T>>) {
   const Component = as || "p";
   return (
     <Component
@@ -93,7 +92,7 @@ export default function Typography<T extends React.ElementType>({
           variant === "c1" && ["md:text-[14px] md:leading-[24px]"],
           variant === "c2" && ["md:text-[12px] md:leading-[24px]"],
         ],
-        className,
+        className
       )}
       {...props}
     >

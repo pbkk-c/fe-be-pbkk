@@ -64,9 +64,7 @@ export default function HistoryPage() {
       <Navbar />
       <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
         <div className="w-full max-w-3xl bg-white shadow-lg rounded-2xl p-8">
-          <h1 className="text-2xl font-bold text-gray-800 mb-6">
-            Analysis History
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-800 mb-6">Analysis History</h1>
 
           {history.length === 0 ? (
             <p className="text-gray-500 text-center">No history available.</p>
@@ -116,7 +114,7 @@ export default function HistoryPage() {
           </div>
         </div>
       </div>
-       {/* Floating Button */}
+      {/* Floating Button */}
       <div className="fixed bottom-6 right-6 group">
         <button
           onClick={() => router.push("/analyzer")}

@@ -72,9 +72,7 @@ export default function HistoryDetailPage() {
       <Navbar />
       <div className="min-h-screen bg-gray-50 px-4 py-8 flex justify-center">
         <div className="w-full max-w-3xl bg-white shadow-md rounded-2xl p-8">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">
-            {detail.title}
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">{detail.title}</h1>
           <p className="text-sm text-gray-500 mb-4">{detail.url}</p>
 
           <div className="mb-6">
@@ -97,18 +95,14 @@ export default function HistoryDetailPage() {
             </div>
             <div>
               <p className="text-sm text-gray-500">Created At</p>
-              <p className="font-medium">
-                {new Date(detail.created_at).toLocaleString()}
-              </p>
+              <p className="font-medium">{new Date(detail.created_at).toLocaleString()}</p>
             </div>
           </div>
 
           <div className="border-t pt-4">
             <h3 className="font-semibold text-gray-700 mb-2">Analysis Breakdown</h3>
             <p className="text-sm text-gray-600">Fact: {detail.fact_percentage}%</p>
-            <p className="text-sm text-gray-600">
-              Opinion: {detail.opinion_percentage}%
-            </p>
+            <p className="text-sm text-gray-600">Opinion: {detail.opinion_percentage}%</p>
             <p className="text-sm text-gray-600">Hoax: {detail.hoax_percentage}%</p>
           </div>
 
@@ -122,7 +116,7 @@ export default function HistoryDetailPage() {
           </div>
         </div>
       </div>
-       {/* Floating Button */}
+      {/* Floating Button */}
       <div className="fixed bottom-6 right-6 group">
         <button
           onClick={() => route.push("/analyzer")}

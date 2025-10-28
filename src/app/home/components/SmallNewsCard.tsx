@@ -8,12 +8,7 @@ interface SmallNewsCardProps {
   href?: string;
 }
 
-export default function SmallNewsCard({
-  title,
-  category,
-  image,
-  href = "#",
-}: SmallNewsCardProps) {
+export default function SmallNewsCard({ title, category, image, href = "#" }: SmallNewsCardProps) {
   return (
     <Link
       href={href}
