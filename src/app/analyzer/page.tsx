@@ -32,8 +32,7 @@ interface LocalAnalysisData {
   hoax_percentage: number;
   main_theme: string;
   sentiment: string;
-  // This field holds the complete AnalysisData object returned by the Python service
-  raw_analysis_json?: AnalysisData; 
+  raw_analysis_json?: AnalysisData;
 }
 
 interface SectionData {
@@ -74,20 +73,19 @@ export default function AnalyzePage() {
     fetchUser();
   }, []);
 
-const handleAnalyze = async () => {
+  const handleAnalyze = async () => {
     if (!url.trim()) return alert("Masukkan URL berita!");
 
     setLoading(true);
     setResult(null);
     setLogs([]);
-    setProgress(0); 
+    setProgress(0);
     setProgressDesc("⏳ Starting analysis...");
-    
+
     try {
       setProgress(5);
       setProgressDesc("🧠 Sending URL to local API...");
 
-      // 🚀 Step 1: Call the local API Route
       const res = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -98,13 +96,11 @@ const handleAnalyze = async () => {
       setProgressDesc("📡 Waiting for Python/Gemini process to finish...");
 
       if (!res.ok) {
-        // If the API route returns an error status (4xx or 5xx)
         const errorData = await res.json();
         setLogs((prev) => [...prev, `❌ Server Error: ${errorData.error || res.statusText}`]);
         throw new Error(errorData.error || "Gagal menghubungi server analisis.");
       }
 
-      // Step 2: Process the successful response (contains the saved DB object)
       const response = await res.json();
       const localData: { success: boolean; data: LocalAnalysisData } = response;
 
@@ -112,39 +108,43 @@ const handleAnalyze = async () => {
       setProgressDesc("✅ Analysis complete. Formatting results...");
 
       if (localData.success && localData.data) {
-        // We now extract the full analysis object (raw_analysis_json) 
-        // which contains the Facts/Opinion/Hoax breakdown.
         const analysisDataFromDB = localData.data.raw_analysis_json || {
           summary_statement: localData.data.summary,
           analysis: {
-            Facts: { percentage: localData.data.fact_percentage, reason: "Data from DB summary.", supporting_factors: [] },
-            Opinion: { percentage: localData.data.opinion_percentage, reason: "Data from DB summary.", supporting_factors: [] },
-            Hoax: { percentage: localData.data.hoax_percentage, reason: "Data from DB summary.", supporting_factors: [] },
-          }
+            Facts: {
+              percentage: localData.data.fact_percentage,
+              reason: "Data from DB summary.",
+              supporting_factors: [],
+            },
+            Opinion: {
+              percentage: localData.data.opinion_percentage,
+              reason: "Data from DB summary.",
+              supporting_factors: [],
+            },
+            Hoax: {
+              percentage: localData.data.hoax_percentage,
+              reason: "Data from DB summary.",
+              supporting_factors: [],
+            },
+          },
         };
-        
-        // Use the detailed analysis for the UI display
+
         setResult(analysisDataFromDB);
         setLogs((prev) => [...prev, `✅ Success! Saved to DB.`]);
-
       } else {
         throw new Error("Invalid response format from /api/analyze.");
       }
-      
     } catch (err: any) {
       console.error("Analysis Error:", err);
       setLogs((prev) => [...prev, `❌ Failed: ${err.message}`]);
       alert(`❌ Error: ${err.message || "Unknown error during analysis."}`);
-      setProgress(0); // Reset progress on failure
+      setProgress(0);
     } finally {
       setProgress(100);
       setProgressDesc("Done!");
       setLoading(false);
     }
   };
-
-
-  // --- UI RENDER (Kept as is, but now using the local analysis result) ---
 
   return (
     <>
@@ -194,7 +194,7 @@ const handleAnalyze = async () => {
               <div className="w-full mt-3">
                 <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-black transition-all duration-300"
+                    className="h-full bg-amber-500 transition-all duration-300"
                     style={{ width: `${progress}%` }}
                   ></div>
                 </div>
@@ -207,55 +207,58 @@ const handleAnalyze = async () => {
           </div>
 
           {/* HASIL ANALISIS */}
-          {result && (
-            <div className="mt-6 bg-white border p-6 rounded-lg shadow-sm text-left space-y-6">
-              <h2 className="text-2xl font-bold mb-2">Hasil Analisis</h2>
+          <AnimatePresence>
+            {result && (
+              <motion.div
+                key="analysis-result"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="mt-6 bg-white border p-6 rounded-lg shadow-sm text-left space-y-6"
+              >
+                <h2 className="text-2xl font-bold mb-2">Hasil Analisis</h2>
 
-              <p className="text-gray-700 whitespace-pre-wrap">{result.summary_statement}</p>
+                <p className="text-gray-700 whitespace-pre-wrap">{result.summary_statement}</p>
 
-                {result.analysis && (
-                  <div className="space-y-6">
-                    {Object.entries(result.analysis).map(([key, section]) => (
-                      <div key={key}>
-                        <h3 className="text-lg font-semibold text-white mb-2">{key}</h3>
-                        <div className="w-full bg-gray-800 h-4 rounded-full overflow-hidden flex">
-                          {key === "Facts" && (
-                            <div
-                              className="bg-blue-600 h-full text-xs flex items-center justify-center text-white"
-                              style={{ width: `${section.percentage}%` }}
-                            >
-                              {section.percentage > 10 && `${section.percentage}%`}
-                            </div>
-                          )}
-                          {key === "Opinion" && (
-                            <div
-                              className="bg-yellow-500 h-full text-xs flex items-center justify-center text-black"
-                              style={{ width: `${section.percentage}%` }}
-                            >
-                              {section.percentage > 10 && `${section.percentage}%`}
-                            </div>
-                          )}
-                          {key === "Hoax" && (
-                            <div
-                              className="bg-red-600 h-full text-xs flex items-center justify-center text-white"
-                              style={{ width: `${section.percentage}%` }}
-                            >
-                              {section.percentage > 10 && `${section.percentage}%`}
-                            </div>
-                          )}
+                {Object.entries(result.analysis ?? {}).map(([key, section]) => (
+                  <div key={key}>
+                    <h3 className="text-lg font-semibold text-white mb-2">{key}</h3>
+                    <div className="w-full bg-gray-800 h-4 rounded-full overflow-hidden flex">
+                      {key === "Facts" && (
+                        <div
+                          className="bg-blue-600 h-full text-xs flex items-center justify-center text-white"
+                          style={{ width: `${section.percentage}%` }}
+                        >
+                          {section.percentage > 10 && `${section.percentage}%`}
                         </div>
-                        <p className="mt-2 text-gray-400 text-sm">{section.reason}</p>
-                        {section.supporting_factors.length > 0 && (
-                          <ul className="list-disc list-inside text-gray-400 text-sm mt-2 space-y-1">
-                            {section.supporting_factors.map((f, i) => (
-                              <li key={i}>{f}</li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-                    ))}
+                      )}
+                      {key === "Opinion" && (
+                        <div
+                          className="bg-yellow-500 h-full text-xs flex items-center justify-center text-black"
+                          style={{ width: `${section.percentage}%` }}
+                        >
+                          {section.percentage > 10 && `${section.percentage}%`}
+                        </div>
+                      )}
+                      {key === "Hoax" && (
+                        <div
+                          className="bg-red-600 h-full text-xs flex items-center justify-center text-white"
+                          style={{ width: `${section.percentage}%` }}
+                        >
+                          {section.percentage > 10 && `${section.percentage}%`}
+                        </div>
+                      )}
+                    </div>
+                    <p className="mt-2 text-gray-400 text-sm">{section.reason}</p>
+                    {section.supporting_factors?.length > 0 && (
+                      <ul className="list-disc list-inside text-gray-400 text-sm mt-2 space-y-1">
+                        {section.supporting_factors.map((f, i) => (
+                          <li key={i}>{f}</li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
-                )}
+                ))}
               </motion.div>
             )}
           </AnimatePresence>
