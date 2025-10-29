@@ -5,6 +5,8 @@ import Image from "next/image";
 import SocialActions from "../components/SocialActions";
 import CommentSection from "../components/CommentAction";
 import { useParams } from "next/navigation";
+import Footer from "@/app/layouts/Footer";
+import Navbar from "@/app/layouts/Navbar";
 
 interface Analysis {
   created_at: string;
@@ -25,6 +27,7 @@ interface ContentDetail {
   id: string;
   title: string | null;
   topic: string | null;
+  url: string | null;
   raw_text: string | null;
   creator_name: string | null;
   published_at: string | null;
@@ -86,12 +89,15 @@ export default function NewsDetailPage() {
   };
 
   const imageUrl =
-    content.content_media.find((m) => m.type === "image")?.url || "/img/home/news-1.png";
+    content.url || "/img/home/news-1.png";
 
   return (
+    <>
+    <Navbar />
+
     <main className="max-w-3xl mx-auto px-4 py-8">
       {/* Topic + Author + Date */}
-      <p className="text-sm text-green-600 font-medium">{content.topic}</p>
+      <p className="text-sm text-amber-600 font-medium">{content.topic}</p>
       <h1 className="mt-2 text-3xl font-bold">{content.title}</h1>
       <p className="text-sm text-gray-500">
         {content.creator_name || "Unknown"} •{" "}
@@ -147,5 +153,7 @@ export default function NewsDetailPage() {
       {/* <SocialActions />
       <CommentSection /> */}
     </main>
+        <Footer />
+    </>
   );
 }

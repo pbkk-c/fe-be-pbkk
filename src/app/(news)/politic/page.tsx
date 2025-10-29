@@ -6,6 +6,8 @@ import { Content } from "@/types/fetchContent";
 import HeroCard from "@/app/home/components/HeroCard";
 import FactBar from "../components/FactBar";
 import NewsTopicCard from "../components/NewsTopicCard";
+import Footer from "@/app/layouts/Footer";
+import Navbar from "@/app/layouts/Navbar";
 
 export default function PoliticsPage() {
   const [contents, setContents] = useState<Content[]>([]);
@@ -52,7 +54,10 @@ export default function PoliticsPage() {
   const moreNews = politicalNews.slice(5);
 
   return (
-    <main className="px-6 md:px-16 py-10 bg-gradient-to-b from-orange-50 via-white to-orange-50 text-gray-900">
+     <>
+        <Navbar />
+     
+    <main className="px-6 md:px-16  pb-10 pt-20 bg-gradient-to-b from-orange-50 via-white to-orange-50 text-gray-900">
       {/* === HERO FEATURED === */}
       {featured ? (
         <HeroCard
@@ -117,5 +122,7 @@ export default function PoliticsPage() {
         </section>
       )}
     </main>
+       <Footer />
+        </>
   );
 }

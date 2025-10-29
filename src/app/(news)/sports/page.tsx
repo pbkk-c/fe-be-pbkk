@@ -23,7 +23,7 @@ export default function PoliticsPage() {
         setContents(data);
       } catch (err) {
         console.error(err);
-        setError("Gagal memuat berita science. Silakan coba lagi nanti.");
+        setError("Gagal memuat berita sports. Silakan coba lagi nanti.");
       } finally {
         setLoading(false);
       }
@@ -34,7 +34,7 @@ export default function PoliticsPage() {
   if (loading)
     return (
       <div className="min-h-screen flex items-center justify-center text-orange-600 font-medium">
-        Memuat berita science...
+        Memuat berita sports...
       </div>
     );
 
@@ -46,7 +46,7 @@ export default function PoliticsPage() {
     );
 
   const politicalNews = contents.filter(
-    (item) => item.type === "News" && item.topic === "Science"
+    (item) => item.type === "News" && item.topic === "Sports"
   );
 
   const featured = politicalNews[0];
@@ -54,16 +54,16 @@ export default function PoliticsPage() {
   const moreNews = politicalNews.slice(5);
 
   return (
-     <>
-        <Navbar />
-       
+    <>
+    <Navbar />
+   
     <main className="px-6 md:px-16 pb-10 pt-20 bg-gradient-to-b from-orange-50 via-white to-orange-50 text-gray-900">
       {/* === HERO FEATURED === */}
       {featured ? (
         <HeroCard
           cards={politicalNews.slice(0, 10).map((item) => ({
             href: `/news/${item.id}`,
-            category: item.topic ?? "Science",
+            category: item.topic ?? "Sports",
             title: item.title ?? "",
             description: item.raw_text?.slice(0, 120) ?? "",
             image: item.url ?? "/placeholder.jpg",
@@ -74,7 +74,7 @@ export default function PoliticsPage() {
         />
       ) : (
         <p className="text-center text-gray-500">
-          Belum ada berita science tersedia.
+          Belum ada berita Sports tersedia.
         </p>
       )}
 
@@ -123,6 +123,6 @@ export default function PoliticsPage() {
       )}
     </main>
      <Footer />
-        </>
+    </>
   );
 }

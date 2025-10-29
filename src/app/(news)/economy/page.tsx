@@ -6,6 +6,8 @@ import { Content } from "@/types/fetchContent";
 import HeroCard from "@/app/home/components/HeroCard";
 import FactBar from "../components/FactBar";
 import NewsTopicCard from "../components/NewsTopicCard";
+import Footer from "@/app/layouts/Footer";
+import Navbar from "@/app/layouts/Navbar";
 
 export default function PoliticsPage() {
   const [contents, setContents] = useState<Content[]>([]);
@@ -21,7 +23,7 @@ export default function PoliticsPage() {
         setContents(data);
       } catch (err) {
         console.error(err);
-        setError("Gagal memuat berita politik. Silakan coba lagi nanti.");
+        setError("Gagal memuat berita economy. Silakan coba lagi nanti.");
       } finally {
         setLoading(false);
       }
@@ -32,7 +34,7 @@ export default function PoliticsPage() {
   if (loading)
     return (
       <div className="min-h-screen flex items-center justify-center text-orange-600 font-medium">
-        Memuat berita politik...
+        Memuat berita economy...
       </div>
     );
 
@@ -44,7 +46,7 @@ export default function PoliticsPage() {
     );
 
   const politicalNews = contents.filter(
-    (item) => item.type === "News" && item.topic === "Politic"
+    (item) => item.type === "News" && item.topic === "Economy"
   );
 
   const featured = politicalNews[0];
@@ -52,13 +54,16 @@ export default function PoliticsPage() {
   const moreNews = politicalNews.slice(5);
 
   return (
-    <main className="px-6 md:px-16 py-10 bg-gradient-to-b from-orange-50 via-white to-orange-50 text-gray-900">
+     <>
+        <Navbar />
+       
+    <main className="px-6 md:px-16  pb-10 pt-20 bg-gradient-to-b from-orange-50 via-white to-orange-50 text-gray-900">
       {/* === HERO FEATURED === */}
       {featured ? (
         <HeroCard
           cards={politicalNews.slice(0, 10).map((item) => ({
             href: `/news/${item.id}`,
-            category: item.topic ?? "Politics",
+            category: item.topic ?? "Economy",
             title: item.title ?? "",
             description: item.raw_text?.slice(0, 120) ?? "",
             image: item.url ?? "/placeholder.jpg",
@@ -69,7 +74,7 @@ export default function PoliticsPage() {
         />
       ) : (
         <p className="text-center text-gray-500">
-          Belum ada berita politik tersedia.
+          Belum ada berita economy tersedia.
         </p>
       )}
 
@@ -117,5 +122,7 @@ export default function PoliticsPage() {
         </section>
       )}
     </main>
+     <Footer />
+        </>
   );
 }
