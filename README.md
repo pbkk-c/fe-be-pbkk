@@ -9,7 +9,7 @@ The architecture is split into two co-dependent services running locally :
 1.  **Next.js Application:** Handles the user interface, routing, authentication, and acts as an **API proxy** for the analysis.
 2.  **Python Analysis Service:** A dedicated, isolated **Flask microservice** that handles complex tasks like web scraping and AI inference.
 
-### 🏛️ Architecture Breakdown
+### Architecture Breakdown
 
 | Component | Technology | Role |
 | :--- | :--- | :--- |
@@ -20,15 +20,13 @@ The architecture is split into two co-dependent services running locally :
 
 ---
 
-## 🚀 Getting Started
-
-**⚠️ IMPORTANT:** This project requires **two separate processes** (the Next.js app and the Python service) to be running simultaneously to function.
+**IMPORTANT:** This project requires **two separate processes** (the Next.js app and the Python service) to be running simultaneously to function.
 
 ### 1. Detailed Installation and Setup
 
 Before running the application, you must set up both the Node.js and Python environments. This includes installing dependencies, activating the virtual environment, and installing the necessary Chromium browser for Playwright.
 
-➡️ **For detailed, step-by-step instructions, please see the [INSTALLATION.md](INSTALLATION.md) file.**
+**For detailed, step-by-step instructions, please see the [INSTALLATION.md](installation.md) file.**
 
 ### 2. Configuration (`.env` File)
 
@@ -50,18 +48,10 @@ Ensure you have created a **`.env`** file in the project root containing all req
 
 ---
 
-## 📦 Core Technologies
+## Core Technologies
 
 * **Frontend:** [Next.js](https://nextjs.org/) (App Router)
 * **Database:** [Supabase](https://supabase.com/) (PostgreSQL)
 * **AI/LLM:** Gemini 2.5 Flash
 * **Analysis Backend:** Python / Flask
 * **Data Extraction:** Playwright, Trafilatura, Newspaper3k
-
-## 🤝 Contribution
-
-[Describe how other developers can contribute to your repository, e.g., pull requests, issue reporting, etc.]
-
-## 📄 License
-
-[Specify the license under which your project is distributed, e.g., MIT, GPL, etc.]
