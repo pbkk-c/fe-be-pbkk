@@ -60,7 +60,7 @@ export default function AnalyzePage() {
       const res = await fetch("/api/me", {
         headers: { Authorization: `Bearer ${token}` },
       });
-
+//tgthb
       if (res.ok) {
         const data = await res.json();
         setUser(data);
