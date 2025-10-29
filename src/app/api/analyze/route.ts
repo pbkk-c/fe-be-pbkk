@@ -1,5 +1,16 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma"; // pastikan kamu sudah punya prisma client di sini
+import { prisma } from "@/lib/prisma";
+
+// Define the expected structure of the data returned by the external Python service.
+interface AnalysisResultData {
+    main_theme: string;
+    summary: string;
+    fact_percentage: number;
+    opinion_percentage: number;
+    hoax_percentage: number;
+    sentiment: string;
+    raw_analysis_json: any; 
+}
 
 export async function POST(req: Request) {
   try {
@@ -7,98 +18,63 @@ export async function POST(req: Request) {
     if (!url) {
       return NextResponse.json({ error: "Missing URL" }, { status: 400 });
     }
+    
+    // 1. Get the new service URL from the environment (loaded from .env)
+    const serviceUrl = process.env.ANALYSIS_SERVICE_URL;
+    if (!serviceUrl) {
+        return NextResponse.json({ error: "ANALYSIS_SERVICE_URL is not set" }, { status: 500 });
+    }
 
-    // ✅ Ambil link Gradio terbaru dari database
-    const latestLink = await prisma.gardio_links.findFirst({
-      orderBy: { created_at: "desc" },
+    console.log(`Forwarding analysis request to: ${serviceUrl}`);
+
+    // 🚀 Step 2: Call the external Python Analysis Service
+    const response = await fetch(serviceUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: url }) // Use the user's input URL
     });
 
-    if (!latestLink?.url) {
-      return NextResponse.json({ error: "No active Gradio link found" }, { status: 404 });
+    // 🛑 CRITICAL CHECK: If the service returns HTML, catch it here.
+    const contentType = response.headers.get("content-type");
+    
+    if (!response.ok || !contentType?.includes('application/json')) {
+        const statusCode = response.status;
+        let errorBody: any = await response.text(); // Read as text first
+        
+        // If it's HTML, truncate the body to prevent huge logs
+        if (errorBody.startsWith('<')) {
+            errorBody = "HTML Error Page (Container Crash or Not Found)";
+        } else {
+            // If it's not HTML, try to parse the error JSON
+            try {
+                errorBody = JSON.parse(errorBody);
+            } catch {
+                // Ignore if parsing fails
+            }
+        }
+        
+        console.error(`Analysis Service Error (${statusCode}):`, errorBody);
+        return NextResponse.json({ 
+            error: `Service failed: ${errorBody.error || errorBody}`,
+            details: `Status ${statusCode}: Check Hugging Face Logs for crash details.`
+        }, { status: 502 });
     }
+    // 🛑 END CRITICAL CHECK
 
-    // TO DO CHANGE GRADIO URL
-    const gradioUrl = latestLink.url;
-    console.log("Using Gradio URL:", gradioUrl);
+    // Step 3: Process successful JSON result
+    const serviceResult = await response.json();
+    // Assuming the Flask app wraps data in a 'data' key for success
+    const analysisResult: AnalysisResultData = serviceResult.data || serviceResult;
 
-    // const gradioUrl = process.env.GRADIO_URL;
-    // const gradioUrl = "https://069d93420c693e575d.gradio.live";
-    if (!gradioUrl) {
-      return NextResponse.json({ error: "Missing GRADIO_URL in env" }, { status: 500 });
-    }
 
-    // Step 1: Kirim ke Gradio (sesuai format payload dari Network tab)
-    const payload = {
-      data: [url],
-      event_data: null,
-      fn_index: 0,
-      session_hash: Math.random().toString(36).substring(7), // random hash
-    };
+    // 🚀 Step 4: Return Analysis Result Directly (Skipping Database Save)
+    
+    // We return the raw analysis JSON so the frontend (analyzer/page.tsx)
+    // can display the facts/opinions/hoax breakdown immediately.
+    return NextResponse.json({ success: true, data: analysisResult });
 
-    const response = await fetch(`${gradioUrl}/gradio_api/queue/join`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    const event = await response.json();
-    if (!event?.event_id) {
-      return NextResponse.json({ error: "Failed to get Gradio event ID" }, { status: 500 });
-    }
-
-    // Step 2: Poll hasil dari Gradio (mirip mekanisme queue)
-    const result = await waitForGradioResult(gradioUrl, event.event_id);
-
-    if (!result) {
-      return NextResponse.json({ error: "Timeout waiting for Gradio result" }, { status: 504 });
-    }
-
-    // --- hasil analisis dari Gradio ---
-    const { main_theme, summary, fact_percentage, opinion_percentage, hoax_percentage, sentiment } =
-      result || {};
-
-    // Step 3: Simpan ke database
-    const saved = await prisma.analyses.create({
-      data: {
-        main_theme,
-        summary,
-        fact_percentage,
-        opinion_percentage,
-        hoax_percentage,
-        sentiment,
-      },
-    });
-
-    return NextResponse.json({ success: true, data: saved });
   } catch (error: any) {
-    console.error("Analyze API Error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("Next.js Analyze API Error:", error);
+    return NextResponse.json({ error: error.message || "An unexpected error occurred." }, { status: 500 });
   }
-}
-
-/** Helper untuk nunggu hasil Gradio (polling mekanisme queue) */
-async function waitForGradioResult(gradioUrl: string, eventId: string) {
-  const maxAttempts = 20; // coba 20x
-  const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-  for (let i = 0; i < maxAttempts; i++) {
-    const res = await fetch(`${gradioUrl}/gradio_api/queue/data?event_id=${eventId}`);
-    const data = await res.json();
-
-    if (data?.status === "COMPLETE" && data?.output?.data) {
-      // sesuaikan sesuai struktur output Gradio kamu
-      return {
-        main_theme: data.output.data[0],
-        summary: data.output.data[1],
-        fact_percentage: data.output.data[2],
-        opinion_percentage: data.output.data[3],
-        hoax_percentage: data.output.data[4],
-        sentiment: data.output.data[5],
-      };
-    }
-
-    await delay(2000); // tunggu 2 detik sebelum coba lagi
-  }
-
-  return null;
 }
