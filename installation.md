@@ -61,7 +61,6 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY="<Your Supabase Anon Key>"
 DATABASE_URL="postgresql://postgres.<user>:<password>@<host>:6543/postgres"
 DIRECT_URL="postgresql://postgres.<user>:<password>@<host>:5432/postgres"
 
-# Optional: Supabase Service Role Key (needed for specific Supabase operations)
 SUPABASE_URL="<Your Supabase Project URL>"
 SUPABASE_SERVICE_ROLE_KEY="<Your Supabase Service Role Key>"
 
@@ -71,7 +70,7 @@ SUPABASE_SERVICE_ROLE_KEY="<Your Supabase Service Role Key>"
 GEMINI_API_KEY="<YOUR_GEMINI_API_KEY_HERE>"
 
 # This URL tells the Next.js API route where to find the Python analysis service
-ANALYSIS_SERVICE_URL="[http://127.0.0.1:5000/analyze](http://127.0.0.1:5000/analyze)"
+ANALYSIS_SERVICE_URL="[http://127.0.0.1:5000/analyze]"
 ```
 
 ## Step 4: Run the Application (Two Terminals Required)
