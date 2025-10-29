@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📰 AI News Analyzer Platform
 
-## Getting Started
+## Project Overview
 
-First, run the development server:
+This is a full-stack news platform built with **Next.js** and **Supabase**, featuring a dedicated **AI News Analyzer** component. The application allows users to submit news URLs for real-time analysis, classifying content into **Facts**, **Opinions**, and potential **Hoaxes** using the **Gemini 2.5 Flash** model.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The architecture is split into two co-dependent services running locally :
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1.  **Next.js Application:** Handles the user interface, routing, authentication, and acts as an **API proxy** for the analysis.
+2.  **Python Analysis Service:** A dedicated, isolated **Flask microservice** that handles complex tasks like web scraping and AI inference.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 🏛️ Architecture Breakdown
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Component | Technology | Role |
+| :--- | :--- | :--- |
+| **Frontend/Main App** | Next.js (TypeScript) | Handles UI, routing, user authentication, and profile management. |
+| **Database/Auth** | Supabase (PostgreSQL) | Stores user data, analysis history, and persistent configurations. |
+| **API Proxy** | Next.js API Routes | Receives client requests (`/api/analyze`) and proxies them to the Python Analysis Service. |
+| **AI Analysis Service** | Python (Flask) | Runs the web scraping (Playwright) and the Gemini 2.5 Flash analysis logic. |
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🚀 Getting Started
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**⚠️ IMPORTANT:** This project requires **two separate processes** (the Next.js app and the Python service) to be running simultaneously to function.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 1. Detailed Installation and Setup
 
-## Deploy on Vercel
+Before running the application, you must set up both the Node.js and Python environments. This includes installing dependencies, activating the virtual environment, and installing the necessary Chromium browser for Playwright.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+➡️ **For detailed, step-by-step instructions, please see the [INSTALLATION.md](INSTALLATION.md) file.**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 2. Configuration (`.env` File)
+
+Ensure you have created a **`.env`** file in the project root containing all required secret keys and connection URLs:
+
+| Variable | Purpose |
+| :--- | :--- |
+| `GEMINI_API_KEY` | Required by the Python Analysis Service for AI inference. |
+| `DATABASE_URL` | Required by Next.js/Prisma for connecting to Supabase (must use **port 6543** connection pooler). |
+| `NEXT_PUBLIC_SUPABASE_*` | Required by the client for authentication and API calls. |
+| `ANALYSIS_SERVICE_URL` | Required by the Next.js API to locate the Python service (`http://127.0.0.1:5000/analyze`). |
+
+### 3. Running the Application
+
+| Terminal | Role | Command |
+| :--- | :--- | :--- |
+| **Terminal 1** | **Next.js App (FE/BE)** | `npm run dev` |
+| **Terminal 2** | **Python AI Service** | **Activate VENV** then: `cd ai-service && python analyze_api.py` |
+
+---
+
+## 📦 Core Technologies
+
+* **Frontend:** [Next.js](https://nextjs.org/) (App Router)
+* **Database:** [Supabase](https://supabase.com/) (PostgreSQL)
+* **AI/LLM:** Gemini 2.5 Flash
+* **Analysis Backend:** Python / Flask
+* **Data Extraction:** Playwright, Trafilatura, Newspaper3k
+
+## 🤝 Contribution
+
+[Describe how other developers can contribute to your repository, e.g., pull requests, issue reporting, etc.]
+
+## 📄 License
+
+[Specify the license under which your project is distributed, e.g., MIT, GPL, etc.]
