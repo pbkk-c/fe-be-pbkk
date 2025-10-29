@@ -68,8 +68,10 @@ export default function Navbar() {
       className={clsx(
         "fixed w-full z-50 transition-all duration-500 backdrop-blur-md",
         scrolled
-          ? "bg-slate-900/80 shadow-md border-b border-slate-700/40 py-2"
-          : "bg-slate-900/80 shadow-md border-b border-slate-700/40 py-4"
+          ? // ? "bg-slate-900/80 shadow-md border-b border-slate-700/40 py-2"
+            // : "bg-slate-900/80 shadow-md border-b border-slate-700/40 py-4"
+            "bg-black/80 shadow-md border-b border-black/40 py-2"
+          : "bg-black/80 shadow-md border-b border-black/40 py-4"
       )}
     >
       <div className="mx-auto flex max-w-[90%] items-center justify-between px-4">
