@@ -8,6 +8,7 @@ import Footer from "../layouts/Footer";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
+import FloatingAIButton from "../home/components/FloatingButton";
 
 interface User {
   id: string;
@@ -61,6 +62,7 @@ export default function ProfilePage() {
   }
 
   return (
+    <>
     <ProtectedRoute>
       <Navbar />
       <main className="min-h-screen bg-gradient-to-b from-orange-50 via-white to-orange-100 flex flex-col items-center justify-center px-6 py-16">
@@ -144,5 +146,9 @@ export default function ProfilePage() {
 
       <Footer />
     </ProtectedRoute>
+          <FloatingAIButton />
+    
+    </>
+
   );
 }
