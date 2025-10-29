@@ -4,54 +4,61 @@
 
 This is a full-stack news platform built with **Next.js** and **Supabase**, featuring a dedicated **AI News Analyzer** component. The application allows users to submit news URLs for real-time analysis, classifying content into **Facts**, **Opinions**, and potential **Hoaxes** using the **Gemini 2.5 Flash** model.
 
-The architecture is split into two co-dependent services running locally :
+The architecture is split into two fully decoupled services:
 
-1.  **Next.js Application:** Handles the user interface, routing, authentication, and acts as an **API proxy** for the analysis.
-2.  **Python Analysis Service:** A dedicated, isolated **Flask microservice** that handles complex tasks like web scraping and AI inference.
+1.  **Next.js Application (Vercel):** The frontend and database-saving backend.
+2.  **Python Analysis Service (Hugging Face):** The external, specialized backend for AI inference and web scraping.
 
-### Architecture Breakdown
+### 🏛️ Architecture Breakdown
 
-| Component | Technology | Role |
-| :--- | :--- | :--- |
-| **Frontend/Main App** | Next.js (TypeScript) | Handles UI, routing, user authentication, and profile management. |
-| **Database/Auth** | Supabase (PostgreSQL) | Stores user data, analysis history, and persistent configurations. |
-| **API Proxy** | Next.js API Routes | Receives client requests (`/api/analyze`) and proxies them to the Python Analysis Service. |
-| **AI Analysis Service** | Python (Flask) | Runs the web scraping (Playwright) and the Gemini 2.5 Flash analysis logic. |
-
----
-
-**IMPORTANT:** This project requires **two separate processes** (the Next.js app and the Python service) to be running simultaneously to function.
-
-### 1. Detailed Installation and Setup
-
-Before running the application, you must set up both the Node.js and Python environments. This includes installing dependencies, activating the virtual environment, and installing the necessary Chromium browser for Playwright.
-
-**For detailed, step-by-step instructions, please see the [INSTALLATION.md](installation.md) file.**
-
-### 2. Configuration (`.env` File)
-
-Ensure you have created a **`.env`** file in the project root containing all required secret keys and connection URLs:
-
-| Variable | Purpose |
-| :--- | :--- |
-| `GEMINI_API_KEY` | Required by the Python Analysis Service for AI inference. |
-| `DATABASE_URL` | Required by Next.js/Prisma for connecting to Supabase (must use **port 6543** connection pooler). |
-| `NEXT_PUBLIC_SUPABASE_*` | Required by the client for authentication and API calls. |
-| `ANALYSIS_SERVICE_URL` | Required by the Next.js API to locate the Python service (`http://127.0.0.1:5000/analyze`). |
-
-### 3. Running the Application
-
-| Terminal | Role | Command |
-| :--- | :--- | :--- |
-| **Terminal 1** | **Next.js App (FE/BE)** | `npm run dev` |
-| **Terminal 2** | **Python AI Service** | **Activate VENV** then: `cd ai-service && python analyze_api.py` |
+| Component | Technology | Location | Role |
+| :--- | :--- | :--- | :--- |
+| **Frontend/Main App** | **Next.js** (TypeScript) | **Vercel** | Handles UI, routing, and proxies analysis requests. |
+| **Database/Auth** | **Supabase** (PostgreSQL) | External | Stores user data and managed by the Next.js API. |
+| **AI Analysis Service** | **Python (Flask, Playwright)** | **Hugging Face Spaces** | Runs resource-intensive web scraping and Gemini 2.5 Flash analysis. |
 
 ---
 
-## Tech Stack
+## 🚀 Getting Started (Local Development Guide)
 
-* **Frontend:** [Next.js](https://nextjs.org/) (App Router)
-* **Database:** [Supabase](https://supabase.com/) (PostgreSQL)
-* **AI/LLM:** Gemini 2.5 Flash
-* **Analysis Backend:** Python / Flask
-* **Data Extraction:** Playwright, Trafilatura, Newspaper3k
+This guide covers setting up the **Next.js frontend/backend proxy** locally. The AI Analysis Service is assumed to be deployed and running externally on Hugging Face Spaces.
+
+### Prerequisites
+
+Ensure you have the following installed:
+
+1.  **Node.js** (v18 or higher) & **npm**
+2.  **Python** (v3.10 or higher) - *Optional, only needed for local development of the Python service.*
+
+### Step 1: Clone the Repository and Install Node Dependencies
+
+Open your terminal and execute the following commands:
+
+```bash
+# 1. Clone the repository
+git clone [https://github.com/pbkk-c/fe-be-pbkk.git](https://github.com/pbkk-c/fe-be-pbkk.git)
+cd fe-be-pbkk # Navigate to the repository directory
+
+# 2. Install Node.js dependencies
+npm install
+```
+
+### Step 2: Configure Environment Variables
+Create a file named .env (or .env.local) in the root directory of the project and populate it with the required connection details.
+
+| Variable | Example Value | Notes |
+|-----------|----------------|-------|
+| `NEXT_PUBLIC_SUPABASE_URL` | `<Your Supabase Project URL>` | [Client] Public URL for client-side authentication. |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `<Your Supabase Anon Key>` | [Client] Public key for client-side authentication. |
+| `DATABASE_URL` | `postgresql://postgres...@<host>:6543/postgres` | [Server] Prisma connection string. Must use the port 6543 connection pooler. |
+| `ANALYSIS_SERVICE_URL` | `https://xoxonn-ai-news-analyzer-api.hf.space/analyze` | [Server] **CRITICAL:** The live, public URL of your Hugging Face API. |
+| `GEMINI_API_KEY` | `<Your_Gemini_Key>` | [Server] Required for local testing or debugging. |
+
+
+### Step 3: Run the Application
+Since the AI microservice is already running externally on Hugging Face, you only need one terminal locally:
+
+# Start the Next.js development server
+```bash
+npm run dev
+```
