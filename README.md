@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a full-stack news platform built with **Next.js** and **Supabase**, featuring a dedicated **AI News Analyzer** component. The application allows users to submit news URLs for real-time analysis, classifying content into **Facts**, **Opinions**, and potential **Hoaxes** using the **Gemini 2.5 Flash** model.
+This is a full-stack news platform built with **Next.js** and **Supabase**, featuring a dedicated **AI News Analyzer** component. The application allows users to submit news URLs / Texts for real-time analysis, classifying content into **Facts**, **Opinions**, and potential **Hoaxes** using the **Gemini 2.5 Flash** model.
 
 The architecture is split into two fully decoupled services:
 
@@ -34,12 +34,25 @@ Ensure you have the following installed:
 
 Open your terminal and execute the following commands:
 
-```bash
-# 1. Clone the repository
-git clone [https://github.com/pbkk-c/fe-be-pbkk.git](https://github.com/pbkk-c/fe-be-pbkk.git)
-cd fe-be-pbkk # Navigate to the repository directory
 
-# 2. Install Node.js dependencies
+# 1. Clone the repository
+```bash
+git clone [https://github.com/pbkk-c/fe-be-pbkk.git]
+cd fe-be-pbkk # Navigate to the repository directory
+```
+
+# 2. Create Virtual Environments
+```bash
+python -m venv venv
+
+venv\Scripts\activate
+
+pip install newspaper3k google-genai lxml_html_clean trafilatura playwright nest_asyncio python-dotenv flask
+python -m playwright install chromium
+```
+
+# 3. Install Node.js dependencies
+```bash
 npm install
 ```
 
@@ -51,8 +64,7 @@ Create a file named .env (or .env.local) in the root directory of the project an
 | `NEXT_PUBLIC_SUPABASE_URL` | `<Your Supabase Project URL>` | [Client] Public URL for client-side authentication. |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `<Your Supabase Anon Key>` | [Client] Public key for client-side authentication. |
 | `DATABASE_URL` | `postgresql://postgres...@<host>:6543/postgres` | [Server] Prisma connection string. Must use the port 6543 connection pooler. |
-| `ANALYSIS_SERVICE_URL` | `https://xoxonn-ai-news-analyzer-api.hf.space/analyze` | [Server] **CRITICAL:** The live, public URL of your Hugging Face API. |
-| `GEMINI_API_KEY` | `<Your_Gemini_Key>` | [Server] Required for local testing or debugging. |
+| `ANALYSIS_SERVICE_URL` | `https://xoxonn-ai-news-analyzer-api.hf.space/analyze` | [Server] The live, public URL of our Hugging Face API. |
 
 
 ### Step 3: Run the Application
