@@ -307,4 +307,4 @@ if __name__ == '__main__':
         
     print("✨ Starting Analysis API Service on http://127.0.0.1:5000/analyze")
     # Note: Use threaded=False in production for better stability or switch to Gunicorn/Waitress
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5050, debug=True)
