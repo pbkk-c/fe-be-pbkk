@@ -45,84 +45,80 @@ export default function PoliticsPage() {
       </div>
     );
 
-  const politicalNews = contents.filter(
-    (item) => item.type === "News" && item.topic === "Economy"
-  );
+  const politicalNews = contents.filter((item) => item.type === "News" && item.topic === "Economy");
 
   const featured = politicalNews[0];
   const latest = politicalNews.slice(1, 5);
   const moreNews = politicalNews.slice(5);
 
   return (
-     <>
-        <Navbar />
-       
-    <main className="px-6 md:px-16  pb-10 pt-20 bg-gradient-to-b from-orange-50 via-white to-orange-50 text-gray-900">
-      {/* === HERO FEATURED === */}
-      {featured ? (
-        <HeroCard
-          cards={politicalNews.slice(0, 10).map((item) => ({
-            href: `/news/${item.id}`,
-            category: item.topic ?? "Economy",
-            title: item.title ?? "",
-            description: item.raw_text?.slice(0, 120) ?? "",
-            image: item.url ?? "/placeholder.jpg",
-            facts: item.analyses?.[0]?.fact_percentage ?? 0,
-            opinion: item.analyses?.[0]?.opinion_percentage ?? 0,
-            hoax: item.analyses?.[0]?.hoax_percentage ?? 0,
-          }))}
-        />
-      ) : (
-        <p className="text-center text-gray-500">
-          Belum ada berita economy tersedia.
-        </p>
-      )}
+    <>
+      <Navbar />
 
-      {/* === LATEST NEWS === */}
-      {latest.length > 0 && (
-        <section className="mb-20 mt-14">
-          <h2 className="text-2xl font-bold mb-6 border-b-4 border-orange-500 inline-block pb-1 text-orange-700">
-            Berita Terbaru
-          </h2>
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {latest.map((item, i) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1, duration: 0.6 }}
-                viewport={{ once: true }}
-              >
-                <NewsTopicCard item={item} variant="grid" />
-              </motion.div>
-            ))}
-          </div>
-        </section>
-      )}
+      <main className="px-6 md:px-16  pb-10 pt-20 bg-gradient-to-b from-orange-50 via-white to-orange-50 text-gray-900">
+        {/* === HERO FEATURED === */}
+        {featured ? (
+          <HeroCard
+            cards={politicalNews.slice(0, 10).map((item) => ({
+              href: `/news/${item.id}`,
+              category: item.topic ?? "Economy",
+              title: item.title ?? "",
+              description: item.raw_text?.slice(0, 120) ?? "",
+              image: item.url ?? "/placeholder.jpg",
+              facts: item.analyses?.[0]?.fact_percentage ?? 0,
+              opinion: item.analyses?.[0]?.opinion_percentage ?? 0,
+              hoax: item.analyses?.[0]?.hoax_percentage ?? 0,
+            }))}
+          />
+        ) : (
+          <p className="text-center text-gray-500">Belum ada berita economy tersedia.</p>
+        )}
 
-      {/* === MORE NEWS === */}
-      {moreNews.length > 0 && (
-        <section className="pb-10">
-          <h2 className="text-2xl font-bold mb-6 border-b-4 border-orange-500 inline-block pb-1 text-orange-700">
-            Berita Lainnya
-          </h2>
-          <div className="flex flex-col gap-6">
-            {moreNews.map((item, i) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.05 }}
-                viewport={{ once: true }}
-              >
-                <NewsTopicCard item={item} variant="list" />
-              </motion.div>
-            ))}
-          </div>
-        </section>
-      )}
-    </main>
-     <Footer />
-        </>
+        {/* === LATEST NEWS === */}
+        {latest.length > 0 && (
+          <section className="mb-20 mt-14">
+            <h2 className="text-2xl font-bold mb-6 border-b-4 border-orange-500 inline-block pb-1 text-orange-700">
+              Berita Terbaru
+            </h2>
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {latest.map((item, i) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1, duration: 0.6 }}
+                  viewport={{ once: true }}
+                >
+                  <NewsTopicCard item={item} variant="grid" />
+                </motion.div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* === MORE NEWS === */}
+        {moreNews.length > 0 && (
+          <section className="pb-10">
+            <h2 className="text-2xl font-bold mb-6 border-b-4 border-orange-500 inline-block pb-1 text-orange-700">
+              Berita Lainnya
+            </h2>
+            <div className="flex flex-col gap-6">
+              {moreNews.map((item, i) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  viewport={{ once: true }}
+                >
+                  <NewsTopicCard item={item} variant="list" />
+                </motion.div>
+              ))}
+            </div>
+          </section>
+        )}
+      </main>
+      <Footer />
+    </>
   );
 }

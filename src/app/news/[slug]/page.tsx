@@ -88,72 +88,71 @@ export default function NewsDetailPage() {
     hoax_percentage: 0,
   };
 
-  const imageUrl =
-    content.url || "/img/home/news-1.png";
+  const imageUrl = content.url || "/img/home/news-1.png";
 
   return (
     <>
-    <Navbar />
+      <Navbar />
 
-    <main className="max-w-3xl mx-auto px-4 py-8">
-      {/* Topic + Author + Date */}
-      <p className="text-sm text-amber-600 font-medium">{content.topic}</p>
-      <h1 className="mt-2 text-3xl font-bold">{content.title}</h1>
-      <p className="text-sm text-gray-500">
-        {content.creator_name || "Unknown"} •{" "}
-        {new Date(content.published_at || "").toLocaleDateString("id-ID", {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        })}
-      </p>
+      <main className="max-w-3xl mx-auto px-4 py-8">
+        {/* Topic + Author + Date */}
+        <p className="text-sm text-amber-600 font-medium">{content.topic}</p>
+        <h1 className="mt-2 text-3xl font-bold">{content.title}</h1>
+        <p className="text-sm text-gray-500">
+          {content.creator_name || "Unknown"} •{" "}
+          {new Date(content.published_at || "").toLocaleDateString("id-ID", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          })}
+        </p>
 
-      {/* Hero Image */}
-      <div className="relative w-full h-80 my-6 rounded-lg overflow-hidden">
-        <Image src={imageUrl} alt={content.title || ""} fill className="object-cover" />
-      </div>
-
-      {/* Analisis bar */}
-      <div className="w-full bg-gray-300 h-5 mt-4 rounded-md overflow-hidden flex">
-        <div
-          className="bg-blue-800 h-full text-[10px] font-semibold flex items-center justify-center text-white"
-          style={{ width: `${analysis.fact_percentage}%` }}
-        >
-          {analysis.fact_percentage > 5 && `Facts ${analysis.fact_percentage}%`}
+        {/* Hero Image */}
+        <div className="relative w-full h-80 my-6 rounded-lg overflow-hidden">
+          <Image src={imageUrl} alt={content.title || ""} fill className="object-cover" />
         </div>
-        <div
-          className="bg-gray-500 h-full text-[10px] font-semibold flex items-center justify-center text-white"
-          style={{ width: `${analysis.opinion_percentage}%` }}
-        >
-          {analysis.opinion_percentage > 5 && `Opinion ${analysis.opinion_percentage}%`}
-        </div>
-        <div
-          className="bg-red-800 h-full text-[10px] font-semibold flex items-center justify-center text-white"
-          style={{ width: `${analysis.hoax_percentage}%` }}
-        >
-          {analysis.hoax_percentage > 5 && `Hoax ${analysis.hoax_percentage}%`}
-        </div>
-      </div>
-      {/* Article Text */}
-      <article className="prose max-w-none text-gray-800">
-        {content.content_media.length > 0 ? (
-          content.content_media
-            .filter((m) => m.text)
-            .map((m) => (
-              <p key={m.id} className="mb-4">
-                {m.text}
-              </p>
-            ))
-        ) : (
-          <p>{content.raw_text}</p>
-        )}
-      </article>
 
-      {/* === HIDE DULU === */}
-      {/* <SocialActions />
+        {/* Analisis bar */}
+        <div className="w-full bg-gray-300 h-5 mt-4 rounded-md overflow-hidden flex">
+          <div
+            className="bg-blue-800 h-full text-[10px] font-semibold flex items-center justify-center text-white"
+            style={{ width: `${analysis.fact_percentage}%` }}
+          >
+            {analysis.fact_percentage > 5 && `Facts ${analysis.fact_percentage}%`}
+          </div>
+          <div
+            className="bg-gray-500 h-full text-[10px] font-semibold flex items-center justify-center text-white"
+            style={{ width: `${analysis.opinion_percentage}%` }}
+          >
+            {analysis.opinion_percentage > 5 && `Opinion ${analysis.opinion_percentage}%`}
+          </div>
+          <div
+            className="bg-red-800 h-full text-[10px] font-semibold flex items-center justify-center text-white"
+            style={{ width: `${analysis.hoax_percentage}%` }}
+          >
+            {analysis.hoax_percentage > 5 && `Hoax ${analysis.hoax_percentage}%`}
+          </div>
+        </div>
+        {/* Article Text */}
+        <article className="prose max-w-none text-gray-800">
+          {content.content_media.length > 0 ? (
+            content.content_media
+              .filter((m) => m.text)
+              .map((m) => (
+                <p key={m.id} className="mb-4">
+                  {m.text}
+                </p>
+              ))
+          ) : (
+            <p>{content.raw_text}</p>
+          )}
+        </article>
+
+        {/* === HIDE DULU === */}
+        {/* <SocialActions />
       <CommentSection /> */}
-    </main>
-        <Footer />
+      </main>
+      <Footer />
     </>
   );
 }
