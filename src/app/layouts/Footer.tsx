@@ -10,7 +10,7 @@ const categories = [
 
 export default function Footer() {
   return (
-    <footer className="mt-16 border-t border-gray-800 bg-[#0b0c10] text-gray-300">
+    <footer className="border-t border-gray-800 bg-[#0b0c10] text-gray-300">
       <div className="mx-auto max-w-7xl px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {/* Logo + Deskripsi */}
         <div>

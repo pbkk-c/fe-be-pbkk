@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import Navbar from "../layouts/Navbar";
 import Footer from "../layouts/Footer";
+import { motion, AnimatePresence } from "framer-motion";
+import { Loader2 } from "lucide-react";
 
 interface User {
   id: string;
@@ -187,126 +189,121 @@ export default function AnalyzePage() {
   return (
     <>
       <Navbar />
-
-      <main className="flex min-h-screen w-full flex-col items-center justify-center pb-40 pt-20">
-        <div className="w-72 md:w-full max-w-3xl xl:max-w-5xl text-center space-y-4">
-          <h1 className="text-4xl font-extrabold tracking-tight md:text-6xl xl:text-8xl">
-            Fact, Hoax, Opinion Checker
+      <main className="min-h-screen bg-gradient-to-b from-black via-zinc-900 to-black text-white flex flex-col items-center justify-center pt-28 pb-40 px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-3xl w-full text-center"
+        >
+          <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-amber-400 to-orange-600 bg-clip-text text-transparent drop-shadow-sm mb-6">
+            Fact, Hoax & Opinion Analyzer
           </h1>
+          <p className="text-gray-300 mb-8">
+            Masukkan URL berita untuk memeriksa sejauh mana artikel tersebut mengandung fakta,
+            opini, atau hoaks menggunakan AI.
+          </p>
 
-          <input
-            type="text"
-            placeholder="Masukkan URL berita..."
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            className="w-full border border-gray-300 rounded-md px-3 py-2"
-          />
-
-          {/* <button
-            onClick={handleAnalyze}
-            disabled={loading}
-            className="bg-black w-full text-white px-4 py-2 rounded-md hover:bg-gray-800 disabled:opacity-60"
-          >
-            {loading ? "Menganalisis..." : "Analisis"}
-          </button> */}
-
-          <div className="w-full space-y-2">
+          <div className="flex flex-col md:flex-row items-center gap-3">
+            <input
+              type="text"
+              placeholder="Contoh: https://www.example.com/berita"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              className="flex-1 px-4 py-3 rounded-xl border border-gray-700 bg-zinc-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-500 placeholder-gray-500"
+            />
             <button
               onClick={handleAnalyze}
               disabled={loading}
-              className={`w-full px-4 py-2 rounded-md text-white flex items-center justify-center gap-2 transition-all duration-200 ${
-                loading ? "bg-gray-700 cursor-not-allowed" : "bg-black hover:bg-gray-800"
+              className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-md ${
+                loading
+                  ? "bg-gray-700 text-gray-300 cursor-not-allowed"
+                  : "bg-amber-500 hover:bg-amber-400 text-black"
               }`}
             >
               {loading ? (
-                <>
-                  <svg
-                    className="animate-spin h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                    ></path>
-                  </svg>
-                  Menganalisis...
-                </>
+                <div className="flex items-center gap-2">
+                  <Loader2 className="animate-spin w-5 h-5" /> Menganalisis...
+                </div>
               ) : (
-                "Analisis"
+                "Analisis Sekarang"
               )}
             </button>
-
-            {/* ✅ Loading bar di bawah tombol */}
-            {/* {loading && (
-    <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
-      <div className="h-full bg-black animate-loading-bar"></div>
-    </div>
-  )} */}
-
-            {loading && (
-              <div className="w-full mt-3">
-                <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-black transition-all duration-300"
-                    style={{ width: `${progress}%` }}
-                  ></div>
-                </div>
-                <div className="flex justify-between text-sm text-gray-600 mt-1">
-                  <span>{progressDesc}</span>
-                  <span>{progress}%</span>
-                </div>
-              </div>
-            )}
           </div>
+          {loading && (
+            <div className="mt-6 text-left w-full">
+              <div className="w-full bg-gray-700 h-3 rounded-full overflow-hidden shadow-inner">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                  transition={{ ease: "easeOut", duration: 0.5 }}
+                  className="h-full bg-gradient-to-r from-amber-400 to-orange-600"
+                />
+              </div>
+              <div className="flex justify-between mt-2 text-sm text-gray-400">
+                <span>{progressDesc}</span>
+                <span>{progress.toFixed(0)}%</span>
+              </div>
+            </div>
+          )}
+          <AnimatePresence>
+            {result && (
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="mt-10 bg-zinc-900/80 backdrop-blur-md rounded-2xl p-8 border border-zinc-700 text-left shadow-lg"
+              >
+                <h2 className="text-2xl font-bold text-amber-400 mb-3">Hasil Analisis</h2>
+                <p className="text-gray-300 leading-relaxed mb-6">{result.summary_statement}</p>
 
-          {/* HASIL ANALISIS */}
-          {result && (
-            <div className="mt-6 bg-white border p-6 rounded-lg shadow-sm text-left space-y-6">
-              <h2 className="text-2xl font-bold mb-2">Hasil Analisis</h2>
-
-              <p className="text-gray-700 whitespace-pre-wrap">{result.summary_statement}</p>
-
-              {result.analysis && (
-                <div className="space-y-6 mt-4">
-                  {Object.entries(result.analysis).map(([key, section]) => (
-                    <div key={key} className="border-t pt-4">
-                      <h3 className="text-xl font-semibold mb-2">{key}</h3>
-                      <p className="text-gray-700">
-                        <strong>Persentase:</strong> {section.percentage}%
-                      </p>
-                      <p className="text-gray-700 mt-2">
-                        <strong>Alasan:</strong> {section.reason}
-                      </p>
-                      {section.supporting_factors.length > 0 && (
-                        <div className="mt-2">
-                          <strong>Faktor Pendukung:</strong>
-                          <ul className="list-disc list-inside text-gray-700 mt-1">
+                {result.analysis && (
+                  <div className="space-y-6">
+                    {Object.entries(result.analysis).map(([key, section]) => (
+                      <div key={key}>
+                        <h3 className="text-lg font-semibold text-white mb-2">{key}</h3>
+                        <div className="w-full bg-gray-800 h-4 rounded-full overflow-hidden flex">
+                          {key === "Facts" && (
+                            <div
+                              className="bg-blue-600 h-full text-xs flex items-center justify-center text-white"
+                              style={{ width: `${section.percentage}%` }}
+                            >
+                              {section.percentage > 10 && `${section.percentage}%`}
+                            </div>
+                          )}
+                          {key === "Opinion" && (
+                            <div
+                              className="bg-yellow-500 h-full text-xs flex items-center justify-center text-black"
+                              style={{ width: `${section.percentage}%` }}
+                            >
+                              {section.percentage > 10 && `${section.percentage}%`}
+                            </div>
+                          )}
+                          {key === "Hoax" && (
+                            <div
+                              className="bg-red-600 h-full text-xs flex items-center justify-center text-white"
+                              style={{ width: `${section.percentage}%` }}
+                            >
+                              {section.percentage > 10 && `${section.percentage}%`}
+                            </div>
+                          )}
+                        </div>
+                        <p className="mt-2 text-gray-400 text-sm">{section.reason}</p>
+                        {section.supporting_factors.length > 0 && (
+                          <ul className="list-disc list-inside text-gray-400 text-sm mt-2 space-y-1">
                             {section.supporting_factors.map((f, i) => (
                               <li key={i}>{f}</li>
                             ))}
                           </ul>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
       </main>
-
       <Footer />
     </>
   );
