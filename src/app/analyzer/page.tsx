@@ -37,29 +37,6 @@ export default function AnalyzePage() {
   const [user, setUser] = useState<User | null>(null);
   const [progress, setProgress] = useState(0);
   const [progressDesc, setProgressDesc] = useState("");
-  const [GRADIO_BASE_URL, setGradioUrl] = useState<string | null>(null);
-
-  // const GRADIO_BASE_URL =
-  // "https://069d93420c693e575d.gradio.live/gradio_api/queue";
-
-  // 🔗 Fetch link Gradio dari backend
-  useEffect(() => {
-    const fetchGradioLink = async () => {
-      try {
-        const res = await fetch("/api/gardio");
-        const data = await res.json();
-        if (data.data.url) {
-          setGradioUrl(data.data.url);
-          console.log("✅ Gradio link loaded:", data.data.url);
-        } else {
-          console.error("❌ Tidak ada Gradio link aktif");
-        }
-      } catch (err) {
-        console.error("Gagal mengambil link Gradio:", err);
-      }
-    };
-    fetchGradioLink();
-  }, []);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -84,105 +61,77 @@ export default function AnalyzePage() {
     fetchUser();
   }, []);
 
-  const handleAnalyze = async () => {
+const handleAnalyze = async () => {
+    if (!url.trim()) return alert("Masukkan URL berita!");
+
     setLoading(true);
     setResult(null);
     setLogs([]);
-
-    const sessionHash = Math.random().toString(36).substring(2, 12);
-
-    // TO DO CHANGE:
+    setProgress(0); 
+    setProgressDesc("⏳ Starting analysis...");
+    
     try {
-      const joinRes = await fetch(`${GRADIO_BASE_URL}gradio_api/queue/join`, {
+      setProgress(5);
+      setProgressDesc("🧠 Sending URL to local API...");
+
+      // 🚀 Step 1: Call the local API Route
+      const res = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          data: [url],
-          fn_index: 0,
-          session_hash: sessionHash,
-        }),
+        body: JSON.stringify({ url }),
       });
 
-      const joinData = await joinRes.json();
-      console.log("Join:", joinData);
-      setLogs((prev) => [...prev, "Connected to Gradio queue..."]);
+      setProgress(20);
+      setProgressDesc("📡 Waiting for Python/Gemini process to finish...");
 
-      // TO DO CHANGE:
-      const source = new EventSource(
-        `${GRADIO_BASE_URL}gradio_api/queue/data?session_hash=${sessionHash}`
-      );
+      if (!res.ok) {
+        // If the API route returns an error status (4xx or 5xx)
+        const errorData = await res.json();
+        setLogs((prev) => [...prev, `❌ Server Error: ${errorData.error || res.statusText}`]);
+        throw new Error(errorData.error || "Gagal menghubungi server analisis.");
+      }
 
-      source.onmessage = async (event) => {
-        const message = event.data;
-        console.log("Event:", message);
-        setLogs((prev) => [...prev, message]);
+      // Step 2: Process the successful response (contains the saved DB object)
+      const response = await res.json();
+      const localData: { success: boolean; data: LocalAnalysisData } = response;
 
-        try {
-          const parsed = JSON.parse(message.replace(/^data:\s*/, ""));
+      setProgress(90);
+      setProgressDesc("✅ Analysis complete. Formatting results...");
 
-          // Saat proses dimulai
-          if (parsed.msg === "process_starts") {
-            setProgress(0);
-            setProgressDesc("Menyiapkan analisis...");
+      if (localData.success && localData.data) {
+        // We now extract the full analysis object (raw_analysis_json) 
+        // which contains the Facts/Opinion/Hoax breakdown.
+        const analysisDataFromDB = localData.data.raw_analysis_json || {
+          summary_statement: localData.data.summary,
+          analysis: {
+            Facts: { percentage: localData.data.fact_percentage, reason: "Data from DB summary.", supporting_factors: [] },
+            Opinion: { percentage: localData.data.opinion_percentage, reason: "Data from DB summary.", supporting_factors: [] },
+            Hoax: { percentage: localData.data.hoax_percentage, reason: "Data from DB summary.", supporting_factors: [] },
           }
+        };
+        
+        // Use the detailed analysis for the UI display
+        setResult(analysisDataFromDB);
+        setLogs((prev) => [...prev, `✅ Success! Saved to DB.`]);
 
-          // Saat progress berjalan
-          if (parsed.msg === "progress" && Array.isArray(parsed.progress_data)) {
-            const progressInfo = parsed.progress_data[0];
-            if (progressInfo) {
-              const pct = progressInfo.progress * 100;
-              setProgress(Math.floor(pct));
-              setProgressDesc(progressInfo.desc || "Memproses...");
-            }
-          }
-
-          // Saat proses selesai
-          if (parsed.msg === "process_completed") {
-            setProgress(100);
-            setProgressDesc("Selesai 🎉");
-
-            const outputs = parsed.output?.data;
-            if (Array.isArray(outputs)) {
-              const jsonText = outputs.find((item: string) => item.includes("```json"));
-              if (jsonText) {
-                const jsonMatch = jsonText.match(/```json\n([\s\S]*?)\n```/);
-                if (jsonMatch) {
-                  const jsonData: AnalysisData = JSON.parse(jsonMatch[1]);
-                  setResult(jsonData);
-
-                  await fetch("/api/save-analysis", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                      url,
-                      summary: jsonData.summary_statement,
-                      userId: user?.id || null,
-                    }),
-                  });
-                }
-              }
-            }
-
-            setLoading(false);
-            source.close();
-          }
-        } catch (e) {
-          console.error("Parse error:", e);
-        }
-      };
-
-      source.onerror = (err) => {
-        console.error("Stream error:", err);
-        setLogs((prev) => [...prev, "❌ Error connecting to stream"]);
-        source.close();
-        setLoading(false);
-      };
-    } catch (err) {
-      console.error(err);
-      setLogs((prev) => [...prev, "❌ Failed to connect"]);
+      } else {
+        throw new Error("Invalid response format from /api/analyze.");
+      }
+      
+    } catch (err: any) {
+      console.error("Analysis Error:", err);
+      setLogs((prev) => [...prev, `❌ Failed: ${err.message}`]);
+      alert(`❌ Error: ${err.message || "Unknown error during analysis."}`);
+      setProgress(0); // Reset progress on failure
+    } finally {
+      setProgress(100);
+      setProgressDesc("Done!");
       setLoading(false);
     }
   };
+
+
+  // --- UI RENDER (Kept as is, but now using the local analysis result) ---
 
   return (
     <>
@@ -201,14 +150,6 @@ export default function AnalyzePage() {
             onChange={(e) => setUrl(e.target.value)}
             className="w-full border border-gray-300 rounded-md px-3 py-2"
           />
-
-          {/* <button
-            onClick={handleAnalyze}
-            disabled={loading}
-            className="bg-black w-full text-white px-4 py-2 rounded-md hover:bg-gray-800 disabled:opacity-60"
-          >
-            {loading ? "Menganalisis..." : "Analisis"}
-          </button> */}
 
           <div className="w-full space-y-2">
             <button
@@ -246,13 +187,6 @@ export default function AnalyzePage() {
                 "Analisis"
               )}
             </button>
-
-            {/* ✅ Loading bar di bawah tombol */}
-            {/* {loading && (
-    <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
-      <div className="h-full bg-black animate-loading-bar"></div>
-    </div>
-  )} */}
 
             {loading && (
               <div className="w-full mt-3">
