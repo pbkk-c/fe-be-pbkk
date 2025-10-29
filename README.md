@@ -48,7 +48,7 @@ Ensure you have created a **`.env`** file in the project root containing all req
 
 ---
 
-## Core Technologies
+## Tech Stack
 
 * **Frontend:** [Next.js](https://nextjs.org/) (App Router)
 * **Database:** [Supabase](https://supabase.com/) (PostgreSQL)
