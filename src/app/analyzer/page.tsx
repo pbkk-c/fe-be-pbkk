@@ -25,6 +25,17 @@ interface AnalysisData {
   summary_statement?: string;
 }
 
+interface LocalAnalysisData {
+  summary: string;
+  fact_percentage: number;
+  opinion_percentage: number;
+  hoax_percentage: number;
+  main_theme: string;
+  sentiment: string;
+  // This field holds the complete AnalysisData object returned by the Python service
+  raw_analysis_json?: AnalysisData; 
+}
+
 interface SectionData {
   percentage: number;
   reason: string;
