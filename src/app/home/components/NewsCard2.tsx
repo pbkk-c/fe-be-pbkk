@@ -30,7 +30,7 @@ export default function NewsCard2({ title, image, facts, opinion, hoax }: NewsCa
             title={`Facts: ${facts}%`}
           />
           <div
-            className="bg-yellow-500 h-full"
+            className="bg-gray-500 h-full"
             style={{ width: `${opinion}%` }}
             title={`Opinion: ${opinion}%`}
           />
@@ -45,7 +45,7 @@ export default function NewsCard2({ title, image, facts, opinion, hoax }: NewsCa
         <div className="flex justify-between text-[10px] sm:text-[11px] md:text-xs lg:text-[9px] xl:text-xs text-gray-700 mt-1 w-full md:w-[400px] lg:w-[200px] xl:w-[350px]">
           <div className="flex items-center gap-1">
             <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-blue-800 inline-block rounded-sm"></span>
-            <span>Facts: {facts}%</span>
+            <span>{facts > 10 && `Facts ${facts}%`}</span>
           </div>
           <div className="flex items-center gap-1">
             <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-gray-500 inline-block rounded-sm"></span>
