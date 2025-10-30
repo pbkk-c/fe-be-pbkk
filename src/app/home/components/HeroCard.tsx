@@ -84,19 +84,19 @@ export default function HeroCard({ cards, interval = 5000 }: HeroCardProps) {
                   className="bg-blue-700 h-full flex items-center justify-center text-[13px] md:text-[14px] font-semibold"
                   style={{ width: `${current.facts}%` }}
                 >
-                  {current.facts > 10 && `Facts ${current.facts}%`}
+                  {current.facts > 10 ? <span>Facts {current.facts}%</span> : current.facts > 3 ? <span>{current.facts}%</span> : null}
                 </div>
                 <div
-                  className="bg-yellow-500 h-full flex items-center justify-center text-[13px] md:text-[14px] font-semibold"
+                  className="bg-gray-500 h-full flex items-center justify-center text-[13px] md:text-[14px] font-semibold"
                   style={{ width: `${current.opinion}%` }}
                 >
-                  {current.opinion > 10 && `Opinion ${current.opinion}%`}
+                  {current.opinion > 10 ? <span>Opinion {current.opinion}%</span> : current.opinion > 3 ? <span>{current.opinion}%</span> : null}
                 </div>
                 <div
                   className="bg-red-700 h-full flex items-center justify-center text-[13px] md:text-[14px] font-semibold"
                   style={{ width: `${current.hoax}%` }}
                 >
-                  {current.hoax > 10 && `Hoax ${current.hoax}%`}
+                  {current.hoax > 10 ? <span>Hoax {current.hoax}%</span> : current.hoax > 3 ? <span>{current.hoax}%</span> : null}
                 </div>
               </div>
 

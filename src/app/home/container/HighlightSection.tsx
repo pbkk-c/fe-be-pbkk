@@ -126,7 +126,7 @@ export default function HighlightSection() {
                 {hoax > 5 && <span>Hoax {hoax}%</span>}
               </div>
               <div
-                className="bg-yellow-500 h-full flex items-center justify-center text-[10px] sm:text-xs font-semibold transition-all duration-700 ease-out"
+                className="bg-gray-500 h-full flex items-center justify-center text-[10px] sm:text-xs font-semibold transition-all duration-700 ease-out"
                 style={{ width: `${opinion}%` }}
               >
                 {opinion > 5 && <span>Opinion {opinion}%</span>}

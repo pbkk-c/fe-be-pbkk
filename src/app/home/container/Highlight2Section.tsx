@@ -72,19 +72,19 @@ export default function Highlight2Section() {
         {/* Bar persentase */}
         <div className="flex items-center justify-center md:justify-start w-full sm:w-3/4 bg-gray-200 rounded-md overflow-hidden h-8 text-xs sm:text-sm font-semibold mb-5">
           <div
-            className="bg-gray-600 h-full flex items-center justify-center text-white transition-all duration-700 ease-out"
+            className="bg-blue-700 h-full flex items-center justify-center text-white transition-all duration-700 ease-out"
             style={{ width: `${facts}%` }}
           >
             {facts > 3 && <span>Facts {facts}%</span>}
           </div>
           <div
-            className="bg-red-600 h-full flex items-center justify-center text-white transition-all duration-700 ease-out"
+            className="bg-red-700 h-full flex items-center justify-center text-white transition-all duration-700 ease-out"
             style={{ width: `${hoax}%` }}
           >
             {hoax > 3 && <span>Hoax {hoax}%</span>}
           </div>
           <div
-            className="bg-blue-700 h-full flex items-center justify-center text-white transition-all duration-700 ease-out"
+            className="bg-gray-500 h-full flex items-center justify-center text-white transition-all duration-700 ease-out"
             style={{ width: `${opinion}%` }}
           >
             {opinion > 3 && <span>Opinion {opinion}%</span>}
