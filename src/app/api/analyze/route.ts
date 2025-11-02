@@ -14,7 +14,7 @@ interface AnalysisResultData {
 
 export async function POST(req: Request) {
   try {
-    const { url } = await req.json();
+    const { url, language } = await req.json();
     if (!url) {
       return NextResponse.json({ error: "Missing URL" }, { status: 400 });
     }
@@ -31,7 +31,10 @@ export async function POST(req: Request) {
     const response = await fetch(serviceUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: url }) // Use the user's input URL
+        body: JSON.stringify({ 
+            url: url,
+            language: language || 'ID'
+        }) // Use the user's input URL
     });
 
     // 🛑 CRITICAL CHECK: If the service returns HTML, catch it here.
