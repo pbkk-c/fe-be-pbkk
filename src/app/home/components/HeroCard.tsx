@@ -74,35 +74,46 @@ export default function HeroCard({ cards, interval = 5000 }: HeroCardProps) {
               </span>
 
               {/* Judul */}
-              <h2 className="text-2xl md:text-4xl font-bold leading-snug drop-shadow-lg md:w-3/4 transition-all duration-300 group-hover:text-amber-400">
+              <h2 className="text-xl md:text-4xl font-bold leading-snug drop-shadow-lg md:w-3/4 transition-all duration-300 group-hover:text-amber-400 line-clamp-3">
                 {current.title}
               </h2>
 
               {/* Bar Fakta / Opini / Hoax */}
               <div className="w-full md:w-3/4 bg-gray-200 h-4 rounded-full overflow-hidden mt-5 flex shadow-inner">
                 <div
-                  className="bg-blue-700 h-full flex items-center justify-center text-[13px] md:text-[14px] font-semibold"
+                  className="bg-blue-700 h-full flex items-center justify-center text-[10px] md:text-[14px] font-semibold"
                   style={{ width: `${current.facts}%` }}
                 >
-                  {current.facts > 10 ? <span>Facts {current.facts}%</span> : current.facts > 3 ? <span>{current.facts}%</span> : null}
+                  {current.facts > 20 ? <span>Facts {current.facts}%</span> : current.facts >= 5 ? <span>{current.facts}%</span> : null}
                 </div>
                 <div
-                  className="bg-gray-500 h-full flex items-center justify-center text-[13px] md:text-[14px] font-semibold"
+                  className="bg-gray-500 h-full flex items-center justify-center text-[10px] md:text-[14px] font-semibold"
                   style={{ width: `${current.opinion}%` }}
                 >
-                  {current.opinion > 10 ? <span>Opinion {current.opinion}%</span> : current.opinion > 3 ? <span>{current.opinion}%</span> : null}
+                  {current.opinion >= 25 ? <span>Opinion {current.opinion}%</span> : current.opinion >= 5 ? <span>{current.opinion}%</span> : null}
                 </div>
                 <div
-                  className="bg-red-700 h-full flex items-center justify-center text-[13px] md:text-[14px] font-semibold"
+                  className="bg-red-700 h-full flex items-center justify-center text-[10px] md:text-[14px] font-semibold"
                   style={{ width: `${current.hoax}%` }}
                 >
-                  {current.hoax > 10 ? <span>Hoax {current.hoax}%</span> : current.hoax > 3 ? <span>{current.hoax}%</span> : null}
+                  {current.hoax > 15 ? <span>Hoax {current.hoax}%</span> : current.hoax >= 5 ? <span>{current.hoax}%</span> : null}
                 </div>
               </div>
 
               {/* Deskripsi */}
-              <p className="text-gray-300 mt-3 md:w-3/4 text-sm md:text-base line-clamp-3 bg-black/30 backdrop-blur-sm p-3 rounded-lg shadow-sm">
-                {current.description}
+              <p className="text-gray-300 mt-3 md:w-3/4 text-sm md:text-base bg-black/30 backdrop-blur-sm p-3 rounded-lg shadow-sm">
+                <span className="md:hidden">
+                  {current.description.length >= 80
+                    ? current.description.slice(0, 80) + '...'
+                    : current.description ?? ''
+                  }
+                </span>
+                <span className="hidden md:inline">
+                  {current.description.length >= 150
+                    ? current.description.slice(0, 150) + '...'
+                    : current.description ?? ''
+                  }
+                </span>
               </p>
             </div>
           </motion.div>

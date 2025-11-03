@@ -75,13 +75,13 @@ export default function HighlightSection() {
   }
 
   return (
-    <section ref={ref} className="relative min-h-screen bg-black w-full overflow-hidden shadow-xl">
+    <section ref={ref} className="relative min-h-[800px] md:min-h-screen bg-black w-full overflow-hidden shadow-xl">
       <UnstyledLink
         href={`/news/${content.id}`}
-        className="group relative block h-full w-full transition-transform duration-700 hover:scale-[1.01]"
+        className="group relative block h-[800px] md:h-full w-full transition-transform duration-700 hover:scale-[1.01]"
       >
         {/* Background image */}
-        <div className="relative h-screen w-full">
+        <div className="relative h-[800px] md:h-screen w-full">
           <Image
             src={content.url || "/img/home/news-1.png"}
             alt={content.title || "Highlight news"}
@@ -117,19 +117,19 @@ export default function HighlightSection() {
                 className="bg-blue-700 h-full flex items-center justify-center text-[10px] sm:text-xs font-semibold transition-all duration-700 ease-out"
                 style={{ width: `${facts}%` }}
               >
-                {facts > 5 && <span>Facts {facts}%</span>}
+                {facts >= 10 ? <span>Facts {facts}%</span> : facts > 4 ? <span>{facts}%</span>:null}
               </div>
               <div
                 className="bg-red-700 h-full flex items-center justify-center text-[10px] sm:text-xs font-semibold transition-all duration-700 ease-out"
                 style={{ width: `${hoax}%` }}
               >
-                {hoax > 5 && <span>Hoax {hoax}%</span>}
+                {hoax > 8 ? <span>Hoax {hoax}%</span> : hoax > 4 ? <span>{hoax}%</span>:null}
               </div>
               <div
                 className="bg-gray-500 h-full flex items-center justify-center text-[10px] sm:text-xs font-semibold transition-all duration-700 ease-out"
                 style={{ width: `${opinion}%` }}
               >
-                {opinion > 5 && <span>Opinion {opinion}%</span>}
+                {opinion >= 25 ? <span>Opinion {opinion}%</span> : opinion > 5 ? <span>{opinion}%</span>:null}
               </div>
             </div>
 

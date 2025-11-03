@@ -51,7 +51,7 @@ export default function NewsCard({
         )}
         <h3
           className={clsx(
-            "font-bold leading-snug group-hover:text-[#D97706]",
+            "font-bold leading-snug group-hover:text-[#D97706] line-clamp-3",
             variant === "big" && "text-2xl",
             variant === "medium" && "text-lg",
             variant === "small" && "text-base",
