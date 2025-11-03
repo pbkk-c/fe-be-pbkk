@@ -180,8 +180,8 @@ export default function AnalyzePage() {
               onChange={(e) => setOutputLang(e.target.value as "ID" | "EN")}
               className="w-full md:w-60 border border-gray-600 bg-zinc-800 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
             >
-              <option value="ID">Output: Bahasa Indonesia</option>
-              <option value="EN">Output: English</option>
+              <option value="ID">Indonesia</option>
+              <option value="EN">English</option>
             </select>
 
             <input
