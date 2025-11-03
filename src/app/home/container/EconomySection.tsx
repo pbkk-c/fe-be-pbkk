@@ -102,7 +102,7 @@ export default function EconomySection() {
 
   return (
     <div className="flex flex-col lg:flex-row lg:items-center">
-      <div className="flex w-full md:w-2/5 flex-col gap-4">
+      <div className="flex w-full lg:w-2/5 flex-col gap-4">
         <h1 className="text-2xl font-extrabold">Economy</h1>
 
         <div className="relative flex-grow">

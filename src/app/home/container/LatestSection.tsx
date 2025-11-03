@@ -10,7 +10,7 @@ export default function LatestSection() {
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const itemsPerPage = 20;
+  const itemsPerPage = 24;
 
   useEffect(() => {
     const fetchContents = async () => {
@@ -47,14 +47,14 @@ export default function LatestSection() {
   return (
     <section className="lg:col-span-3 px-16 py-12 bg-[#FFFDF9]">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="font-extrabold text-3xl text-[#1F2937]">Latest News</h2>
+        <h2 className="font-extrabold text-2xl md:text-3xl text-[#1F2937]">Latest News</h2>
         <span className="text-sm text-gray-500">
           Showing {startIndex + 1} - {Math.min(startIndex + itemsPerPage, contents.length)} of{" "}
           {contents.length}
         </span>
       </div>
 
-      <div className="grid md:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {currentItems.map((item) => (
           <NewsCard
             key={item.id}

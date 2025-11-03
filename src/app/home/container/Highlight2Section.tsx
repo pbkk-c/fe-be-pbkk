@@ -37,7 +37,7 @@ export default function Highlight2Section() {
   return (
     <section
       ref={ref}
-      className="min-h-screen flex flex-col md:flex-row items-center justify-center px-6 sm:px-12 lg:px-24 py-10 gap-10"
+      className="min-h-[1000px] xl:min-h-screen flex flex-col md:flex-row items-center justify-center px-6 sm:px-12 lg:px-24 py-10 gap-10"
     >
       {/* Bagian kiri: gambar */}
       <UnstyledLink
@@ -70,24 +70,24 @@ export default function Highlight2Section() {
         </h1>
 
         {/* Bar persentase */}
-        <div className="flex items-center justify-center md:justify-start w-full sm:w-3/4 bg-gray-200 rounded-md overflow-hidden h-8 text-xs sm:text-sm font-semibold mb-5">
-          <div
-            className="bg-gray-600 h-full flex items-center justify-center text-white transition-all duration-700 ease-out"
-            style={{ width: `${facts}%` }}
-          >
-            {facts > 3 && <span>Facts {facts}%</span>}
-          </div>
-          <div
-            className="bg-red-600 h-full flex items-center justify-center text-white transition-all duration-700 ease-out"
-            style={{ width: `${hoax}%` }}
-          >
-            {hoax > 3 && <span>Hoax {hoax}%</span>}
-          </div>
+        <div className="flex items-center justify-center md:justify-start w-full sm:w-3/4 bg-gray-200 rounded-md overflow-hidden h-8 text-xs lg:text-sm font-semibold mb-5">
           <div
             className="bg-blue-700 h-full flex items-center justify-center text-white transition-all duration-700 ease-out"
+            style={{ width: `${facts}%` }}
+          >
+            {facts >= 30 ? <span>Facts {facts}%</span> : facts > 4 ? <span>{facts}%</span>:null}
+          </div>
+          <div
+            className="bg-red-700 h-full flex items-center justify-center text-white transition-all duration-700 ease-out"
+            style={{ width: `${hoax}%` }}
+          >
+            {hoax >= 20 ? <span>Hoax {hoax}%</span> : hoax > 4 ? <span>{hoax}%</span>:null}
+          </div>
+          <div
+            className="bg-gray-500 h-full flex items-center justify-center text-white transition-all duration-700 ease-out"
             style={{ width: `${opinion}%` }}
           >
-            {opinion > 3 && <span>Opinion {opinion}%</span>}
+            {opinion >= 40 ? <span>Opinion {opinion}%</span> : opinion > 4 ? <span>{opinion}%</span>:null}
           </div>
         </div>
 
