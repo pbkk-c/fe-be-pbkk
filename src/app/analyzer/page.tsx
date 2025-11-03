@@ -159,16 +159,17 @@ export default function AnalyzePage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-gradient-to-b from-black via-zinc-900 to-black text-white flex flex-col items-center justify-center pt-28 pb-40 px-4">
+      <main className="min-h-screen bg-gradient-to-b from-orange-100 via-white to-orange-50 text-zinc-800 flex flex-col items-center justify-center pt-28 pb-40 px-4">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           className="max-w-3xl w-full text-center"
         >
-          <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-amber-400 to-orange-600 bg-clip-text text-transparent drop-shadow-sm mb-6">
+          {/* <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-orange-500 to-amber-600 bg-clip-text text-transparent drop-shadow-sm mb-6">
             Fact, Hoax & Opinion Analyzer
-          </h1>
-          <p className="text-gray-300 mb-8">
+          </h1> */}
+          <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent drop-shadow-sm mb-6"> Fact, Hoax & Opinion Analyzer </h1>
+          <p className="text-zinc-600 mb-8">
             Masukkan URL berita untuk memeriksa sejauh mana artikel tersebut mengandung fakta,
             opini, atau hoaks menggunakan AI.
           </p>
@@ -178,7 +179,7 @@ export default function AnalyzePage() {
             <select
               value={outputLang}
               onChange={(e) => setOutputLang(e.target.value as "ID" | "EN")}
-              className="w-full md:w-60 border border-gray-600 bg-zinc-800 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="w-full md:w-60 border border-orange-300 bg-white rounded-md px-3 py-2 text-zinc-800 focus:outline-none focus:ring-2 focus:ring-orange-400"
             >
               <option value="ID">Indonesia</option>
               <option value="EN">English</option>
@@ -189,7 +190,7 @@ export default function AnalyzePage() {
               placeholder="Masukkan URL berita..."
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              className="flex-1 border border-gray-600 bg-zinc-800 rounded-md px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="flex-1 border border-orange-300 bg-white rounded-md px-3 py-2 text-zinc-800 focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
           </div>
 
@@ -200,8 +201,8 @@ export default function AnalyzePage() {
               disabled={loading}
               className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-md w-full ${
                 loading
-                  ? "bg-gray-700 text-gray-300 cursor-not-allowed"
-                  : "bg-amber-500 hover:bg-amber-400 text-black"
+                  ? "bg-orange-200 text-orange-700 cursor-not-allowed"
+                  : "bg-orange-500 hover:bg-orange-400 text-white"
               }`}
             >
               {loading ? (
@@ -215,13 +216,13 @@ export default function AnalyzePage() {
 
             {loading && (
               <div className="w-full mt-3">
-                <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-orange-200 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-amber-500 transition-all duration-300"
+                    className="h-full bg-orange-500 transition-all duration-300"
                     style={{ width: `${progress}%` }}
                   ></div>
                 </div>
-                <div className="flex justify-between text-sm text-gray-400 mt-1">
+                <div className="flex justify-between text-sm text-zinc-500 mt-1">
                   <span>{progressDesc}</span>
                 </div>
               </div>
@@ -236,21 +237,21 @@ export default function AnalyzePage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="mt-10 bg-zinc-900 border border-zinc-800 p-6 rounded-2xl shadow-xl text-left space-y-6"
+                className="mt-10 bg-white border border-orange-200 p-6 rounded-2xl shadow-lg text-left space-y-6"
               >
-                <h2 className="text-2xl font-bold text-amber-400 mb-4">
+                <h2 className="text-2xl font-bold text-orange-500 mb-4">
                   🧾 Hasil Analisis
                 </h2>
 
-                <p className="text-gray-300 whitespace-pre-wrap leading-relaxed">
+                <p className="text-zinc-700 whitespace-pre-wrap leading-relaxed">
                   {result.summary_statement}
                 </p>
 
                 {/* Bar Kombinasi */}
                 <div className="mt-6">
-                  <div className="w-full bg-zinc-800 h-6 rounded-full overflow-hidden flex">
+                  <div className="w-full bg-orange-100 h-6 rounded-full overflow-hidden flex">
                     <div
-                      className="bg-blue-600 h-full"
+                      className="bg-blue-500 h-full"
                       style={{ width: `${total.facts}%` }}
                       title={`Fakta ${total.facts}%`}
                     ></div>
@@ -260,15 +261,15 @@ export default function AnalyzePage() {
                       title={`Opini ${total.opinion}%`}
                     ></div>
                     <div
-                      className="bg-red-600 h-full"
+                      className="bg-red-500 h-full"
                       style={{ width: `${total.hoax}%` }}
                       title={`Hoaks ${total.hoax}%`}
                     ></div>
                   </div>
 
-                  <div className="flex justify-between mt-3 text-sm text-gray-400 font-medium">
+                  <div className="flex justify-between mt-3 text-sm text-zinc-600 font-medium">
                     <div className="flex items-center gap-2">
-                      <span className="inline-block w-3 h-3 rounded-full bg-blue-600"></span>
+                      <span className="inline-block w-3 h-3 rounded-full bg-blue-500"></span>
                       <span>Fakta: {total.facts}%</span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -276,7 +277,7 @@ export default function AnalyzePage() {
                       <span>Opini: {total.opinion}%</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="inline-block w-3 h-3 rounded-full bg-red-600"></span>
+                      <span className="inline-block w-3 h-3 rounded-full bg-red-500"></span>
                       <span>Hoaks: {total.hoax}%</span>
                     </div>
                   </div>
@@ -286,10 +287,10 @@ export default function AnalyzePage() {
                 <div className="mt-6 space-y-4">
                   {Object.entries(result.analysis ?? {}).map(([key, section]) => (
                     <div key={key}>
-                      <h3 className="text-lg font-semibold text-white mb-1">{key}</h3>
-                      <p className="text-gray-400 text-sm">{section.reason}</p>
+                      <h3 className="text-lg font-semibold text-orange-600 mb-1">{key}</h3>
+                      <p className="text-zinc-600 text-sm">{section.reason}</p>
                       {section.supporting_factors?.length > 0 && (
-                        <ul className="list-disc list-inside text-gray-500 text-sm mt-2 space-y-1">
+                        <ul className="list-disc list-inside text-zinc-500 text-sm mt-2 space-y-1">
                           {section.supporting_factors.map((f, i) => (
                             <li key={i}>{f}</li>
                           ))}
