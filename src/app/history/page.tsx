@@ -7,6 +7,8 @@ import Navbar from "../layouts/Navbar";
 import Footer from "../layouts/Footer";
 import { Loader2, Clock } from "lucide-react";
 import FloatingAIButton from "../home/components/FloatingButton";
+import LoadingScreen from "../components/LoadingScree";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 interface HistoryItem {
   id: string;
@@ -52,17 +54,14 @@ export default function HistoryPage() {
     fetchHistory();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-orange-100 to-orange-50">
-        <Loader2 className="animate-spin w-6 h-6 text-orange-500 mr-2" />
-        <p className="text-orange-600">Loading your analysis history...</p>
-      </div>
-    );
-  }
+   if (loading) {
+        return <LoadingScreen />;
+      }
 
   return (
     <>
+        <ProtectedRoute>
+    
       <Navbar />
 
       <main className="min-h-screen bg-gradient-to-b from-orange-100 via-white to-orange-50 pt-28 pb-40 px-4">
@@ -178,6 +177,7 @@ export default function HistoryPage() {
       <FloatingAIButton />
 
       <Footer />
+      </ProtectedRoute>
     </>
   );
 }

@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { Loader2, Search } from "lucide-react";
 import FloatingAIButton from "@/app/home/components/FloatingButton";
 import Link from "next/link";
+import LoadingScreen from "@/app/components/LoadingScree";
 
 interface HistoryDetail {
   id: string;
@@ -57,14 +58,9 @@ export default function HistoryDetailPage() {
   }, [id]);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-orange-100 via-white to-orange-50">
-        <div className="flex items-center gap-2 text-orange-600 font-medium">
-          <Loader2 className="animate-spin w-5 h-5" /> Loading detail...
-        </div>
-      </div>
-    );
-  }
+        return <LoadingScreen />;
+      }
+
 
   if (!detail) {
     return (

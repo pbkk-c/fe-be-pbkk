@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import SocialActions from "../components/SocialActions";
-import CommentSection from "../components/CommentAction";
 import { useParams } from "next/navigation";
 import Footer from "@/app/layouts/Footer";
 import Navbar from "@/app/layouts/Navbar";
 import FloatingAIButton from "@/app/home/components/FloatingButton";
+import LoadingScreen from "@/app/components/LoadingScree";
 
 interface Analysis {
   created_at: string;
@@ -69,12 +68,9 @@ export default function NewsDetailPage() {
     fetchContent();
   }, [id]);
 
-  if (loading)
-    return (
-      <main className="max-w-3xl mx-auto px-4 py-12 text-center text-gray-500">
-        Loading article...
-      </main>
-    );
+  if (loading) {
+        return <LoadingScreen />;
+      }
 
   if (!content)
     return (

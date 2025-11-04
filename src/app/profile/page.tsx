@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import FloatingAIButton from "../home/components/FloatingButton";
+import LoadingScreen from "../components/LoadingScree";
 
 interface User {
   id: string;
@@ -49,12 +50,9 @@ export default function ProfilePage() {
     fetchUser();
   }, []);
 
-  if (loading)
-    return (
-      <div className="flex items-center justify-center min-h-screen text-gray-600">
-        Loading profile...
-      </div>
-    );
+    if (loading) {
+      return <LoadingScreen />;
+    }
 
   if (!user) {
     route.push("/login");

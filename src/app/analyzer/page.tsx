@@ -81,7 +81,7 @@ export default function AnalyzePage() {
     setResult(null);
     setLogs([]);
     setProgress(0);
-    setProgressDesc("⏳ Memulai analisis...");
+    setProgressDesc("Memulai analisis...");
 
     // ✅ Ambil token di awal
     const token = localStorage.getItem("token");
@@ -89,7 +89,7 @@ export default function AnalyzePage() {
 
     try {
       setProgress(10);
-      setProgressDesc("🧠 Mengirim URL ke API lokal...");
+      setProgressDesc("Mengirim URL ke API...");
 
       const res = await fetch("/api/analyze", {
         method: "POST",
@@ -101,7 +101,7 @@ export default function AnalyzePage() {
       });
 
       setProgress(40);
-      setProgressDesc("📡 Menunggu hasil analisis dari AI...");
+      setProgressDesc("Menunggu hasil analisis dari AI...");
 
       console.log("📥 Response /api/analyze - Status:", res.status);
 
@@ -122,7 +122,7 @@ export default function AnalyzePage() {
       const localData: { success: boolean; data: LocalAnalysisData } = response;
 
       setProgress(85);
-      setProgressDesc("✅ Analisis selesai. Memformat hasil...");
+      setProgressDesc("Analisis selesai. Memformat hasil...");
 
       if (localData.success && localData.data) {
         const analysisDataFromDB = localData.data.raw_analysis_json || {
@@ -148,7 +148,7 @@ export default function AnalyzePage() {
 
         // 🧠 Simpan ke database melalui /api/saveanalyze
         setProgress(90);
-        setProgressDesc("💾 Menyimpan hasil analisis ke database...");
+        setProgressDesc("Menyimpan hasil analisis ke database...");
 
         console.log("🔑 Token untuk saveanalyze:", token ? "Ada" : "Tidak ada");
 
