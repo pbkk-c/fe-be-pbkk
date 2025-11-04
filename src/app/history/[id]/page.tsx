@@ -58,9 +58,8 @@ export default function HistoryDetailPage() {
   }, [id]);
 
   if (loading) {
-        return <LoadingScreen />;
-      }
-
+    return <LoadingScreen />;
+  }
 
   if (!detail) {
     return (
@@ -85,9 +84,7 @@ export default function HistoryDetailPage() {
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-3xl bg-white border border-orange-200 shadow-lg rounded-2xl p-8"
         >
-          <h1 className="text-3xl font-bold text-orange-600 mb-2">
-            {detail.title || "Untitled"}
-          </h1>
+          <h1 className="text-3xl font-bold text-orange-600 mb-2">{detail.title || "Untitled"}</h1>
 
           {/* Metadata */}
           <Link href={detail.url} target="_blank" rel="noopener noreferrer" className="mb-6 block">
@@ -137,9 +134,7 @@ export default function HistoryDetailPage() {
 
           {/* Breakdown */}
           <div className="mb-6">
-            <h2 className="text-xl font-semibold text-orange-500 mb-3">
-              Analysis Breakdown
-            </h2>
+            <h2 className="text-xl font-semibold text-orange-500 mb-3">Analysis Breakdown</h2>
             <div className="w-full bg-orange-100 h-6 rounded-full overflow-hidden flex">
               <div
                 className="bg-blue-500 h-full"
@@ -215,7 +210,6 @@ export default function HistoryDetailPage() {
           </div>
         </motion.div>
       </main>
-
 
       <FloatingAIButton />
       <Footer />

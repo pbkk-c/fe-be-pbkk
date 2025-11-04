@@ -69,8 +69,8 @@ export default function NewsDetailPage() {
   }, [id]);
 
   if (loading) {
-        return <LoadingScreen />;
-      }
+    return <LoadingScreen />;
+  }
 
   if (!content)
     return (
@@ -148,8 +148,7 @@ export default function NewsDetailPage() {
         {/* === HIDE DULU === */}
         {/* <SocialActions />
       <CommentSection /> */}
-            <FloatingAIButton />
-      
+        <FloatingAIButton />
       </main>
       <Footer />
     </>

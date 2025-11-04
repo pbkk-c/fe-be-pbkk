@@ -12,7 +12,7 @@ import { Loader2 } from "lucide-react";
  */
 
 export default function LoadingScreen() {
-     const [dots, setDots] = useState("");
+  const [dots, setDots] = useState("");
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -67,7 +67,7 @@ export default function LoadingScreen() {
               }}
             />
           </div> */}
-        <Loader2 className="animate-spin w-6 h-6 text-orange-500" />
+          <Loader2 className="animate-spin w-6 h-6 text-orange-500" />
           <span className="text-sm md:text-md text-orange-600">Loading{dots}</span>
         </div>
       </motion.div>

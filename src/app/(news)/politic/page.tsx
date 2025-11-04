@@ -116,7 +116,6 @@ export default function PoliticsPage() {
             </div>
             <FloatingAIButton />
           </section>
-          
         )}
       </main>
       <Footer />

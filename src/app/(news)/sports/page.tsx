@@ -33,9 +33,9 @@ export default function PoliticsPage() {
     fetchContents();
   }, []);
 
-    if (loading) {
-      return <LoadingScreen />;
-    }   
+  if (loading) {
+    return <LoadingScreen />;
+  }
   if (error)
     return (
       <div className="min-h-screen flex items-center justify-center text-red-600 font-medium">

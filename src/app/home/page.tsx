@@ -15,7 +15,7 @@ import Loading from "../loading/page";
 import LoadingScreen from "../components/LoadingScree";
 
 export default function HomePage() {
-   const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Simulasikan delay data loading (misal dari API)

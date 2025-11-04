@@ -55,7 +55,7 @@ export default function AnalyzePage() {
     const fetchUser = async () => {
       const token = localStorage.getItem("token");
       console.log("🔍 Token saat fetch user:", token);
-      
+
       if (!token) return setLoading(false);
 
       const res = await fetch("/api/me", {
@@ -93,9 +93,9 @@ export default function AnalyzePage() {
 
       const res = await fetch("/api/analyze", {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
-          ...(token && { "Authorization": `Bearer ${token}` })
+          ...(token && { Authorization: `Bearer ${token}` }),
         },
         body: JSON.stringify({ url, language: outputLang }),
       });
@@ -110,11 +110,8 @@ export default function AnalyzePage() {
         console.error("❌ Error dari /api/analyze:", errorData);
         console.error("📍 Status:", res.status);
         console.error("📍 StatusText:", res.statusText);
-        
-        setLogs((prev) => [
-          ...prev,
-          `❌ Server Error: ${errorData.error || res.statusText}`,
-        ]);
+
+        setLogs((prev) => [...prev, `❌ Server Error: ${errorData.error || res.statusText}`]);
         throw new Error(errorData.error || "Gagal menghubungi server analisis.");
       }
 
@@ -170,7 +167,7 @@ export default function AnalyzePage() {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              "Authorization": `Bearer ${token}`,
+              Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
               url,
@@ -204,7 +201,10 @@ export default function AnalyzePage() {
           if (!saveRes.ok) {
             const saveErr = await saveRes.json();
             console.error("❌ Error dari server:", saveErr);
-            setLogs((prev) => [...prev, `⚠️ Gagal menyimpan hasil: ${saveErr.message || saveErr.error}`]);
+            setLogs((prev) => [
+              ...prev,
+              `⚠️ Gagal menyimpan hasil: ${saveErr.message || saveErr.error}`,
+            ]);
           } else {
             const saveData = await saveRes.json();
             console.log("✅ Berhasil disimpan:", saveData);
@@ -215,7 +215,6 @@ export default function AnalyzePage() {
         // ✅ Tampilkan hasil di layar
         setResult(analysisDataFromDB);
       }
-
     } catch (err: any) {
       console.error("❌ Analysis Error:", err);
       setLogs((prev) => [...prev, `❌ Gagal: ${err.message}`]);
@@ -319,9 +318,7 @@ export default function AnalyzePage() {
                 exit={{ opacity: 0, y: -20 }}
                 className="mt-10 bg-white border border-orange-200 p-6 rounded-2xl shadow-lg text-left space-y-6"
               >
-                <h2 className="text-2xl font-bold text-orange-500 mb-4">
-                  🧾 Hasil Analisis
-                </h2>
+                <h2 className="text-2xl font-bold text-orange-500 mb-4">🧾 Hasil Analisis</h2>
 
                 <p className="text-zinc-700 whitespace-pre-wrap leading-relaxed">
                   {result.summary_statement}
