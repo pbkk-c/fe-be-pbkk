@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { Loader2, Search } from "lucide-react";
 import FloatingAIButton from "@/app/home/components/FloatingButton";
 import Link from "next/link";
+import LoadingScreen from "@/app/components/LoadingScree";
 
 interface HistoryDetail {
   id: string;
@@ -57,13 +58,7 @@ export default function HistoryDetailPage() {
   }, [id]);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-orange-100 via-white to-orange-50">
-        <div className="flex items-center gap-2 text-orange-600 font-medium">
-          <Loader2 className="animate-spin w-5 h-5" /> Loading detail...
-        </div>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   if (!detail) {
@@ -89,9 +84,7 @@ export default function HistoryDetailPage() {
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-3xl bg-white border border-orange-200 shadow-lg rounded-2xl p-8"
         >
-          <h1 className="text-3xl font-bold text-orange-600 mb-2">
-            {detail.title || "Untitled"}
-          </h1>
+          <h1 className="text-3xl font-bold text-orange-600 mb-2">{detail.title || "Untitled"}</h1>
 
           {/* Metadata */}
           <Link href={detail.url} target="_blank" rel="noopener noreferrer" className="mb-6 block">
@@ -141,9 +134,7 @@ export default function HistoryDetailPage() {
 
           {/* Breakdown */}
           <div className="mb-6">
-            <h2 className="text-xl font-semibold text-orange-500 mb-3">
-              Analysis Breakdown
-            </h2>
+            <h2 className="text-xl font-semibold text-orange-500 mb-3">Analysis Breakdown</h2>
             <div className="w-full bg-orange-100 h-6 rounded-full overflow-hidden flex">
               <div
                 className="bg-blue-500 h-full"
@@ -219,7 +210,6 @@ export default function HistoryDetailPage() {
           </div>
         </motion.div>
       </main>
-
 
       <FloatingAIButton />
       <Footer />

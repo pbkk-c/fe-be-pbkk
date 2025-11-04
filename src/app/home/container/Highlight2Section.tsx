@@ -22,8 +22,7 @@ export default function Highlight2Section() {
         if (!res.ok) throw new Error("Failed to fetch content");
 
         const data: Content[] = await res.json();
-        const sorted = data
-          .filter((item) => item.type === "News");
+        const sorted = data.filter((item) => item.type === "News");
 
         // ambil konten ke-2
         setContent(sorted[1] || null);
@@ -117,21 +116,13 @@ export default function Highlight2Section() {
             className="bg-blue-700 h-full flex items-center justify-center text-white transition-all duration-700 ease-out"
             style={{ width: `${facts}%` }}
           >
-            {facts >= 30 ? (
-              <span>Facts {facts}%</span>
-            ) : facts > 4 ? (
-              <span>{facts}%</span>
-            ) : null}
+            {facts >= 30 ? <span>Facts {facts}%</span> : facts > 4 ? <span>{facts}%</span> : null}
           </div>
           <div
             className="bg-red-700 h-full flex items-center justify-center text-white transition-all duration-700 ease-out"
             style={{ width: `${hoax}%` }}
           >
-            {hoax >= 20 ? (
-              <span>Hoax {hoax}%</span>
-            ) : hoax > 4 ? (
-              <span>{hoax}%</span>
-            ) : null}
+            {hoax >= 20 ? <span>Hoax {hoax}%</span> : hoax > 4 ? <span>{hoax}%</span> : null}
           </div>
           <div
             className="bg-gray-500 h-full flex items-center justify-center text-white transition-all duration-700 ease-out"
@@ -147,8 +138,7 @@ export default function Highlight2Section() {
 
         {/* Deskripsi */}
         <p className="text-gray-700 text-sm sm:text-base md:text-lg leading-relaxed max-w-xl mx-auto md:mx-0">
-          {content.raw_text?.slice(0, 200) ||
-            "No description available for this news."}
+          {content.raw_text?.slice(0, 200) || "No description available for this news."}
         </p>
       </div>
     </section>

@@ -9,6 +9,7 @@ import NewsTopicCard from "../components/NewsTopicCard";
 import Footer from "@/app/layouts/Footer";
 import Navbar from "@/app/layouts/Navbar";
 import FloatingAIButton from "@/app/home/components/FloatingButton";
+import LoadingScreen from "@/app/components/LoadingScree";
 
 export default function PoliticsPage() {
   const [contents, setContents] = useState<Content[]>([]);
@@ -32,12 +33,9 @@ export default function PoliticsPage() {
     fetchContents();
   }, []);
 
-  if (loading)
-    return (
-      <div className="min-h-screen flex items-center justify-center text-orange-600 font-medium">
-        Memuat berita economy...
-      </div>
-    );
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   if (error)
     return (

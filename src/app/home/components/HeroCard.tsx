@@ -91,19 +91,31 @@ export default function HeroCard({ cards, interval = 5000 }: HeroCardProps) {
                   className="bg-blue-700 h-full flex items-center justify-center text-[10px] md:text-[14px] font-semibold"
                   style={{ width: `${current.facts}%` }}
                 >
-                  {current.facts > 20 ? <span>Facts {current.facts}%</span> : current.facts >= 5 ? <span>{current.facts}%</span> : null}
+                  {current.facts > 20 ? (
+                    <span>Facts {current.facts}%</span>
+                  ) : current.facts >= 5 ? (
+                    <span>{current.facts}%</span>
+                  ) : null}
                 </div>
                 <div
                   className="bg-gray-500 h-full flex items-center justify-center text-[10px] md:text-[14px] font-semibold"
                   style={{ width: `${current.opinion}%` }}
                 >
-                  {current.opinion >= 25 ? <span>Opinion {current.opinion}%</span> : current.opinion >= 5 ? <span>{current.opinion}%</span> : null}
+                  {current.opinion >= 25 ? (
+                    <span>Opinion {current.opinion}%</span>
+                  ) : current.opinion >= 5 ? (
+                    <span>{current.opinion}%</span>
+                  ) : null}
                 </div>
                 <div
                   className="bg-red-700 h-full flex items-center justify-center text-[10px] md:text-[14px] font-semibold"
                   style={{ width: `${current.hoax}%` }}
                 >
-                  {current.hoax > 15 ? <span>Hoax {current.hoax}%</span> : current.hoax >= 5 ? <span>{current.hoax}%</span> : null}
+                  {current.hoax > 15 ? (
+                    <span>Hoax {current.hoax}%</span>
+                  ) : current.hoax >= 5 ? (
+                    <span>{current.hoax}%</span>
+                  ) : null}
                 </div>
               </div>
 
@@ -111,15 +123,13 @@ export default function HeroCard({ cards, interval = 5000 }: HeroCardProps) {
               <p className="text-gray-300 mt-3 md:w-3/4 text-sm md:text-base bg-black/30 backdrop-blur-sm p-3 rounded-lg shadow-sm">
                 <span className="md:hidden">
                   {current.description.length >= 80
-                    ? current.description.slice(0, 80) + '...'
-                    : current.description ?? ''
-                  }
+                    ? current.description.slice(0, 80) + "..."
+                    : (current.description ?? "")}
                 </span>
                 <span className="hidden md:inline">
                   {current.description.length >= 150
-                    ? current.description.slice(0, 150) + '...'
-                    : current.description ?? ''
-                  }
+                    ? current.description.slice(0, 150) + "..."
+                    : (current.description ?? "")}
                 </span>
               </p>
             </div>

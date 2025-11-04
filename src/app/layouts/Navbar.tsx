@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -20,6 +21,8 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const supabase = createClientComponentClient();
+
+  const router = useRouter();
 
   // ✅ Fetch user
   useEffect(() => {
@@ -56,6 +59,7 @@ export default function Navbar() {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
     setUser(null);
+    router.push("/login");
   };
 
   return (
