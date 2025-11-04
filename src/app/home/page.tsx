@@ -13,6 +13,7 @@ import EconomySection from "./container/EconomySection";
 import { useEffect, useState } from "react";
 import Loading from "../loading/page";
 import LoadingScreen from "../components/LoadingScree";
+import AnalyzerPromoModal from "../components/ModalAnalyzer";
 
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,6 +30,7 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
+      <AnalyzerPromoModal />
       <main className="w-full mx-auto gap-6 pt-10">
         <HeroSection />
         <HighlightSection />
