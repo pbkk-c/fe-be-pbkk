@@ -1,3 +1,4 @@
+import Link from "next/dist/client/link";
 import Image from "next/image";
 
 type BigCardProps = {
@@ -8,6 +9,7 @@ type BigCardProps = {
   facts: number;
   opinion: number;
   hoax: number;
+  href?: string;
 };
 
 export default function BigCard({
@@ -18,8 +20,12 @@ export default function BigCard({
   facts,
   opinion,
   hoax,
+  href,
 }: BigCardProps) {
   return (
+    <Link href={href || "#"}>
+
+
     <div className="relative w-full rounded-3xl overflow-hidden shadow-lg">
       {/* Background image */}
       <div className="relative h-[260px] md:h-[360px] lg:h-[460px] xl:h-[560px] 2xl:h-[600px] w-full transition-all duration-300">
@@ -73,5 +79,6 @@ export default function BigCard({
         </div>
       </div>
     </div>
+    </Link>
   );
 }

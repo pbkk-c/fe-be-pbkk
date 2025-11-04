@@ -8,6 +8,7 @@ import FactBar from "../components/FactBar";
 import NewsTopicCard from "../components/NewsTopicCard";
 import Footer from "@/app/layouts/Footer";
 import Navbar from "@/app/layouts/Navbar";
+import FloatingAIButton from "@/app/home/components/FloatingButton";
 
 export default function PoliticsPage() {
   const [contents, setContents] = useState<Content[]>([]);
@@ -115,7 +116,9 @@ export default function PoliticsPage() {
                 </motion.div>
               ))}
             </div>
+            <FloatingAIButton />
           </section>
+          
         )}
       </main>
       <Footer />

@@ -1,3 +1,4 @@
+import Link from "next/dist/client/link";
 import Image from "next/image";
 
 type NewsCardProps = {
@@ -6,10 +7,15 @@ type NewsCardProps = {
   facts: number;
   opinion: number;
   hoax: number;
+  href?: string;
 };
 
-export default function NewsCard2({ title, image, facts, opinion, hoax }: NewsCardProps) {
+export default function NewsCard2({ title, image, facts, opinion, hoax, href }: NewsCardProps) {
   return (
+    <Link
+      href={href || "#"}
+      // className="block"
+    >
     <div className="flex flex-col sm:flex-row gap-3 items-center sm:items-start rounded-xl p-3 hover:shadow-md transition-all duration-300 w-full max-w-full">
       {/* Thumbnail */}
       <div className="relative rounded-xl w-[90%] sm:w-28 md:w-32 2xl:w-40 h-24 sm:h-16 md:h-20 overflow-hidden flex-shrink-0">
@@ -58,5 +64,6 @@ export default function NewsCard2({ title, image, facts, opinion, hoax }: NewsCa
         </div>
       </div>
     </div>
+    </Link>
   );
 }

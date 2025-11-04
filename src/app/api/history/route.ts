@@ -6,31 +6,36 @@ const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
 
 export async function GET(req: Request) {
   try {
-    // 🔹 Ambil token dari Authorization header
+    // 🔹 Ambil Authorization Header
     const authHeader = req.headers.get("authorization");
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const token = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : null;
+
+    let userId: string | null = null;
+
+    // 🔹 Jika token ada → verifikasi JWT
+    if (token) {
+      try {
+        const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+        userId = decoded.userId;
+      } catch (err: any) {
+        console.warn("⚠️ Token invalid atau expired:", err.message);
+        // Tidak langsung return 401 — karena user boleh melihat history tanpa login (optional auth)
+      }
     }
 
-    const token = authHeader.split(" ")[1];
-    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+    // 🔹 Ambil semua contents dengan type = "history"
+    // Jika user login → filter berdasarkan user_id
+    // Jika tidak login → tampilkan history umum (tanpa user_id)
+    const whereClause: any = {
+      type: "history",
+    };
 
-    // 🔹 Pastikan user ada
-    const user = await prisma.users.findUnique({
-      where: { id: decoded.userId },
-      select: { id: true },
-    });
-
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    if (userId) {
+      whereClause.user_id = userId;
     }
 
-    // 🔹 Ambil semua contents milik user dengan type = "history"
     const history = await prisma.contents.findMany({
-      where: {
-        user_id: user.id,
-        type: "history",
-      },
+      where: whereClause,
       orderBy: { collected_at: "desc" },
       select: {
         id: true,
@@ -48,30 +53,37 @@ export async function GET(req: Request) {
             sentiment: true,
             created_at: true,
           },
-          take: 1,
           orderBy: { created_at: "desc" },
+          take: 1, // ambil analisis terbaru
         },
       },
     });
 
-    // 🔹 Format data agar frontend bisa langsung render
+    // 🔹 Format hasil agar frontend langsung bisa render
     const formatted = history.map((item) => ({
       id: item.id,
-      url: item.url || "-",
-      title: item.title || "Untitled",
-      topic: item.topic || "-",
-      summary: item.analyses[0]?.summary || "No analysis available",
-      main_theme: item.analyses[0]?.main_theme || "-",
-      sentiment: item.analyses[0]?.sentiment || "-",
-      fact_percentage: item.analyses[0]?.fact_percentage || 0,
-      opinion_percentage: item.analyses[0]?.opinion_percentage || 0,
-      hoax_percentage: item.analyses[0]?.hoax_percentage || 0,
+      url: item.url ?? "-",
+      title: item.title ?? "Untitled",
+      topic: item.topic ?? "-",
+      summary: item.analyses[0]?.summary ?? "No analysis available",
+      main_theme: item.analyses[0]?.main_theme ?? "-",
+      sentiment: item.analyses[0]?.sentiment ?? "-",
+      fact_percentage: Number(item.analyses[0]?.fact_percentage ?? 0),
+      opinion_percentage: Number(item.analyses[0]?.opinion_percentage ?? 0),
+      hoax_percentage: Number(item.analyses[0]?.hoax_percentage ?? 0),
       created_at: item.collected_at,
     }));
 
-    return NextResponse.json(formatted);
-  } catch (err) {
-    console.error("Error in /api/history:", err);
-    return NextResponse.json({ error: "Invalid or expired token" }, { status: 401 });
+    return NextResponse.json({
+      success: true,
+      count: formatted.length,
+      data: formatted,
+    });
+  } catch (err: any) {
+    console.error("❌ Error in /api/history:", err);
+    return NextResponse.json(
+      { success: false, error: err.message || "Failed to load history" },
+      { status: 500 }
+    );
   }
 }

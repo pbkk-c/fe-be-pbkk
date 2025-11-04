@@ -7,6 +7,7 @@ import CommentSection from "../components/CommentAction";
 import { useParams } from "next/navigation";
 import Footer from "@/app/layouts/Footer";
 import Navbar from "@/app/layouts/Navbar";
+import FloatingAIButton from "@/app/home/components/FloatingButton";
 
 interface Analysis {
   created_at: string;
@@ -94,7 +95,7 @@ export default function NewsDetailPage() {
     <>
       <Navbar />
 
-      <main className="max-w-3xl mx-auto px-4 py-8">
+      <main className="max-w-3xl mx-auto px-4 pt-24 pb-16">
         {/* Topic + Author + Date */}
         <p className="text-sm text-amber-600 font-medium">{content.topic}</p>
         <h1 className="mt-2 text-3xl font-bold">{content.title}</h1>
@@ -151,6 +152,8 @@ export default function NewsDetailPage() {
         {/* === HIDE DULU === */}
         {/* <SocialActions />
       <CommentSection /> */}
+            <FloatingAIButton />
+      
       </main>
       <Footer />
     </>

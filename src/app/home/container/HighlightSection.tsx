@@ -23,7 +23,7 @@ export default function HighlightSection() {
         const data: Content[] = await res.json();
         const sorted = data
           // .sort((a, b) => (a.platform ?? 0) - (b.platform ?? 0))
-          .filter((item) => item.type === "News" || item.type === "history");
+          .filter((item) => item.type === "News");
 
         setContent(sorted[0] || null);
       } catch (err) {
