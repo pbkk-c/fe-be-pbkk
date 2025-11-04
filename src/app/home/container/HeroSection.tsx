@@ -51,7 +51,7 @@ export default function HeroSection() {
       <HeroCard
         cards={[...contents]
           .sort((a, b) => Number(a.platform) - Number(b.platform)) // urutkan berdasarkan platform (cast ke number)
-          .filter((item) => item.type === "News" || item.type === "history")
+          .filter((item) => item.type === "News")
           .slice(0, 10)
           .map((item) => ({
             href: `/news/${item.id}`,

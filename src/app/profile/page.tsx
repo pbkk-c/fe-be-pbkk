@@ -120,9 +120,9 @@ export default function ProfilePage() {
                   localStorage.removeItem("token");
                   window.location.href = "/login";
                 }}
-                className="w-full sm:w-1/2 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition font-medium"
+                className="w-full sm:w-1/2 py-2 bg-white border border-red-500 text-red-500 rounded-lg hover:bg-red-700 hover:text-white transition font-medium"
               >
-                Keluar
+                Logout
               </button>
             </div>
           </div>
@@ -130,23 +130,10 @@ export default function ProfilePage() {
       </main>
 
       {/* Floating Button */}
-      <motion.button
-        onClick={() => route.push("/analyzer")}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.5 }}
-        className="fixed bottom-8 right-8 w-14 h-14 rounded-full bg-orange-600 hover:bg-orange-700 text-white shadow-lg flex items-center justify-center relative group"
-      >
-        <Search className="w-6 h-6" />
-        <span className="absolute right-full mr-3 px-3 py-1 bg-gray-800 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-          Gunakan AI untuk analisis fakta & opini
-        </span>
-        <span className="absolute inset-0 rounded-full bg-orange-500 blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-300" />
-      </motion.button>
 
+          <FloatingAIButton />
       <Footer />
     </ProtectedRoute>
-          <FloatingAIButton />
     
     </>
 

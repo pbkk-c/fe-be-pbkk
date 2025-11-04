@@ -56,8 +56,15 @@ export default function HeroCard({ cards, interval = 5000 }: HeroCardProps) {
           >
             {/* Gambar Latar */}
             <div className="relative h-[300px] md:h-[420px] lg:h-[520px] w-full">
+              {/* <img
+  src={current.image}
+                alt={current.title}
+                fill
+                priority
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+              /> */}
               <Image
-                src={current.image}
+                src={current.image ? current.image : ""}
                 alt={current.title}
                 fill
                 priority

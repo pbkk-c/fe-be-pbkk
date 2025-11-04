@@ -19,7 +19,13 @@ export default function LatestSection() {
         if (!res.ok) throw new Error("Failed to fetch contents");
 
         const data: Content[] = await res.json();
-        const shuffled = data.sort(() => Math.random() - 0.5); // acak urutan
+
+        // 🔍 Filter hanya konten bertipe News
+        const filtered = data.filter((item) => item.type === "News");
+
+        // 🎲 Acak urutan biar tampilnya tidak monoton
+        const shuffled = filtered.sort(() => Math.random() - 0.5);
+
         setContents(shuffled);
       } catch (err) {
         console.error("Error fetching contents:", err);
@@ -33,11 +39,19 @@ export default function LatestSection() {
   }, []);
 
   if (loading) {
-    return <section className="px-16 py-12 text-center text-gray-500">Loading konten...</section>;
+    return (
+      <section className="px-16 py-12 text-center text-gray-500">
+        Loading konten...
+      </section>
+    );
   }
 
   if (error) {
-    return <section className="px-16 py-12 text-center text-red-500">{error}</section>;
+    return (
+      <section className="px-16 py-12 text-center text-red-500">
+        {error}
+      </section>
+    );
   }
 
   const totalPages = Math.ceil(contents.length / itemsPerPage);
@@ -46,14 +60,19 @@ export default function LatestSection() {
 
   return (
     <section className="lg:col-span-3 px-16 py-12 bg-[#FFFDF9]">
+      {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h2 className="font-extrabold text-2xl md:text-3xl text-[#1F2937]">Latest News</h2>
+        <h2 className="font-extrabold text-2xl md:text-3xl text-[#1F2937]">
+          Latest News
+        </h2>
         <span className="text-sm text-gray-500">
-          Showing {startIndex + 1} - {Math.min(startIndex + itemsPerPage, contents.length)} of{" "}
+          Showing {startIndex + 1} -{" "}
+          {Math.min(startIndex + itemsPerPage, contents.length)} of{" "}
           {contents.length}
         </span>
       </div>
 
+      {/* Grid News */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {currentItems.map((item) => (
           <NewsCard

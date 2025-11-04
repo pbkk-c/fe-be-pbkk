@@ -54,6 +54,8 @@ export default function AnalyzePage() {
   useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem("token");
+      console.log("🔍 Token saat fetch user:", token);
+      
       if (!token) return setLoading(false);
 
       const res = await fetch("/api/me", {
@@ -62,9 +64,10 @@ export default function AnalyzePage() {
 
       if (res.ok) {
         const data = await res.json();
+        console.log("✅ User data:", data);
         setUser(data);
       } else {
-        console.error("Failed to fetch user");
+        console.error("❌ Failed to fetch user");
       }
       setLoading(false);
     };
@@ -80,21 +83,34 @@ export default function AnalyzePage() {
     setProgress(0);
     setProgressDesc("⏳ Memulai analisis...");
 
+    // ✅ Ambil token di awal
+    const token = localStorage.getItem("token");
+    console.log("🔑 Token tersedia:", token ? "✅ Ada" : "❌ Tidak ada");
+
     try {
       setProgress(10);
       setProgressDesc("🧠 Mengirim URL ke API lokal...");
 
       const res = await fetch("/api/analyze", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          ...(token && { "Authorization": `Bearer ${token}` })
+        },
         body: JSON.stringify({ url, language: outputLang }),
       });
 
       setProgress(40);
       setProgressDesc("📡 Menunggu hasil analisis dari AI...");
 
+      console.log("📥 Response /api/analyze - Status:", res.status);
+
       if (!res.ok) {
         const errorData = await res.json();
+        console.error("❌ Error dari /api/analyze:", errorData);
+        console.error("📍 Status:", res.status);
+        console.error("📍 StatusText:", res.statusText);
+        
         setLogs((prev) => [
           ...prev,
           `❌ Server Error: ${errorData.error || res.statusText}`,
@@ -130,13 +146,78 @@ export default function AnalyzePage() {
           },
         };
 
+        // 🧠 Simpan ke database melalui /api/saveanalyze
+        setProgress(90);
+        setProgressDesc("💾 Menyimpan hasil analisis ke database...");
+
+        console.log("🔑 Token untuk saveanalyze:", token ? "Ada" : "Tidak ada");
+
+        if (!token) {
+          console.warn("⚠️ Token tidak ditemukan. User mungkin belum login.");
+          setLogs((prev) => [...prev, "⚠️ Anda belum login. Analisis tidak akan disimpan."]);
+        } else {
+          console.log("📤 Mengirim request ke /api/saveanalyze...");
+          console.log("📦 Data yang dikirim:", {
+            url,
+            title: localData.data.main_theme || "Untitled",
+            main_theme: localData.data.main_theme,
+            fact_percentage: localData.data.fact_percentage,
+            opinion_percentage: localData.data.opinion_percentage,
+            hoax_percentage: localData.data.hoax_percentage,
+          });
+
+          const saveRes = await fetch("/api/saveanalyze", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              url,
+              title: localData.data.main_theme || "Untitled",
+              raw_text: localData.data.summary,
+              main_theme: localData.data.main_theme,
+              summary: localData.data.summary,
+              fact_percentage: localData.data.fact_percentage,
+              opinion_percentage: localData.data.opinion_percentage,
+              hoax_percentage: localData.data.hoax_percentage,
+              sentiment: localData.data.sentiment,
+              // 🧠 Tambahkan ini:
+              raw_analysis_json: analysisDataFromDB,
+            }),
+          });
+          console.log("📦 Data lengkap dikirim ke /api/saveanalyze:", {
+            url,
+            title: localData.data.main_theme || "Untitled",
+            raw_text: localData.data.summary,
+            main_theme: localData.data.main_theme,
+            summary: localData.data.summary,
+            fact_percentage: localData.data.fact_percentage,
+            opinion_percentage: localData.data.opinion_percentage,
+            hoax_percentage: localData.data.hoax_percentage,
+            sentiment: localData.data.sentiment,
+            raw_analysis_json: analysisDataFromDB,
+          });
+
+          console.log("📥 Response status dari /api/saveanalyze:", saveRes.status);
+
+          if (!saveRes.ok) {
+            const saveErr = await saveRes.json();
+            console.error("❌ Error dari server:", saveErr);
+            setLogs((prev) => [...prev, `⚠️ Gagal menyimpan hasil: ${saveErr.message || saveErr.error}`]);
+          } else {
+            const saveData = await saveRes.json();
+            console.log("✅ Berhasil disimpan:", saveData);
+            setLogs((prev) => [...prev, "✅ Analisis berhasil disimpan ke database."]);
+          }
+        }
+
+        // ✅ Tampilkan hasil di layar
         setResult(analysisDataFromDB);
-        setLogs((prev) => [...prev, "✅ Analisis berhasil disimpan ke database."]);
-      } else {
-        throw new Error("Format respons dari /api/analyze tidak valid.");
       }
+
     } catch (err: any) {
-      console.error("Analysis Error:", err);
+      console.error("❌ Analysis Error:", err);
       setLogs((prev) => [...prev, `❌ Gagal: ${err.message}`]);
       alert(`❌ Error: ${err.message || "Terjadi kesalahan saat analisis."}`);
       setProgress(0);
@@ -165,10 +246,9 @@ export default function AnalyzePage() {
           animate={{ opacity: 1, y: 0 }}
           className="max-w-3xl w-full text-center"
         >
-          {/* <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-orange-500 to-amber-600 bg-clip-text text-transparent drop-shadow-sm mb-6">
+          <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent drop-shadow-sm mb-6">
             Fact, Hoax & Opinion Analyzer
-          </h1> */}
-          <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent drop-shadow-sm mb-6"> Fact, Hoax & Opinion Analyzer </h1>
+          </h1>
           <p className="text-zinc-600 mb-8">
             Masukkan URL berita untuk memeriksa sejauh mana artikel tersebut mengandung fakta,
             opini, atau hoaks menggunakan AI.

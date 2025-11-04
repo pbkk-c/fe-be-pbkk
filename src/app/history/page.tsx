@@ -2,18 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "../layouts/Navbar";
 import Footer from "../layouts/Footer";
-import { Search } from "lucide-react";
+import { Loader2, Clock } from "lucide-react";
+import FloatingAIButton from "../home/components/FloatingButton";
 
 interface HistoryItem {
   id: string;
   url: string;
   title: string;
-  topic: string;
-  summary: string;
-  main_theme: string;
-  sentiment: string;
   fact_percentage: number;
   opinion_percentage: number;
   hoax_percentage: number;
@@ -27,25 +25,28 @@ export default function HistoryPage() {
 
   useEffect(() => {
     const fetchHistory = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setLoading(false);
+          return;
+        }
+
+        const res = await fetch("/api/history", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!res.ok) throw new Error("Failed to fetch history");
+
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data)) {
+          setHistory(json.data);
+        }
+      } catch (err) {
+        console.error("Error fetching history:", err);
+      } finally {
         setLoading(false);
-        return;
       }
-
-      const res = await fetch("/api/history", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        setHistory(data);
-      } else {
-        console.error("Failed to fetch history");
-      }
-      setLoading(false);
     };
 
     fetchHistory();
@@ -53,8 +54,9 @@ export default function HistoryPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <p className="text-gray-600">Loading history...</p>
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-orange-100 to-orange-50">
+        <Loader2 className="animate-spin w-6 h-6 text-orange-500 mr-2" />
+        <p className="text-orange-600">Loading your analysis history...</p>
       </div>
     );
   }
@@ -62,70 +64,119 @@ export default function HistoryPage() {
   return (
     <>
       <Navbar />
-      <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
-        <div className="w-full max-w-3xl bg-white shadow-lg rounded-2xl p-8">
-          <h1 className="text-2xl font-bold text-gray-800 mb-6">Analysis History</h1>
+
+      <main className="min-h-screen bg-gradient-to-b from-orange-100 via-white to-orange-50 pt-28 pb-40 px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-4xl mx-auto"
+        >
+          <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-8 bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent drop-shadow-sm">
+            Your Analysis History
+          </h1>
+          <p className="text-center text-zinc-600 mb-10">
+            Riwayat hasil analisis AI terhadap berita yang pernah kamu periksa.
+          </p>
 
           {history.length === 0 ? (
-            <p className="text-gray-500 text-center">No history available.</p>
+            <p className="text-center text-zinc-500">Belum ada riwayat analisis.</p>
           ) : (
-            <ul className="divide-y divide-gray-200">
-              {history.map((item) => (
-                <li
-                  key={item.id}
-                  className="py-4 cursor-pointer hover:bg-gray-50 transition rounded-lg px-2"
-                  onClick={() => router.push(`/history/${item.id}`)}
-                >
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <p className="font-semibold text-gray-800 line-clamp-1">
-                        {item.title || "Untitled"}
-                      </p>
-                      <p className="text-sm text-gray-500 line-clamp-1">
-                        {item.summary || "No summary available."}
-                      </p>
-                      <div className="mt-2 text-xs text-gray-400 flex gap-4">
-                        <span>Topic: {item.topic}</span>
-                        <span>Sentiment: {item.sentiment}</span>
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: { staggerChildren: 0.12 },
+                },
+              }}
+              className="space-y-5"
+            >
+              <AnimatePresence>
+                {history.map((item, i) => {
+                  const total =
+                    item.fact_percentage + item.opinion_percentage + item.hoax_percentage;
+
+                  return (
+                    <motion.div
+                      key={item.id}
+                      variants={{
+                        hidden: { opacity: 0, y: 20 },
+                        visible: { opacity: 1, y: 0 },
+                      }}
+                      whileHover={{ scale: 1.02 }}
+                      className="bg-white/90 backdrop-blur-md rounded-2xl shadow-md border border-orange-200 hover:shadow-lg transition-all duration-300 p-6 cursor-pointer"
+                      onClick={() => router.push(`/history/${item.id}`)}
+                    >
+                      {/* Title & Date */}
+                      <div className="flex justify-between items-start mb-3">
+                        <h2 className="font-bold text-lg text-zinc-800 line-clamp-1">
+                          {item.title || "Untitled Analysis"}
+                        </h2>
+                        <span className="text-sm text-zinc-400 flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          {new Date(item.created_at).toLocaleDateString("id-ID", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </span>
                       </div>
-                    </div>
-                    <span className="text-sm text-gray-400 whitespace-nowrap ml-4">
-                      {new Date(item.created_at).toLocaleString("en-US", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </span>
-                  </div>
-                </li>
-              ))}
-            </ul>
+
+                      {/* Combined Bar */}
+                      <div className="w-full bg-orange-100 h-5 rounded-full overflow-hidden flex shadow-inner">
+                        <motion.div
+                          className="bg-blue-500 h-full"
+                          style={{ width: `${(item.fact_percentage / total) * 100}%` }}
+                          title={`Fakta ${item.fact_percentage}%`}
+                        />
+                        <motion.div
+                          className="bg-yellow-400 h-full"
+                          style={{ width: `${(item.opinion_percentage / total) * 100}%` }}
+                          title={`Opini ${item.opinion_percentage}%`}
+                        />
+                        <motion.div
+                          className="bg-red-500 h-full"
+                          style={{ width: `${(item.hoax_percentage / total) * 100}%` }}
+                          title={`Hoaks ${item.hoax_percentage}%`}
+                        />
+                      </div>
+
+                      {/* Legend */}
+                      <div className="flex justify-between mt-3 text-sm text-zinc-600">
+                        <div className="flex items-center gap-2">
+                          <span className="inline-block w-3 h-3 rounded-full bg-blue-500"></span>
+                          Fakta: {item.fact_percentage.toFixed(1)}%
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="inline-block w-3 h-3 rounded-full bg-yellow-400"></span>
+                          Opini: {item.opinion_percentage.toFixed(1)}%
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="inline-block w-3 h-3 rounded-full bg-red-500"></span>
+                          Hoaks: {item.hoax_percentage.toFixed(1)}%
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+            </motion.div>
           )}
 
-          <div className="mt-6">
+          <div className="text-center mt-10">
             <a
               href="/profile"
-              className="w-full inline-block text-center py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition"
+              className="inline-block bg-orange-500 hover:bg-orange-400 text-white font-semibold px-6 py-3 rounded-xl transition-all shadow-md"
             >
-              Back to Profile
+              Kembali ke Profil
             </a>
           </div>
-        </div>
-      </div>
-      {/* Floating Button */}
-      <div className="fixed bottom-6 right-6 group">
-        <button
-          onClick={() => router.push("/analyzer")}
-          className="relative flex items-center justify-center w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg transition-colors duration-300"
-        >
-          <Search className="w-6 h-6" />
-          <span className="absolute right-full mr-3 px-3 py-1 bg-gray-800 text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-            Gunakan AI untuk temukan fakta atau opini
-          </span>
-        </button>
-      </div>
+        </motion.div>
+      </main>
+      <FloatingAIButton />
+
       <Footer />
     </>
   );

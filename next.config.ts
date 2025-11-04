@@ -11,6 +11,18 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  images: {
+    domains: [
+      "abcnews.go.com",
+      "cdn.cnn.com",
+      "assets.bbc.com",
+      "upload.wikimedia.org",
+      "images.unsplash.com",
+      "static01.nyt.com",
+      "placekitten.com",
+      "picsum.photos",
+    ],
+  },
 };
 
 module.exports = nextConfig;
