@@ -40,6 +40,8 @@ interface LocalAnalysisData {
   main_theme: string;
   sentiment: string;
   raw_analysis_json?: AnalysisData;
+  topic?: string;
+  title?: string;
 }
 
 export default function AnalyzePage() {
