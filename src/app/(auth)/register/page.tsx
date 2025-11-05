@@ -163,11 +163,7 @@ export default function RegisterForm() {
                   })}
                   className="ml-3 w-full bg-transparent border-none outline-none text-sm"
                 />
-                {showConfirm ? (
-                  <EyeOff className="w-4 h-4 text-zinc-500 cursor-pointer" onClick={() => setShowConfirm(false)} />
-                ) : (
-                  <Eye className="w-4 h-4 text-zinc-500 cursor-pointer" onClick={() => setShowConfirm(true)} />
-                )}
+                
               </div>
               {errors.confirm_password && (
                 <p className="mt-1 text-xs text-red-500">{errors.confirm_password.message?.toString()}</p>
