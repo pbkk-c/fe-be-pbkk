@@ -139,11 +139,7 @@ export default function RegisterForm() {
                   {...register("password", { required: "Password is required" })}
                   className="ml-3 w-full bg-transparent border-none outline-none text-sm"
                 />
-                {showPassword ? (
-                  <EyeOff className="w-4 h-4 text-zinc-500 cursor-pointer" onClick={() => setShowPassword(false)} />
-                ) : (
-                  <Eye className="w-4 h-4 text-zinc-500 cursor-pointer" onClick={() => setShowPassword(true)} />
-                )}
+                
               </div>
               {errors.password && (
                 <p className="mt-1 text-xs text-red-500">{errors.password.message?.toString()}</p>
