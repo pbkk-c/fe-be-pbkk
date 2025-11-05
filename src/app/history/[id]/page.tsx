@@ -5,7 +5,6 @@ import { useParams, useRouter } from "next/navigation";
 import Navbar from "../../layouts/Navbar";
 import Footer from "../../layouts/Footer";
 import { motion } from "framer-motion";
-import { Loader2, Search } from "lucide-react";
 import FloatingAIButton from "@/app/home/components/FloatingButton";
 import Link from "next/link";
 import LoadingScreen from "@/app/components/LoadingScree";
@@ -57,9 +56,7 @@ export default function HistoryDetailPage() {
     if (id) fetchDetail();
   }, [id]);
 
-  if (loading) {
-    return <LoadingScreen />;
-  }
+  if (loading) return <LoadingScreen />;
 
   if (!detail) {
     return (
@@ -70,9 +67,9 @@ export default function HistoryDetailPage() {
   }
 
   const total = {
-    fact: detail.fact_percentage,
-    opinion: detail.opinion_percentage,
-    hoax: detail.hoax_percentage,
+    fact: Number(detail.fact_percentage),
+    opinion: Number(detail.opinion_percentage),
+    hoax: Number(detail.hoax_percentage),
   };
 
   return (
@@ -84,31 +81,27 @@ export default function HistoryDetailPage() {
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-3xl bg-white border border-orange-200 shadow-lg rounded-2xl p-8"
         >
-          <h1 className="text-3xl font-bold text-orange-600 mb-2">{detail.title || "Untitled"}</h1>
+          {/* Title */}
+          <h1 className="text-3xl font-bold text-orange-600 mb-2">
+            {detail.title || "Untitled"}
+          </h1>
 
           {/* Metadata */}
           <Link href={detail.url} target="_blank" rel="noopener noreferrer" className="mb-6 block">
             <div>
               <p className="text-zinc-500">News Link</p>
-              <p className="font-semibold text-zinc-800">{detail.url || "-"}</p>
+              <p className="font-semibold text-zinc-800 break-words">{detail.url || "-"}</p>
             </div>
           </Link>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-6">
-            {/* <div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm mb-6">
+            <div>
               <p className="text-zinc-500">Topic</p>
-              <p className="font-semibold text-zinc-800">{detail.topic ? "✓" : "-"}</p>
-            </div> */}
-            {/* <div>
-              <p className="text-zinc-500">Topic</p>
-              <p className="font-semibold text-zinc-800">{detail.topic ? "✓" : "-"}</p>
-            </div> */}
+              <p className="font-semibold text-zinc-800">{detail.topic || "-"}</p>
+            </div>
             {/* <div>
               <p className="text-zinc-500">Main Theme</p>
               <p className="font-semibold text-zinc-800">{detail.main_theme || "-"}</p>
-            </div>
-            <div>
-              <p className="text-zinc-500">Sentiment</p>
-              <p className="font-semibold text-zinc-800">{detail.sentiment || "-"}</p>
             </div> */}
             <div>
               <p className="text-zinc-500">Created</p>
@@ -169,27 +162,27 @@ export default function HistoryDetailPage() {
             </div>
           </div>
 
-          {/* 🧠 Facts */}
-          {detail.topic && (
+          {/* 🧠 Fakta (from platform) */}
+          {detail.platform && (
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-blue-600 mb-1">Fakta</h3>
               <p className="text-zinc-700 whitespace-pre-line border-l-4 border-blue-400 pl-3">
-                {detail.topic}
-              </p>
-            </div>
-          )}
-
-          {/* 💬 Opinions */}
-          {detail.platform && (
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold text-yellow-600 mb-1">Opini</h3>
-              <p className="text-zinc-700 whitespace-pre-line border-l-4 border-yellow-400 pl-3">
                 {detail.platform}
               </p>
             </div>
           )}
 
-          {/* 🚫 Hoaxes */}
+          {/* 💬 Opini (from sentiment) */}
+          {detail.sentiment && (
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-yellow-600 mb-1">Opini</h3>
+              <p className="text-zinc-700 whitespace-pre-line border-l-4 border-yellow-400 pl-3">
+                {detail.sentiment}
+              </p>
+            </div>
+          )}
+
+          {/* 🚫 Hoaks (from creator_name) */}
           {detail.creator_name && (
             <div className="mb-8">
               <h3 className="text-lg font-semibold text-red-600 mb-1">Hoaks</h3>
