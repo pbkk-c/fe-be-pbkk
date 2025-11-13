@@ -215,7 +215,7 @@ const handleAnalyze = async () => {
           animate={{ opacity: 1, y: 0 }}
           className="max-w-3xl w-full text-center"
         >
-          <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent drop-shadow-sm mb-6">
+          <h1 className="pb-3 text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent drop-shadow-sm mb-6">
             Fact, Hoax & Opinion Analyzer
           </h1>
           <p className="text-zinc-600 mb-8">
@@ -298,17 +298,17 @@ const handleAnalyze = async () => {
                 <div className="mt-6">
                   <div className="w-full bg-orange-100 h-6 rounded-full overflow-hidden flex">
                     <div
-                      className="bg-blue-500 h-full"
+                      className="bg-blue-800 h-full"
                       style={{ width: `${total.facts}%` }}
                       title={`Fakta ${total.facts}%`}
                     ></div>
                     <div
-                      className="bg-yellow-400 h-full"
+                      className="bg-gray-500 h-full"
                       style={{ width: `${total.opinion}%` }}
                       title={`Opini ${total.opinion}%`}
                     ></div>
                     <div
-                      className="bg-red-500 h-full"
+                      className="bg-red-800 h-full"
                       style={{ width: `${total.hoax}%` }}
                       title={`Hoaks ${total.hoax}%`}
                     ></div>
@@ -316,15 +316,15 @@ const handleAnalyze = async () => {
 
                   <div className="flex justify-between mt-3 text-sm text-zinc-600 font-medium">
                     <div className="flex items-center gap-2">
-                      <span className="inline-block w-3 h-3 rounded-full bg-blue-500"></span>
+                      <span className="inline-block w-3 h-3 rounded-full bg-blue-800"></span>
                       <span>Fakta: {total.facts}%</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="inline-block w-3 h-3 rounded-full bg-yellow-400"></span>
+                      <span className="inline-block w-3 h-3 rounded-full bg-gray-500"></span>
                       <span>Opini: {total.opinion}%</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="inline-block w-3 h-3 rounded-full bg-red-500"></span>
+                      <span className="inline-block w-3 h-3 rounded-full bg-red-800"></span>
                       <span>Hoaks: {total.hoax}%</span>
                     </div>
                   </div>
