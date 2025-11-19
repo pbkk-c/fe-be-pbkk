@@ -892,6 +892,8 @@ def parse_paren(source, info):
         if ch == "&":
             # (?&...: a call to a named group.
             return parse_call_named_group(source, info, saved_pos_2)
+        if (ch == "+" or ch == "-") and source.peek() in DIGITS:
+            return parse_rel_call_group(source, info, ch, saved_pos_2)
 
         # (?...: probably a flags subpattern.
         source.pos = saved_pos_2
@@ -1089,6 +1091,21 @@ def parse_call_group(source, info, ch, pos):
         group = "0"
     else:
         group = ch + source.get_while(DIGITS)
+
+    source.expect(")")
+
+    return CallGroup(info, group, pos)
+
+def parse_rel_call_group(source, info, ch, pos):
+    "Parses a relative call to a group."
+    digits = source.get_while(DIGITS)
+    if not digits:
+        raise error("missing relative group number", source.string, source.pos)
+
+    offset = int(digits)
+    group = info.group_count + offset if ch == "+" else info.group_count - offset + 1
+    if group <= 0:
+        raise error("invalid relative group number", source.string, source.pos)
 
     source.expect(")")
 
@@ -4091,6 +4108,30 @@ class Source:
         self.pos = 0
         self.ignore_space = False
         self.sep = string[ : 0]
+
+    def peek(self, override_ignore=False):
+        string = self.string
+        pos = self.pos
+
+        try:
+            if self.ignore_space and not override_ignore:
+                while True:
+                    if string[pos].isspace():
+                        # Skip over the whitespace.
+                        pos += 1
+                    elif string[pos] == "#":
+                        # Skip over the comment to the end of the line.
+                        pos = string.index("\n", pos)
+                    else:
+                        break
+
+            return string[pos]
+        except IndexError:
+            # We've reached the end of the string.
+            return string[ : 0]
+        except ValueError:
+            # The comment extended to the end of the string.
+            return string[ : 0]
 
     def get(self, override_ignore=False):
         string = self.string

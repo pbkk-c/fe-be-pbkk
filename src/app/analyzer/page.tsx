@@ -6,205 +6,189 @@ import Footer from "../layouts/Footer";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2 } from "lucide-react";
 
-interface User {
-  id: string;
-  email: string;
-  created_at: string;
-  user_metadata?: {
-    full_name?: string;
-    avatar_url?: string;
-  };
-}
-
+// --- TYPES ---
 interface SectionData {
   percentage: number;
   reason: string;
   supporting_factors: string[];
 }
 
-interface AnalysisData {
-  analysis?: {
-    Facts?: SectionData;
-    Opinion?: SectionData;
-    Hoax?: SectionData;
-  };
-  summary_statement?: string;
-  topic?: string;
+// The structure inside 'raw_analysis_json'
+interface AnalysisStructure {
+  Facts?: SectionData;
+  Opinion?: SectionData;
+  Hoax?: SectionData;
 }
 
-interface LocalAnalysisData {
+// The data returned from Python 'data' field
+interface PythonAnalysisResult {
+  title: string;
+  topic: string;
   summary: string;
   fact_percentage: number;
   opinion_percentage: number;
   hoax_percentage: number;
-  main_theme: string;
-  sentiment: string;
-  raw_analysis_json?: AnalysisData;
-  topic?: string;
-  title?: string;
+  raw_analysis_json: {
+    topic: string;
+    analysis: AnalysisStructure;
+    summary_statement: string;
+  };
+}
+
+interface User {
+  id: string;
+  email: string;
 }
 
 export default function AnalyzePage() {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<AnalysisData | null>(null);
+  
+  // Result holds the nested structure for display
+  const [result, setResult] = useState<{ analysis: AnalysisStructure; summary: string } | null>(null);
+  
   const [logs, setLogs] = useState<string[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [progress, setProgress] = useState(0);
   const [progressDesc, setProgressDesc] = useState("");
   const [outputLang, setOutputLang] = useState<"ID" | "EN">("ID");
+  const [percentages, setPercentages] = useState({ facts: 0, opinion: 0, hoax: 0 });
 
+  // 1. Fetch User on Mount
   useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem("token");
-      console.log("🔍 Token saat fetch user:", token);
+      if (!token) return;
 
-      if (!token) return setLoading(false);
-
-      const res = await fetch("/api/me", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        console.log("✅ User data:", data);
-        setUser(data);
-      } else {
-        console.error("❌ Failed to fetch user");
+      try {
+        const res = await fetch("/api/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data);
+        }
+      } catch (e) {
+        console.error("Failed to fetch user", e);
       }
-      setLoading(false);
     };
     fetchUser();
   }, []);
 
-const handleAnalyze = async () => {
-  if (!url.trim()) return alert("Masukkan URL berita!");
+  // 2. Main Analyze Function
+  const handleAnalyze = async () => {
+    if (!url.trim()) return alert("Masukkan URL berita!");
 
-  setLoading(true);
-  setResult(null);
-  setLogs([]);
-  setProgress(0);
-  setProgressDesc("Memulai analisis...");
+    setLoading(true);
+    setResult(null);
+    setLogs([]);
+    setProgress(0);
+    setProgressDesc("Menghubungkan ke Local AI...");
 
-  const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-  try {
-    setProgress(10);
-    setProgressDesc("Mengirim URL ke API...");
+    try {
+      // --- STEP A: Call Next.js API (which calls Python) ---
+      setProgress(10);
+      setProgressDesc("Mengirim URL ke AI...");
 
-    const res = await fetch("/api/analyze", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(token && { Authorization: `Bearer ${token}` }),
-      },
-      body: JSON.stringify({ url, language: outputLang }),
-    });
-
-    setProgress(40);
-    setProgressDesc("Menunggu hasil analisis dari AI...");
-
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || "Gagal menghubungi server analisis.");
-    }
-
-    const response = await res.json();
-    const localData: { success: boolean; data: LocalAnalysisData } = response;
-
-    if (!localData.success || !localData.data)
-      throw new Error("Data analisis tidak valid.");
-
-    const raw = localData.data.raw_analysis_json;
-    const analysisDataFromDB = raw ?? {
-      summary_statement: localData.data.summary,
-      topic: localData.data.main_theme || "Umum",
-      analysis: {
-        Facts: { percentage: localData.data.fact_percentage, reason: "", supporting_factors: [] },
-        Opinion: { percentage: localData.data.opinion_percentage, reason: "", supporting_factors: [] },
-        Hoax: { percentage: localData.data.hoax_percentage, reason: "", supporting_factors: [] },
-      },
-    };
-
-    setProgress(85);
-    setProgressDesc("Analisis selesai. Menyimpan hasil...");
-
-    if (token) {
-      // 🔥 Ambil dan join data supporting_factors jadi string
-      const platformData =
-        analysisDataFromDB.analysis?.Facts?.supporting_factors?.join("; ") || "";
-      const publishedAtData =
-        analysisDataFromDB.analysis?.Opinion?.supporting_factors?.join("; ") || "";
-      const creatorNameData =
-        analysisDataFromDB.analysis?.Hoax?.supporting_factors?.join("; ") || "";
-
-      // 🔥 Pastikan topic diambil dari response AI
-      const topicData =
-        analysisDataFromDB.topic || localData.data.topic || localData.data.main_theme || "Umum";
-
-      // 🔥 Kirim ke backend
-      const payload = {
-        url,
-        title: localData.data.title || localData.data.main_theme || "Untitled",
-        raw_text: localData.data.summary,
-        main_theme: topicData,
-        summary: localData.data.summary,
-        fact_percentage: localData.data.fact_percentage,
-        opinion_percentage: localData.data.opinion_percentage,
-        hoax_percentage: localData.data.hoax_percentage,
-        sentiment: localData.data.sentiment,
-        raw_analysis_json: analysisDataFromDB,
-
-        // ✅ Data dari supporting_factors
-        platform: platformData,
-        published_at: publishedAtData,
-        creator_name: creatorNameData,
-        topic: topicData,
-      };
-
-      console.log("📦 Payload ke /api/saveanalyze:", payload);
-
-      const saveRes = await fetch("/api/saveanalyze", {
+      const res = await fetch("/api/analyze", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url, language: outputLang }),
       });
 
-      if (!saveRes.ok) {
-        const saveErr = await saveRes.json();
-        throw new Error(saveErr.message || saveErr.error);
+      setProgress(50);
+      setProgressDesc("AI sedang membaca & menganalisis...");
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Gagal menghubungi server analisis.");
       }
 
-      const saveData = await saveRes.json();
-      console.log("✅ Data berhasil disimpan:", saveData);
-      setLogs((prev) => [...prev, "✅ Analisis berhasil disimpan ke database."]);
-    } else {
-      setLogs((prev) => [...prev, "⚠️ Anda belum login, data tidak disimpan."]);
+      const responseWrapper = await res.json();
+      // Expecting: { success: true, data: { ...PythonAnalysisResult... } }
+      
+      if (!responseWrapper.success || !responseWrapper.data) {
+        throw new Error("Format data AI tidak valid.");
+      }
+
+      const aiData: PythonAnalysisResult = responseWrapper.data;
+
+      // --- STEP B: Update UI State ---
+      setProgress(80);
+      setProgressDesc("Memproses hasil...");
+
+      // Set the bars
+      setPercentages({
+        facts: aiData.fact_percentage,
+        opinion: aiData.opinion_percentage,
+        hoax: aiData.hoax_percentage
+      });
+
+      // Set the text content (Using raw_analysis_json for deep details)
+      setResult({
+        analysis: aiData.raw_analysis_json.analysis,
+        summary: aiData.summary
+      });
+
+      // --- STEP C: Save to Database (If Logged In) ---
+      if (token) {
+        setProgressDesc("Menyimpan ke riwayat...");
+        
+        const deepAnalysis = aiData.raw_analysis_json.analysis;
+
+        // Prepare payload for your Backend
+        const payload = {
+          url,
+          title: aiData.title || "Untitled News",
+          raw_text: aiData.summary,
+          main_theme: aiData.topic, // Mapping Python 'topic' to DB 'main_theme'
+          summary: aiData.summary,
+          
+          fact_percentage: aiData.fact_percentage,
+          opinion_percentage: aiData.opinion_percentage,
+          hoax_percentage: aiData.hoax_percentage,
+          
+          // Keep specific JSON for detailed view later
+          raw_analysis_json: aiData.raw_analysis_json, 
+
+          // Flatten arrays to strings for DB compatibility
+          platform: deepAnalysis.Facts?.supporting_factors?.join("; ") || "",
+          published_at: deepAnalysis.Opinion?.supporting_factors?.join("; ") || "",
+          creator_name: deepAnalysis.Hoax?.supporting_factors?.join("; ") || "",
+          topic: aiData.topic,
+        };
+
+        console.log("📦 Saving Payload:", payload);
+
+        const saveRes = await fetch("/api/saveanalyze", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (saveRes.ok) {
+          setLogs(prev => [...prev, "✅ Tersimpan di riwayat"]);
+        } else {
+          console.warn("Gagal menyimpan ke DB");
+        }
+      }
+
+      setProgress(100);
+      setProgressDesc("Selesai!");
+
+    } catch (err: any) {
+      console.error("❌ Error:", err);
+      alert(`Gagal: ${err.message}`);
+      setProgressDesc("Terjadi kesalahan.");
+    } finally {
+      setLoading(false);
     }
-
-    setResult(analysisDataFromDB);
-    setProgress(100);
-    setProgressDesc("Selesai!");
-  } catch (err: any) {
-    console.error("❌ Error:", err);
-    alert(`Gagal: ${err.message}`);
-  } finally {
-    setLoading(false);
-  }
-};
-
-
-  const getTotalPercentages = () => {
-    const facts = result?.analysis?.Facts?.percentage || 0;
-    const opinion = result?.analysis?.Opinion?.percentage || 0;
-    const hoax = result?.analysis?.Hoax?.percentage || 0;
-    return { facts, opinion, hoax };
   };
-
-  const total = getTotalPercentages();
 
   return (
     <>
@@ -216,34 +200,33 @@ const handleAnalyze = async () => {
           className="max-w-3xl w-full text-center"
         >
           <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent drop-shadow-sm mb-6">
-            Fact, Hoax & Opinion Analyzer
+            Senopati AI Analyzer
           </h1>
           <p className="text-zinc-600 mb-8">
-            Masukkan URL berita untuk memeriksa sejauh mana artikel tersebut mengandung fakta,
-            opini, atau hoaks menggunakan AI.
+            Analisis berita menggunakan Local AI (Qwen 2.5) untuk mendeteksi Fakta, Opini, dan Hoaks.
           </p>
 
-          {/* Pilihan Bahasa + Input URL */}
+          {/* Inputs */}
           <div className="flex flex-col md:flex-row gap-4 mb-6 items-center">
             <select
               value={outputLang}
               onChange={(e) => setOutputLang(e.target.value as "ID" | "EN")}
-              className="w-full md:w-60 border border-orange-300 bg-white rounded-md px-3 py-2 text-zinc-800 focus:outline-none focus:ring-2 focus:ring-orange-400"
+              className="w-full md:w-32 border border-orange-300 bg-white rounded-md px-3 py-3 text-zinc-800 focus:ring-2 focus:ring-orange-400"
             >
-              <option value="ID">Indonesia</option>
-              <option value="EN">English</option>
+              <option value="ID">🇮🇩 Indo</option>
+              <option value="EN">🇬🇧 Eng</option>
             </select>
 
             <input
               type="text"
-              placeholder="Masukkan URL berita..."
+              placeholder="Tempel link berita di sini..."
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              className="flex-1 border border-orange-300 bg-white rounded-md px-3 py-2 text-zinc-800 focus:outline-none focus:ring-2 focus:ring-orange-400"
+              className="flex-1 border border-orange-300 bg-white rounded-md px-4 py-3 text-zinc-800 focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-sm"
             />
           </div>
 
-          {/* Tombol & Progress */}
+          {/* Action Button */}
           <div className="w-full space-y-3">
             <button
               onClick={handleAnalyze}
@@ -251,34 +234,34 @@ const handleAnalyze = async () => {
               className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-md w-full ${
                 loading
                   ? "bg-orange-200 text-orange-700 cursor-not-allowed"
-                  : "bg-orange-500 hover:bg-orange-400 text-white"
+                  : "bg-orange-500 hover:bg-orange-600 text-white hover:shadow-lg"
               }`}
             >
               {loading ? (
                 <div className="flex items-center justify-center gap-2">
-                  <Loader2 className="animate-spin w-5 h-5" /> Menganalisis...
+                  <Loader2 className="animate-spin w-5 h-5" /> {progressDesc}
                 </div>
               ) : (
-                "Analisis Sekarang"
+                "Mulai Analisis AI"
               )}
             </button>
 
+            {/* Progress Bar */}
             {loading && (
               <div className="w-full mt-3">
                 <div className="w-full h-2 bg-orange-200 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-orange-500 transition-all duration-300"
-                    style={{ width: `${progress}%` }}
-                  ></div>
-                </div>
-                <div className="flex justify-between text-sm text-zinc-500 mt-1">
-                  <span>{progressDesc}</span>
+                  <motion.div
+                    className="h-full bg-orange-500"
+                    initial={{ width: "0%" }}
+                    animate={{ width: `${progress}%` }}
+                    transition={{ duration: 0.5 }}
+                  />
                 </div>
               </div>
             )}
           </div>
 
-          {/* Hasil Analisis */}
+          {/* Results Display */}
           <AnimatePresence>
             {result && (
               <motion.div
@@ -286,65 +269,74 @@ const handleAnalyze = async () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="mt-10 bg-white border border-orange-200 p-6 rounded-2xl shadow-lg text-left space-y-6"
+                className="mt-10 bg-white border border-orange-200 p-6 rounded-2xl shadow-xl text-left space-y-6"
               >
-                <h2 className="text-2xl font-bold text-orange-500 mb-4">🧾 Hasil Analisis</h2>
+                <h2 className="text-2xl font-bold text-zinc-800 border-b pb-2">📊 Hasil Analisis</h2>
 
-                <p className="text-zinc-700 whitespace-pre-wrap leading-relaxed">
-                  {result.summary_statement}
-                </p>
+                <div className="bg-orange-50 p-4 rounded-lg border border-orange-100">
+                  <p className="text-zinc-700 leading-relaxed font-medium">
+                    {result.summary}
+                  </p>
+                </div>
 
-                {/* Bar Kombinasi */}
+                {/* Percentage Bars */}
                 <div className="mt-6">
-                  <div className="w-full bg-orange-100 h-6 rounded-full overflow-hidden flex">
-                    <div
-                      className="bg-blue-500 h-full"
-                      style={{ width: `${total.facts}%` }}
-                      title={`Fakta ${total.facts}%`}
-                    ></div>
-                    <div
-                      className="bg-yellow-400 h-full"
-                      style={{ width: `${total.opinion}%` }}
-                      title={`Opini ${total.opinion}%`}
-                    ></div>
-                    <div
-                      className="bg-red-500 h-full"
-                      style={{ width: `${total.hoax}%` }}
-                      title={`Hoaks ${total.hoax}%`}
-                    ></div>
+                  <div className="w-full bg-zinc-100 h-8 rounded-full overflow-hidden flex border border-zinc-200 shadow-inner">
+                    <div style={{ width: `${percentages.facts}%` }} className="bg-blue-500 h-full transition-all duration-1000" />
+                    <div style={{ width: `${percentages.opinion}%` }} className="bg-yellow-400 h-full transition-all duration-1000" />
+                    <div style={{ width: `${percentages.hoax}%` }} className="bg-red-500 h-full transition-all duration-1000" />
                   </div>
 
-                  <div className="flex justify-between mt-3 text-sm text-zinc-600 font-medium">
-                    <div className="flex items-center gap-2">
-                      <span className="inline-block w-3 h-3 rounded-full bg-blue-500"></span>
-                      <span>Fakta: {total.facts}%</span>
+                  <div className="flex justify-between mt-3 text-sm font-bold">
+                    <div className="flex items-center gap-2 text-blue-600">
+                      <span className="w-3 h-3 rounded-full bg-blue-500"></span>
+                      Fakta: {percentages.facts}%
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className="inline-block w-3 h-3 rounded-full bg-yellow-400"></span>
-                      <span>Opini: {total.opinion}%</span>
+                    <div className="flex items-center gap-2 text-yellow-600">
+                      <span className="w-3 h-3 rounded-full bg-yellow-400"></span>
+                      Opini: {percentages.opinion}%
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className="inline-block w-3 h-3 rounded-full bg-red-500"></span>
-                      <span>Hoaks: {total.hoax}%</span>
+                    <div className="flex items-center gap-2 text-red-600">
+                      <span className="w-3 h-3 rounded-full bg-red-500"></span>
+                      Hoaks: {percentages.hoax}%
                     </div>
                   </div>
                 </div>
 
-                {/* Penjelasan Tiap Bagian */}
-                <div className="mt-6 space-y-4">
-                  {Object.entries(result.analysis ?? {}).map(([key, section]) => (
-                    <div key={key}>
-                      <h3 className="text-lg font-semibold text-orange-600 mb-1">{key}</h3>
-                      <p className="text-zinc-600 text-sm">{section.reason}</p>
-                      {section.supporting_factors?.length > 0 && (
-                        <ul className="list-disc list-inside text-zinc-500 text-sm mt-2 space-y-1">
-                          {section.supporting_factors.map((f, i) => (
-                            <li key={i}>{f}</li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                  ))}
+                {/* Detailed Breakdown */}
+                <div className="grid gap-6 md:grid-cols-1 mt-8">
+                  {/* Facts */}
+                  <div className="border-l-4 border-blue-500 pl-4 py-1">
+                    <h3 className="text-lg font-bold text-blue-600">Fakta</h3>
+                    <p className="text-sm text-zinc-600 mb-2">{result.analysis.Facts?.reason}</p>
+                    <ul className="list-disc list-inside text-xs text-zinc-500">
+                      {result.analysis.Facts?.supporting_factors?.map((f, i) => (
+                        <li key={i}>{f}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Opinion */}
+                  <div className="border-l-4 border-yellow-400 pl-4 py-1">
+                    <h3 className="text-lg font-bold text-yellow-600">Opini</h3>
+                    <p className="text-sm text-zinc-600 mb-2">{result.analysis.Opinion?.reason}</p>
+                    <ul className="list-disc list-inside text-xs text-zinc-500">
+                      {result.analysis.Opinion?.supporting_factors?.map((f, i) => (
+                        <li key={i}>{f}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Hoax */}
+                  <div className="border-l-4 border-red-500 pl-4 py-1">
+                    <h3 className="text-lg font-bold text-red-600">Hoaks</h3>
+                    <p className="text-sm text-zinc-600 mb-2">{result.analysis.Hoax?.reason}</p>
+                    <ul className="list-disc list-inside text-xs text-zinc-500">
+                      {result.analysis.Hoax?.supporting_factors?.map((f, i) => (
+                        <li key={i}>{f}</li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </motion.div>
             )}
