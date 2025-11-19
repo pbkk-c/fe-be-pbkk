@@ -115,19 +115,19 @@ export default function NewsDetailPage() {
             className="bg-blue-800 h-full text-[10px] font-semibold flex items-center justify-center text-white"
             style={{ width: `${analysis.fact_percentage}%` }}
           >
-            {analysis.fact_percentage > 5 && `Facts ${analysis.fact_percentage}%`}
+            {analysis.fact_percentage >= 20 ? `Facts ${analysis.fact_percentage}%` : analysis.fact_percentage >= 5 ? `${analysis.fact_percentage}%` : null}
           </div>
           <div
             className="bg-gray-500 h-full text-[10px] font-semibold flex items-center justify-center text-white"
             style={{ width: `${analysis.opinion_percentage}%` }}
           >
-            {analysis.opinion_percentage > 5 && `Opinion ${analysis.opinion_percentage}%`}
+            {analysis.opinion_percentage >= 25  ? `Opinion ${analysis.opinion_percentage}%` : analysis.opinion_percentage >= 5  ? `${analysis.opinion_percentage}%` : null}
           </div>
           <div
             className="bg-red-800 h-full text-[10px] font-semibold flex items-center justify-center text-white"
             style={{ width: `${analysis.hoax_percentage}%` }}
           >
-            {analysis.hoax_percentage > 5 && `Hoax ${analysis.hoax_percentage}%`}
+            {analysis.hoax_percentage >= 15 ? `Hoax ${analysis.hoax_percentage}%` : analysis.hoax_percentage >= 5 ? `${analysis.hoax_percentage}%` : null}
           </div>
         </div>
         {/* Article Text */}
