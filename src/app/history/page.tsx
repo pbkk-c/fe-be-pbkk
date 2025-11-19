@@ -197,7 +197,7 @@ export default function HistoryPage() {
 
             <div className="text-center mt-12">
               <a
-                href="/profile"
+                href="/xenotimes/profile"
                 className="inline-block bg-gradient-to-r from-amber-500 to-orange-600 hover:opacity-90 text-white font-semibold px-6 py-3 rounded-xl transition-all shadow-md"
               >
                 ← Kembali ke Profil

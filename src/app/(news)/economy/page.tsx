@@ -59,7 +59,7 @@ export default function PoliticsPage() {
         {featured ? (
           <HeroCard
             cards={politicalNews.slice(0, 10).map((item) => ({
-              href: `/news/${item.id}`,
+              href: `/xenotimes/news/${item.id}`,
               category: item.topic ?? "Economy",
               title: item.title ?? "",
               description: item.raw_text?.slice(0, 120) ?? "",
