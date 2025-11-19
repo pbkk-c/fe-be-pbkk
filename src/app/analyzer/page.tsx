@@ -200,10 +200,10 @@ export default function AnalyzePage() {
           className="max-w-3xl w-full text-center"
         >
           <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent drop-shadow-sm mb-6">
-            Senopati AI Analyzer
+            AI News Analyzer
           </h1>
           <p className="text-zinc-600 mb-8">
-            Analisis berita menggunakan Local AI (Qwen 2.5) untuk mendeteksi Fakta, Opini, dan Hoaks.
+            Analyze news to detect Facts, Opinions, and Hoaxes using AI.
           </p>
 
           {/* Inputs */}
