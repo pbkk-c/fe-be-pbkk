@@ -8,6 +8,7 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  assetPrefix: "/xenotimes",
   eslint: {
     ignoreDuringBuilds: true,
   },

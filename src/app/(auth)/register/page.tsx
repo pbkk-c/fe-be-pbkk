@@ -215,7 +215,7 @@ export default function RegisterForm() {
         {/* Footer */}
         <Typography as="p" variant="c1" className="mt-6 text-center text-gray-600 text-sm">
           Sudah punya akun?{" "}
-          <UnstyledLink href="/login" className="font-semibold text-orange-600 hover:underline">
+          <UnstyledLink href="/xenotimes/login" className="font-semibold text-orange-600 hover:underline">
             Masuk Sekarang
           </UnstyledLink>
         </Typography>

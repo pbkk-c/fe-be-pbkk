@@ -104,7 +104,7 @@ export default function ProfilePage() {
 
               <div className="mt-8 flex flex-col sm:flex-row gap-3">
                 <Link
-                  href="/history"
+                  href="/xenotimes/history"
                   className="w-full sm:w-1/2 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-500 transition text-center font-medium"
                 >
                   Riwayat Aktivitas
@@ -112,7 +112,7 @@ export default function ProfilePage() {
                 <button
                   onClick={() => {
                     localStorage.removeItem("token");
-                    window.location.href = "/login";
+                    window.location.href = "/xenotimes/login";
                   }}
                   className="w-full sm:w-1/2 py-2 bg-white border border-red-500 text-red-500 rounded-lg hover:bg-red-700 hover:text-white transition font-medium"
                 >

@@ -42,7 +42,7 @@ export default function LoginForm() {
       if (result.token) localStorage.setItem("token", result.token);
       toast.success(result.message || "Login success!");
 
-      setTimeout(() => router.push("/profile"), 2000);
+      setTimeout(() => router.push("/xenotimes/profile"), 2000);
     } catch (error: any) {
       toast.error(error.message || "Something went wrong");
     } finally {
@@ -186,7 +186,7 @@ export default function LoginForm() {
         {/* Footer */}
         <Typography as="p" variant="c1" className="mt-6 text-center text-gray-600 text-sm">
           Belum punya akun?{" "}
-          <UnstyledLink href="/register" className="font-semibold text-orange-600 hover:underline">
+          <UnstyledLink href="/xenotimes/register" className="font-semibold text-orange-600 hover:underline">
             Daftar Sekarang
           </UnstyledLink>
         </Typography>
