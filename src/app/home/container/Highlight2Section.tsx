@@ -18,7 +18,7 @@ export default function Highlight2Section() {
   useEffect(() => {
     const fetchHighlight2 = async () => {
       try {
-        const res = await fetch("/api/content");
+        const res = await fetch("/api/xenotimes/content");
         if (!res.ok) throw new Error("Failed to fetch content");
 
         const data: Content[] = await res.json();
@@ -82,7 +82,7 @@ export default function Highlight2Section() {
     >
       {/* Bagian kiri: gambar */}
       <UnstyledLink
-        href={`/news/${content.id}`}
+        href={`/xenotimes/news/${content.id}`}
         className="group relative w-full md:w-1/2 h-[400px] sm:h-[480px] lg:h-[560px] rounded-3xl overflow-hidden shadow-xl transition-transform duration-700 hover:scale-[1.03]"
       >
         <Image

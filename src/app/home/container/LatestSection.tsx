@@ -15,7 +15,7 @@ export default function LatestSection() {
   useEffect(() => {
     const fetchContents = async () => {
       try {
-        const res = await fetch("/api/content");
+        const res = await fetch("/api/xenotimes/content");
         if (!res.ok) throw new Error("Failed to fetch contents");
 
         const data: Content[] = await res.json();
@@ -71,7 +71,7 @@ export default function LatestSection() {
             description={item.raw_text?.slice(0, 100) ?? ""}
             image={item.url ?? "/img/home/hero-1.png"}
             category={item.topic ?? ""}
-            href={`/news/${item.id}`}
+            href={`/xenotimes/news/${item.id}`}
           />
         ))}
       </div>

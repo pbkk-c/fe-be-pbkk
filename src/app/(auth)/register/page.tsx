@@ -23,7 +23,7 @@ export default function RegisterForm() {
   const onSubmit = async (data: RegisterType) => {
     try {
       setLoading(true);
-      const res = await fetch("/api/register", {
+      const res = await fetch("/api/xenotimes/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -35,7 +35,7 @@ export default function RegisterForm() {
         return;
       }
       toast.success(result.message || "Register success!");
-      setTimeout(() => router.push("/login"), 2000);
+      setTimeout(() => router.push("/xenotimes/login"), 2000);
     } catch (error: any) {
       toast.error(error.message || "Something went wrong");
     } finally {

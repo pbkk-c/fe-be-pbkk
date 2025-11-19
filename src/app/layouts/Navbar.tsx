@@ -8,11 +8,11 @@ import clsx from "clsx";
 import { useRouter } from "next/navigation";
 
 const navItems = [
-  { label: "Home", href: "/" },
-  { label: "Politic", href: "/politic" },
-  { label: "Economy", href: "/economy" },
-  { label: "Science", href: "/science" },
-  { label: "Sports", href: "/sports" },
+  { label: "Home", href: "/xenotimes" },
+  { label: "Politic", href: "/xenotimes/politic" },
+  { label: "Economy", href: "/xenotimes/economy" },
+  { label: "Science", href: "/xenotimes/science" },
+  { label: "Sports", href: "/xenotimes/sports" },
 ];
 
 export default function Navbar() {
@@ -59,7 +59,7 @@ export default function Navbar() {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
     setUser(null);
-    router.push("/login");
+    router.push("/xenotimes/login");
   };
 
   return (
@@ -99,7 +99,7 @@ export default function Navbar() {
           {isLoggedIn ? (
             <>
               <Link
-                href="/profile"
+                href="/xenotimes/profile"
                 className="bg-amber-500 text-black px-4 py-2 rounded-lg font-semibold hover:bg-amber-400 transition-all"
               >
                 Profile
@@ -114,13 +114,13 @@ export default function Navbar() {
           ) : (
             <>
               <Link
-                href="/register"
+                href="/xenotimes/register"
                 className="px-4 py-1.5 rounded-md border border-amber-500 text-amber-400 hover:bg-amber-500 hover:text-black transition-all duration-300 shadow-[0_0_8px_rgba(251,191,36,0.4)]"
               >
                 Register
               </Link>
               <Link
-                href="/login"
+                href="/xenotimes/login"
                 className="px-4 py-1.5 rounded-md bg-amber-500 text-black font-semibold hover:bg-amber-400 transition-all duration-300"
               >
                 Login
@@ -166,7 +166,7 @@ export default function Navbar() {
             {isLoggedIn ? (
               <>
                 <Link
-                  href="/profile"
+                  href="/xenotimes/profile"
                   onClick={() => setIsOpen(false)}
                   className="text-center bg-amber-500 text-black font-semibold py-2 rounded-lg hover:bg-amber-400 transition"
                 >
@@ -185,14 +185,14 @@ export default function Navbar() {
             ) : (
               <>
                 <Link
-                  href="/register"
+                  href="/xenotimes/register"
                   onClick={() => setIsOpen(false)}
                   className="text-center border border-amber-500 text-amber-400 font-semibold py-2 rounded-lg hover:bg-amber-500 hover:text-black transition-all duration-300 shadow-[0_0_8px_rgba(251,191,36,0.4)]"
                 >
                   Register
                 </Link>
                 <Link
-                  href="/login"
+                  href="/xenotimes/login"
                   onClick={() => setIsOpen(false)}
                   className="text-center bg-amber-500 text-black font-semibold py-2 rounded-lg hover:bg-amber-400 transition-all duration-300"
                 >

@@ -36,7 +36,7 @@ export default function HistoryPage() {
           return;
         }
 
-        const res = await fetch("/api/history", {
+        const res = await fetch("/api/xenotimes/history", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -114,7 +114,7 @@ export default function HistoryPage() {
                           boxShadow: "0px 10px 25px rgba(255,165,0,0.2)",
                         }}
                         className="bg-white/90 backdrop-blur-md rounded-2xl shadow-sm border border-orange-200 hover:shadow-lg transition-all duration-300 p-6 cursor-pointer"
-                        onClick={() => router.push(`/history/${item.id}`)}
+                        onClick={() => router.push(`/xenotimes/history/${item.id}`)}
                       >
                         {/* Header Section */}
                         <div className="flex justify-between items-start mb-3">

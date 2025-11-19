@@ -1,11 +1,10 @@
 import Link from "next/link";
 
 const categories = [
-  { label: "Politics", href: "/politics" },
-  { label: "World", href: "/world" },
-  { label: "Economy", href: "/economy" },
-  { label: "Science", href: "/science" },
-  { label: "Sports", href: "/sports" },
+  { label: "Politics", href: "/xenotimes/politic" },
+  { label: "Economy", href: "/xenotimes/economy" },
+  { label: "Science", href: "/xenotimes/science" },
+  { label: "Sports", href: "/xenotimes/sports" },
 ];
 
 export default function Footer() {
@@ -42,7 +41,7 @@ export default function Footer() {
           <h3 className="mb-3 text-lg font-semibold text-white">Contact</h3>
           <ul className="space-y-2 text-sm text-gray-400">
             <li>Email: contact@xenotimes.com</li>
-            <li>Address: Jakarta, Indonesia</li>
+            <li>Address: Surabaya, Indonesia</li>
           </ul>
         </div>
       </div>
