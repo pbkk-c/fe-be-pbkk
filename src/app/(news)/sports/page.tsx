@@ -19,7 +19,7 @@ export default function PoliticsPage() {
   useEffect(() => {
     const fetchContents = async () => {
       try {
-        const res = await fetch("/api/content");
+        const res = await fetch("/api/xenotimes/content");
         if (!res.ok) throw new Error("Failed to fetch contents");
         const data: Content[] = await res.json();
         setContents(data);

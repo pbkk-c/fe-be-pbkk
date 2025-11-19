@@ -72,7 +72,7 @@ export default function EconomySection() {
   useEffect(() => {
     const fetchContents = async () => {
       try {
-        const res = await fetch("/api/content");
+        const res = await fetch("/api/xenotimes/content");
         if (!res.ok) throw new Error("Failed to fetch contents");
 
         const data: Content[] = await res.json();
@@ -116,7 +116,7 @@ export default function EconomySection() {
                 <NewsCard
                   key={item.id}
                   title={item.title ?? ""}
-                  href={`news/${item.id}`}
+                  href={`/xenotimes/news/${item.id}`}
                   image={item.url ?? "/img/home/hero-1.png"}
                   facts={item.analyses?.[0]?.fact_percentage ?? 0}
                   opinion={item.analyses?.[0]?.opinion_percentage ?? 0}
@@ -143,7 +143,7 @@ export default function EconomySection() {
               key={item.id}
               title={item.title ?? ""}
               image={item.url ?? "/img/home/hero-1.png"}
-              href={`news/${item.id}`}
+              href={`/xenotimes/news/${item.id}`}
               facts={item.analyses?.[0]?.fact_percentage ?? 0}
               opinion={item.analyses?.[0]?.opinion_percentage ?? 0}
               hoax={item.analyses?.[0]?.hoax_percentage ?? 0}

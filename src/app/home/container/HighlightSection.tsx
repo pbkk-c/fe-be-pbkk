@@ -17,7 +17,7 @@ export default function HighlightSection() {
   useEffect(() => {
     const fetchHighlight = async () => {
       try {
-        const res = await fetch("/api/content");
+        const res = await fetch("/api/xenotimes/content");
         if (!res.ok) throw new Error("Failed to fetch content");
 
         const data: Content[] = await res.json();
@@ -80,7 +80,7 @@ export default function HighlightSection() {
       className="relative min-h-[800px] md:min-h-screen bg-black w-full overflow-hidden shadow-xl"
     >
       <UnstyledLink
-        href={`/news/${content.id}`}
+        href={`/xenotimes/news/${content.id}`}
         className="group relative block h-[800px] md:h-full w-full transition-transform duration-700 hover:scale-[1.01]"
       >
         {/* Background image */}

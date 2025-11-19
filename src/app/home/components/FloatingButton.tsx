@@ -18,7 +18,7 @@ export default function FloatingAIButton() {
     >
       {/* Tombol utama */}
       <motion.button
-        onClick={() => router.push("/analyzer")}
+        onClick={() => router.push("/xenotimes/analyzer")}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         whileHover={{ scale: 1.1 }}
