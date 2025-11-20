@@ -35,7 +35,7 @@ export default function ProfilePage() {
         return;
       }
 
-      const res = await fetch("/api/xenotimes/me", {
+      const res = await fetch("/xenotimes/api/xenotimes/me", {
         headers: { Authorization: `Bearer ${token}` },
       });
 

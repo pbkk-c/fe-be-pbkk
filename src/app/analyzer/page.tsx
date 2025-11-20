@@ -61,7 +61,7 @@ export default function AnalyzePage() {
       if (!token) return;
 
       try {
-        const res = await fetch("/api/xenotimes/me", {
+        const res = await fetch("/xenotimes/api/xenotimes/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.ok) {
@@ -92,7 +92,7 @@ export default function AnalyzePage() {
       setProgress(10);
       setProgressDesc("Mengirim URL ke AI...");
 
-      const res = await fetch("/api/xenotimes/analyze", {
+      const res = await fetch("/xenotimes/api/xenotimes/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url, language: outputLang }),
@@ -162,7 +162,7 @@ export default function AnalyzePage() {
 
         console.log("📦 Saving Payload:", payload);
 
-        const saveRes = await fetch("/api/xenotimes/saveanalyze", {
+        const saveRes = await fetch("/xenotimes/api/xenotimes/saveanalyze", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

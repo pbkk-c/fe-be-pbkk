@@ -23,7 +23,7 @@ export default function RegisterForm() {
   const onSubmit = async (data: RegisterType) => {
     try {
       setLoading(true);
-      const res = await fetch("/api/xenotimes/register", {
+      const res = await fetch("/xenotimes/api/xenotimes/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

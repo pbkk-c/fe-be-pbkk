@@ -36,7 +36,7 @@ export default function HistoryPage() {
           return;
         }
 
-        const res = await fetch("/api/xenotimes/history", {
+        const res = await fetch("/xenotimes/api/xenotimes/history", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
