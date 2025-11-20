@@ -53,7 +53,7 @@ export default function NewsDetailPage() {
 
       try {
         setLoading(true);
-        const res = await fetch(`/api/xenotimes/content/${id}`);
+        const res = await fetch(`/xenotimes/api/xenotimes/content/${id}`);
         if (!res.ok) throw new Error(`Failed to fetch content: ${res.status}`);
         const data: ContentDetail = await res.json();
         setContent(data);

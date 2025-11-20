@@ -72,7 +72,7 @@ export default function PoliticsSection() {
   useEffect(() => {
     const fetchContents = async () => {
       try {
-        const res = await fetch("/api/xenotimes/content");
+        const res = await fetch("/xenotimes/api/xenotimes/content");
         if (!res.ok) throw new Error("Failed to fetch contents");
 
         const data: Content[] = await res.json();

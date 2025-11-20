@@ -26,7 +26,7 @@ export default function LoginForm() {
   const onSubmit = async (data: LoginType) => {
     try {
       setLoading(true);
-      const res = await fetch("/api/xenotimes/login", {
+      const res = await fetch("/xenotimes/api/xenotimes/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
