@@ -3,60 +3,6 @@ import { Content } from "@/types/fetchContent";
 import NewsCard from "../components/NewsCard2";
 import BigCard from "../components/BigCard";
 
-const dummyBig = {
-  category: "Sports",
-  title: "Underdog Triumph: Unexpected Victory at the Championship",
-  description: "Against all odds, the underdog team delivered an astonishing performance...",
-  image: "/img/home/news-8.png",
-  facts: 55,
-  opinion: 25,
-  hoax: 20,
-};
-const dummyNews = [
-  {
-    title: "Reliving the Most Iconic Moments on Ice...",
-    image: "/img/home/news-7.png",
-    facts: 50,
-    opinion: 30,
-    hoax: 20,
-  },
-  {
-    title: "From Amateur to Pro: The Journey of Aspiring Boxers",
-    image: "/img/home/news-3.png",
-    facts: 20,
-    opinion: 40,
-    hoax: 40,
-  },
-  {
-    title: "From Amateur to Pro: The Journey of Aspiring Boxers",
-    image: "/img/home/news-3.png",
-    facts: 20,
-    opinion: 40,
-    hoax: 40,
-  },
-  {
-    title: "Olympic Dreams: Athletes Prepare for Paris 2024",
-    image: "/img/home/news-4.png",
-    facts: 50,
-    opinion: 50,
-    hoax: 0,
-  },
-  {
-    title: "Inside the Mind of a Champion: A New Documentary",
-    image: "/img/home/news-4.png",
-    facts: 70,
-    opinion: 20,
-    hoax: 10,
-  },
-  {
-    title: "The Rise of eSports: More Than Just a Game",
-    image: "/img/home/news-4.png",
-    facts: 60,
-    opinion: 30,
-    hoax: 10,
-  },
-];
-
 export default function PoliticsSection() {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -115,7 +61,8 @@ export default function PoliticsSection() {
                 <NewsCard
                   key={item.id}
                   title={item.title ?? ""}
-                  image={item.url ?? "/img/home/news-3.png"}
+                  // image={item.url ?? "/img/home/news-3.png"}
+                  image = {`/xenotimes/${item.url}`}
                   href={`/xenotimes/news/${item.id}`}
                   facts={item.analyses?.[0]?.fact_percentage ?? 0}
                   opinion={item.analyses?.[0]?.opinion_percentage ?? 0}

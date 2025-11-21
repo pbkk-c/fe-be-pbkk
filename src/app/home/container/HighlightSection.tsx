@@ -86,7 +86,8 @@ export default function HighlightSection() {
         {/* Background image */}
         <div className="relative h-[800px] md:h-screen w-full">
           <Image
-            src={content.url || "/img/home/news-1.png"}
+            // src={content.url || "/img/home/news-1.png"}
+            src={`/xenotimes/${content.url}`}
             alt={content.title || "Highlight news"}
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-105"

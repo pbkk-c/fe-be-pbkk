@@ -69,7 +69,8 @@ export default function LatestSection() {
             variant="medium"
             title={item.title}
             description={item.raw_text?.slice(0, 100) ?? ""}
-            image={item.url ?? "/img/home/hero-1.png"}
+            // image={item.url ?? "/img/home/hero-1.png"}
+            image = {`/xenotimes/${item.url}`}
             category={item.topic ?? ""}
             href={`/xenotimes/news/${item.id}`}
           />

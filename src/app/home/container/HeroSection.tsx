@@ -59,7 +59,8 @@ export default function HeroSection() {
             title: item.title ?? "",
             // ensure description is string (fallback to empty string)
             description: item.raw_text ? item.raw_text.slice(0, 100) : "",
-            image: item.url ?? "/placeholder.jpg",
+            // image: item.url ?? "/placeholder.jpg",
+            image : `/xenotimes/${item.url}`,
             facts: item.analyses?.[0]?.fact_percentage ?? 0,
             opinion: item.analyses?.[0]?.opinion_percentage ?? 0,
             hoax: item.analyses?.[0]?.hoax_percentage ?? 0,
