@@ -109,10 +109,11 @@ export default function EconomySection() {
           <div
             className={`flex flex-col gap-4 transition-all duration-300 ease-in-out ${listContainerClasses}`}
           >
-            {contents
+            {/* {contents
               .filter((item) => item.type === "News" && item.topic === "Economy")
               //  .slice(0, 4)
               .map((item) => (
+
                 <NewsCard
                   key={item.id}
                   title={item.title ?? ""}
@@ -123,7 +124,23 @@ export default function EconomySection() {
                   opinion={item.analyses?.[0]?.opinion_percentage ?? 0}
                   hoax={item.analyses?.[0]?.hoax_percentage ?? 0}
                 />
-              ))}
+              ))} */}
+              {contents
+                .filter((item) => item.type === "News" && item.topic === "Economy")
+                .map((item) => {
+                  console.log("Image URL:", `/xenotimes${item.url}`);
+                  return (
+                    <NewsCard
+                      key={item.id}
+                      title={item.title ?? ""}
+                      href={`/xenotimes/news/${item.id}`}
+                      image={`/xenotimes${item.url}`}
+                      facts={item.analyses?.[0]?.fact_percentage ?? 0}
+                      opinion={item.analyses?.[0]?.opinion_percentage ?? 0}
+                      hoax={item.analyses?.[0]?.hoax_percentage ?? 0}
+                    />
+                  );
+                })}
           </div>
         </div>
 
@@ -143,7 +160,8 @@ export default function EconomySection() {
             <BigCard
               key={item.id}
               title={item.title ?? ""}
-              image={item.url ?? "/img/home/hero-1.png"}
+              // image={item.url ?? "/img/home/hero-1.png"}
+              image={`/xenotimes${item.url}`}
               href={`/xenotimes/news/${item.id}`}
               facts={item.analyses?.[0]?.fact_percentage ?? 0}
               opinion={item.analyses?.[0]?.opinion_percentage ?? 0}

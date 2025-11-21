@@ -62,7 +62,7 @@ export default function PoliticsSection() {
                   key={item.id}
                   title={item.title ?? ""}
                   // image={item.url ?? "/img/home/news-3.png"}
-                  image = {`/xenotimes/${item.url}`}
+                  image = {`/xenotimes${item.url}`}
                   href={`/xenotimes/news/${item.id}`}
                   facts={item.analyses?.[0]?.fact_percentage ?? 0}
                   opinion={item.analyses?.[0]?.opinion_percentage ?? 0}
@@ -88,8 +88,8 @@ export default function PoliticsSection() {
             <BigCard
               key={item.id}
               title={item.title ?? ""}
-              image={item.url ?? "/img/home/news-7.png"}
-              href={`/news/${item.id}`}
+              image={`/xenotimes${item.url}`}
+              href={`/xenotimes/news/${item.id}`}
               facts={item.analyses?.[0]?.fact_percentage ?? 0}
               opinion={item.analyses?.[0]?.opinion_percentage ?? 0}
               hoax={item.analyses?.[0]?.hoax_percentage ?? 0}

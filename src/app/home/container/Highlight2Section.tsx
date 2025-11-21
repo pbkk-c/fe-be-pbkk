@@ -87,7 +87,7 @@ export default function Highlight2Section() {
       >
         <Image
           // src={content.url || "/img/home/news-4.png"}
-          src={`/xenotimes/${content.url}`}
+          src={`/xenotimes${content.url}`}
           alt={content.title || "Highlight news"}
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-105"
