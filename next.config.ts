@@ -8,12 +8,14 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  basePath: "/xenotimes",
   assetPrefix: "/xenotimes",
   eslint: {
     ignoreDuringBuilds: true,
   },
   images: {
     domains: [
+      "senopati.its.ac.id",
       "abcnews.go.com",
       "cdn.cnn.com",
       "assets.bbc.com",
