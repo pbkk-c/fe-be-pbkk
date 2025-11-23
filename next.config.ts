@@ -8,8 +8,8 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: "/xenotimes",
-  // assetPrefix: "/xenotimes",
+  // basePath: "/xenotimes",
+  assetPrefix: "/xenotimes",
   eslint: {
     ignoreDuringBuilds: true,
   },
