@@ -52,7 +52,8 @@ export default function SmallNewsCarousel({ contents }: SmallNewsCarouselProps) 
               <SmallNewsCard
                 title={item.title ?? ""}
                 category={item.topic ?? ""}
-                image={item.url ?? ""}
+                // image={item.url ?? ""}
+                image={`xenotimes${item.url}`}
                 href={`/news/${item.id}`}
               />
             </div>
