@@ -10,7 +10,7 @@
 const nextConfig = {
   basePath: "/xenotimes",
   assetPrefix: "/xenotimes",
-  output: "export",
+  // output: "export",
   eslint: {
     ignoreDuringBuilds: true,
   },
