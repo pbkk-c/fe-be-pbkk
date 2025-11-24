@@ -16,13 +16,24 @@ export default function SmallNewsCard({ title, category, image, href = "#" }: Sm
     >
       {/* Gambar */}
       <div className="relative w-full h-40 md:h-48">
-        <Image
+        {/* <Image
           src={image}
           alt={title}
           fill
           sizes="(max-width: 768px) 200px, 400px"
           className="object-cover transition-transform duration-700 group-hover:scale-105"
-        />
+        /> */}
+
+             <div className="relative w-full h-full">
+              <img
+                // src={current.image ? current.image : ""}
+                // alt={current.title}
+                src={image}
+                alt={title}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+              />
+            </div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent group-hover:from-black/70 transition-all duration-500" />
       </div>
 
