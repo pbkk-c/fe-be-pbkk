@@ -75,7 +75,7 @@ export default function HeroCard({ cards, interval = 5000 }: HeroCardProps) {
                 alt={current.title}
                 // fill
                 // priority
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                className="object-cover fill priority transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
             </div>
