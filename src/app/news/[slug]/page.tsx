@@ -86,6 +86,7 @@ export default function NewsDetailPage() {
   };
 
   const imageUrl = content.url || "/img/home/news-1.png";
+  console.log("Using image URL:", imageUrl);
 
   return (
     <>
@@ -111,8 +112,8 @@ export default function NewsDetailPage() {
               <img
                 src={content.url ? `xenotimes${content.url}` : ""}
                 alt={content.title || ""}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                loading="lazy"
+                // className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                // loading="lazy"
               />
             </div>
         </div>
