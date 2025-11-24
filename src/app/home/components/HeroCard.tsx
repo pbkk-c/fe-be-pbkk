@@ -70,13 +70,6 @@ export default function HeroCard({ cards, interval = 5000 }: HeroCardProps) {
                 priority
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               /> */}
-               {/* <Image
-                src={current.image ? current.image : ""}
-                alt={current.title}
-                fill
-                priority
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
-              /> */}
               <div className="relative w-full h-full">
               <img
                 src={current.image ? current.image : ""}

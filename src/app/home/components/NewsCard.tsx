@@ -38,12 +38,20 @@ export default function NewsCard({
           variant === "trending" && "w-20 h-20 shrink-0 rounded-md"
         )}
       >
-        <Image
+        {/* <Image
           src={image}
           alt={title}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-300"
-        />
+        /> */}
+         <div className="relative w-full h-full">
+              <img
+                src={image}
+                alt={title}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+              />
+            </div>
       </div>
       <div className="p-4">
         {category && (

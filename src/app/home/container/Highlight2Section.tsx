@@ -85,14 +85,23 @@ export default function Highlight2Section() {
         href={`/xenotimes/news/${content.id}`}
         className="group relative w-full md:w-1/2 h-[400px] sm:h-[480px] lg:h-[560px] rounded-3xl overflow-hidden shadow-xl transition-transform duration-700 hover:scale-[1.03]"
       >
-        <Image
+        {/* <Image
           // src={content.url || "/img/home/news-4.png"}
-          src={`/xenotimes${content.url}`}
+          src={`xenotimes${content.url}`}
           alt={content.title || "Highlight news"}
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-105"
           priority
-        />
+        /> */}
+          <div className="relative w-full h-full">
+              <img
+                // src={current.image ? current.image : ""}
+                src={`xenotimes${content.url}`}
+                alt={content.title || "Highlight news"}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+              />
+            </div>
       </UnstyledLink>
 
       {/* Bagian kanan: konten */}
