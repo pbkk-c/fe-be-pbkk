@@ -58,7 +58,6 @@ export default function HeroSection() {
             category: item.topic ?? "",
             title: item.title ?? "",
             description: item.raw_text ? item.raw_text.slice(0, 100) : "",
-            // image: item.url ?? "/placeholder.jpg",
             image : `xenotimes${item.url}`,
             facts: item.analyses?.[0]?.fact_percentage ?? 0,
             opinion: item.analyses?.[0]?.opinion_percentage ?? 0,
