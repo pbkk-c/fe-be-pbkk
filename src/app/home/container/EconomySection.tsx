@@ -161,7 +161,7 @@ export default function EconomySection() {
               key={item.id}
               title={item.title ?? ""}
               // image={item.url ?? "/img/home/hero-1.png"}
-              image={`/xenotimes${item.url}`}
+              image={`xenotimes${item.url}`}
               href={`/xenotimes/news/${item.id}`}
               facts={item.analyses?.[0]?.fact_percentage ?? 0}
               opinion={item.analyses?.[0]?.opinion_percentage ?? 0}

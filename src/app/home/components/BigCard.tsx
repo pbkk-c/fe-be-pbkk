@@ -27,7 +27,17 @@ export default function BigCard({
       <div className="relative w-full rounded-3xl overflow-hidden shadow-lg">
         {/* Background image */}
         <div className="relative h-[260px] md:h-[360px] lg:h-[460px] xl:h-[560px] 2xl:h-[600px] w-full transition-all duration-300">
-          <Image src={image} alt={title} fill className="object-cover" priority />
+          {/* <Image src={image} alt={title} fill className="object-cover" priority /> */}
+            <div className="relative w-full h-full">
+              <img
+                // src={current.image ? current.image : ""}
+                // alt={current.title}
+                src={image}
+                alt={title}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+              />
+            </div>
 
           {/* Overlay gelap agar teks terbaca */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
