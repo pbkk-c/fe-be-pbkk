@@ -109,7 +109,7 @@ export default function NewsDetailPage() {
           {/* <Image src={imageUrl} alt={content.title || ""} fill className="object-cover" /> */}
             <div className="relative w-full h-full">
               <img
-                src={content.url ? `xenotimes/news${content.url}` : ""}
+                src={content.url ? `xenotimes${content.url}` : ""}
                 alt={content.title || ""}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 loading="lazy"
