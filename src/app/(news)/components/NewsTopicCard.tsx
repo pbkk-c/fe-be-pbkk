@@ -43,7 +43,7 @@ export default function NewsTopicCard({ item, variant = "grid" }: PoliticsCardPr
       <div className="bg-white p-5 rounded-2xl shadow-sm hover:shadow-md border border-orange-100 hover:border-orange-300 transition-all">
         <div className="flex flex-col md:flex-row gap-4">
           <img
-            src={item.url ?? "/placeholder.jpg"}
+            src={item.url ? `xenotimes${item.url}` : "/placeholder.jpg"}
             alt={item.title ?? ""}
             className="w-full md:w-48 h-40 object-cover rounded-lg"
           />
