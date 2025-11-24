@@ -8,14 +8,11 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: "/xenotimes",
   assetPrefix: "/xenotimes",
-  // output: "export",
   eslint: {
     ignoreDuringBuilds: true,
   },
   images: {
-    // unoptimized: true,
     domains: [
       "senopati.its.ac.id",
       "abcnews.go.com",
