@@ -15,7 +15,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    unoptimized: true,
+    // unoptimized: true,
     domains: [
       "senopati.its.ac.id",
       "abcnews.go.com",
