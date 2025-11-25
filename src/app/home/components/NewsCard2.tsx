@@ -19,7 +19,16 @@ export default function NewsCard2({ title, image, facts, opinion, hoax, href }: 
       <div className="flex flex-col sm:flex-row gap-3 items-center sm:items-start rounded-xl p-3 hover:shadow-md transition-all duration-300 w-full max-w-full">
         {/* Thumbnail */}
         <div className="relative rounded-xl w-[90%] sm:w-28 md:w-32 2xl:w-40 h-24 sm:h-16 md:h-20 overflow-hidden flex-shrink-0">
-          <Image src={image} alt={title} fill className="object-cover" />
+          {/* <Image src={image} alt={title} fill className="object-cover" /> */}
+          <div className="relative w-full h-full">
+              <img
+                src={image}
+                alt={title}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+              />
+            </div>
+          {/* <img src={image} alt={title} className="object-cover" /> */}
         </div>
 
         {/* Info Section */}
