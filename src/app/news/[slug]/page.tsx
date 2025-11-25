@@ -85,7 +85,7 @@ export default function NewsDetailPage() {
     hoax_percentage: 0,
   };
 
-  const imageUrl = content.url || "/img/home/news-1.png";
+  const imageUrl = content.url ? `/xenotimes/xenotimes${content.url}` : "/placeholder-image.jpg";
   console.log("Using image URL:", imageUrl);
 
   return (
@@ -110,7 +110,7 @@ export default function NewsDetailPage() {
           {/* <Image src={imageUrl} alt={content.title || ""} fill className="object-cover" /> */}
             <div className="relative w-full h-full">
               <img
-                src={content.url ? `xenotimes${content.url}` : ""}
+                src={content.url ? `/xenotimes/xenotimes${content.url}` : ""}
                 alt={content.title || ""}
                 // className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 // loading="lazy"
