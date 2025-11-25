@@ -54,7 +54,7 @@ export default function SmallNewsCarousel({ contents }: SmallNewsCarouselProps) 
                 category={item.topic ?? ""}
                 // image={item.url ?? ""}
                 image={`xenotimes${item.url}`}
-                href={`/news/${item.id}`}
+                href={`/xenotimes/news/${item.id}`}
               />
             </div>
           ))}
