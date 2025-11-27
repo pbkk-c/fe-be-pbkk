@@ -359,6 +359,7 @@ export default function AnalyzePage() {
                 </div>
               </motion.div>
             )}
+            {result && <BackHomeButton />}
           </AnimatePresence>
         </motion.div>
       </main>
