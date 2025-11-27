@@ -173,7 +173,7 @@ export default function LoginForm() {
             <Button
               variant="slate"
               size="lg"
-              onClick={() => router.push("/")}
+              onClick={() => router.push("/xenotimes")}
               className="w-full mt-3 bg-white hover:bg-orange-50 text-black border border-orange-200 py-3"
             >
               <Typography as="p" variant="btn" className="text-black">
