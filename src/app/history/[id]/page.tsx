@@ -195,7 +195,7 @@ export default function HistoryDetailPage() {
           {/* Back Button */}
           <div className="mt-8">
             <button
-              onClick={() => router.push("/history")}
+              onClick={() => router.push("/xenotimes/history")}
               className="w-full py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition"
             >
               ← Back to History

@@ -40,7 +40,7 @@ export default function FloatingAIButton() {
           initial={{ opacity: 0, x: 10 }}
           animate={{ opacity: hovered ? 1 : 0, x: hovered ? 0 : 10 }}
           transition={{ duration: 0.2 }}
-          className="absolute right-full mr-3 px-3 py-1.5 backdrop-blur-md bg-white/40 text-white text-sm rounded-md whitespace-nowrap shadow-lg"
+          className="absolute right-full mr-3 px-3 py-1.5 backdrop-blur-md bg-gray-400 text-white text-sm rounded-md whitespace-nowrap shadow-lg"
         >
           Gunakan AI untuk temukan fakta atau opini
         </motion.span>

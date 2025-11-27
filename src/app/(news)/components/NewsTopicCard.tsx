@@ -14,7 +14,7 @@ export default function NewsTopicCard({ item, variant = "grid" }: PoliticsCardPr
 
   if (variant === "grid") {
     return (
-      <Link href={`/news/${item.id}`}>
+      <Link href={`/xenotimes/news/${item.id}`}>
         <div className="bg-white rounded-2xl shadow-sm hover:shadow-lg border border-orange-100 hover:border-orange-400 transition-all overflow-hidden">
           <img
             src={item.url ? `xenotimes${item.url}` : "/placeholder.jpg"}
@@ -39,7 +39,7 @@ export default function NewsTopicCard({ item, variant = "grid" }: PoliticsCardPr
   }
 
   return (
-    <Link href={`/news/${item.id}`} className="no-underline">
+    <Link href={`/xenotimes/news/${item.id}`} className="no-underline">
       <div className="bg-white p-5 rounded-2xl shadow-sm hover:shadow-md border border-orange-100 hover:border-orange-300 transition-all">
         <div className="flex flex-col md:flex-row gap-4">
           <img
