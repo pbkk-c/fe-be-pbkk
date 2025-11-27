@@ -112,7 +112,9 @@ export default function NewsDetailPage() {
               <img
                 src={content.url ? `/xenotimes/xenotimes${content.url}` : ""}
                 alt={content.title || ""}
-                className="object-cover"
+                // className="object-cover"
+                className="absolute inset w-full h-full object-cover"
+                
                 // className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 // loading="lazy"
               />
