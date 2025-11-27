@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { useParams } from "next/navigation";
 import Footer from "@/app/layouts/Footer";
 import Navbar from "@/app/layouts/Navbar";
 import FloatingAIButton from "@/app/home/components/FloatingButton";
 import LoadingScreen from "@/app/components/LoadingScree";
+import { useRouter } from "next/navigation";
+
 
 interface Analysis {
   created_at: string;
@@ -42,6 +43,8 @@ export default function NewsDetailPage() {
   const [content, setContent] = useState<ContentDetail | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const router = useRouter();
+
   useEffect(() => {
     console.log("Params object:", params);
     console.log("Extracted id:", id);
@@ -53,7 +56,7 @@ export default function NewsDetailPage() {
 
       try {
         setLoading(true);
-        const res = await fetch(`/xenotimes/api/xenotimes/content/${id}`);
+        const res = await fetch(`/api/xenotimes/content/${id}`);
         if (!res.ok) throw new Error(`Failed to fetch content: ${res.status}`);
         const data: ContentDetail = await res.json();
         setContent(data);
@@ -91,10 +94,17 @@ export default function NewsDetailPage() {
   return (
     <>
       <Navbar />
-
       <main className="max-w-3xl mx-auto px-4 pt-24 pb-16">
         {/* Topic + Author + Date */}
+        <div className="flex items-center justify-between mt-24">
         <p className="text-sm text-amber-600 font-medium">{content.topic}</p>
+          <button
+            onClick={() => router.back()}
+            className="px-3 py-1 text-sm border border-amber-600 text-amber-600 rounded-md hover:bg-amber-50 transition"
+          >
+            Back
+          </button>
+        </div>
         <h1 className="mt-2 text-3xl font-bold">{content.title}</h1>
         <p className="text-sm text-gray-500">
           {content.creator_name || "Unknown"} •{" "}
@@ -112,11 +122,7 @@ export default function NewsDetailPage() {
               <img
                 src={content.url ? `/xenotimes/xenotimes${content.url}` : ""}
                 alt={content.title || ""}
-                // className="object-cover"
                 className="absolute inset w-full h-full object-cover"
-                
-                // className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                // loading="lazy"
               />
             </div>
         </div>
