@@ -5,6 +5,10 @@ import Navbar from "../layouts/Navbar";
 import Footer from "../layouts/Footer";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2 } from "lucide-react";
+import Button from "@/components/buttons/Button";
+import Typography from "@/components/Typography";
+import { useRouter } from "next/navigation";
+
 
 // --- TYPES ---
 interface SectionData {
@@ -189,6 +193,20 @@ export default function AnalyzePage() {
       setLoading(false);
     }
   };
+  const router = useRouter();
+  const BackHomeButton = () => (
+  <Button
+    onClick={() => router.push("/xenotimes")}
+    className="mt-6 px-6 py-3 rounded-xl border border-orange-500 text-orange-600 
+               bg-white hover:bg-orange-50 hover:border-orange-600 
+               transition-all font-semibold shadow-sm w-full"
+  >
+    <Typography as="p" variant="btn" className="text-orange-600">
+      ← Kembali ke Home
+    </Typography>
+  </Button>
+);
+
 
   return (
     <>
@@ -259,6 +277,7 @@ export default function AnalyzePage() {
                 </div>
               </div>
             )}
+            {!result && !loading && <BackHomeButton />}
           </div>
 
           {/* Results Display */}

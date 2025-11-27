@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
 
+
 export default function LoginForm() {
   const methods = useForm<LoginType>({ mode: "onTouched" });
   const {

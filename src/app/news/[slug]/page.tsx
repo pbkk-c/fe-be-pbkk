@@ -96,7 +96,7 @@ export default function NewsDetailPage() {
       <Navbar />
       <main className="max-w-3xl mx-auto px-4 pt-24 pb-16">
         {/* Topic + Author + Date */}
-        <div className="flex items-center justify-between mt-24">
+        <div className="flex items-center justify-between">
         <p className="text-sm text-amber-600 font-medium">{content.topic}</p>
           <button
             onClick={() => router.back()}
