@@ -24,7 +24,7 @@ export default function AnalyzerPromoModal() {
 
   const handleGoToAnalyzer = () => {
     localStorage.setItem("hasSeenAnalyzerPromo", "true");
-    router.push("/analyzer");
+    router.push("/xenotimes/analyzer");
   };
 
   return (
