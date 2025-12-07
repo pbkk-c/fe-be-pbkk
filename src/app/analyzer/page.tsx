@@ -94,7 +94,7 @@ export default function AnalyzePage() {
     try {
       // --- STEP A: Call Next.js API (which calls Python) ---
       setProgress(10);
-      setProgressDesc("Mengirim URL ke AI...");
+      setProgressDesc("Loading...");
 
       const res = await fetch("/xenotimes/api/xenotimes/analyze", {
         method: "POST",
@@ -217,7 +217,7 @@ export default function AnalyzePage() {
           animate={{ opacity: 1, y: 0 }}
           className="max-w-3xl w-full text-center"
         >
-          <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent drop-shadow-sm mb-6">
+          <h1 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent drop-shadow-sm mb-6 py-2">
             AI News Analyzer
           </h1>
           <p className="text-zinc-600 mb-8">
@@ -290,7 +290,7 @@ export default function AnalyzePage() {
                 exit={{ opacity: 0, y: -20 }}
                 className="mt-10 bg-white border border-orange-200 p-6 rounded-2xl shadow-xl text-left space-y-6"
               >
-                <h2 className="text-2xl font-bold text-zinc-800 border-b pb-2">📊 Hasil Analisis</h2>
+                <h2 className="text-2xl font-bold text-zinc-800 border-b pb-2">Hasil Analisis</h2>
 
                 <div className="bg-orange-50 p-4 rounded-lg border border-orange-100">
                   <p className="text-zinc-700 leading-relaxed font-medium">

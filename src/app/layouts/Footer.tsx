@@ -5,6 +5,7 @@ const categories = [
   { label: "Economy", href: "/xenotimes/economy" },
   { label: "Science", href: "/xenotimes/science" },
   { label: "Sports", href: "/xenotimes/sports" },
+  { label: "Help", href: "/xenotimes/help" },
 ];
 
 export default function Footer() {
@@ -15,7 +16,7 @@ export default function Footer() {
         <div>
           <h2 className="text-3xl font-bold text-white tracking-tight">XenoTimes</h2>
           <p className="mt-3 text-sm text-gray-400 leading-relaxed max-w-sm">
-            Your trusted source for the latest updates in politics, economy, science, and more.
+           Your instant AI detector for facts, opinions, and hoaxes
           </p>
         </div>
 
@@ -40,7 +41,7 @@ export default function Footer() {
         <div>
           <h3 className="mb-3 text-lg font-semibold text-white">Contact</h3>
           <ul className="space-y-2 text-sm text-gray-400">
-            <li>Email: contact@xenotimes.com</li>
+            {/* <li>Email: contact@xenotimes.com</li> */}
             <li>Address: Surabaya, Indonesia</li>
           </ul>
         </div>

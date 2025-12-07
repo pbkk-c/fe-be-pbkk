@@ -13,6 +13,7 @@ const navItems = [
   { label: "Economy", href: "/xenotimes/economy" },
   { label: "Science", href: "/xenotimes/science" },
   { label: "Sports", href: "/xenotimes/sports" },
+  { label: "Help", href: "/xenotimes/help" },
 ];
 
 export default function Navbar() {
@@ -74,7 +75,7 @@ export default function Navbar() {
       <div className="mx-auto flex max-w-[90%] items-center justify-between px-4">
         {/* === Logo === */}
         <Link
-          href="/"
+          href="/xenotimes"
           className="text-2xl font-extrabold tracking-tight text-white hover:text-amber-400 transition"
         >
           XenoTimes
